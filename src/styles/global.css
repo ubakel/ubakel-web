@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  /* Ubakel Strict Brand Palette */
+  --color-crisp-grey: #f3f4f6;
+  --color-deep-black: #0d0d0d;
+  --color-deep-raisin: #1a0a10;
+  --color-deep-burgundy: #6b1a2a;
+  --color-sharp-crimson: #D90429;
+  --color-cool-slate: #4B5563;
+  --color-pure-white: #ffffff;
+  
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+}
+
+@layer utilities {
+  /* Film grain noise texture for the Hero background */
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+  }
+}
+
+/* ░░ ADVANCED CSS ANIMATIONS ░░ */
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin-slow {
+  100% { transform: rotate(360deg); }
+}
+
+/* Rotating Text Animation (Zero JS) */
+@keyframes rotateText {
+  0%, 20% { transform: translateY(0); opacity: 1; }
+  25%, 45% { transform: translateY(-1.2em); opacity: 1; }
+  50%, 70% { transform: translateY(-2.4em); opacity: 1; }
+  75%, 95% { transform: translateY(-3.6em); opacity: 1; }
+  100% { transform: translateY(-4.8em); opacity: 0; }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.animate-rotate-text {
+  display: flex;
+  flex-direction: column;
+  animation: rotateText 10s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+.animate-marquee {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 20s linear infinite;
+}

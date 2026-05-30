@@ -1,0 +1,25 @@
+---
+// src/components/Footer.astro
+const year = new Date().getFullYear();
+---
+<footer class="bg-deep-raisin py-12 px-6 lg:px-8 border-t border-pure-white/5">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+    
+    <div class="flex items-center gap-2">
+      <img class="h-6 w-auto opacity-80" src="/logo.svg" alt="Ubakel Logo" />
+    </div>
+
+    <div class="flex gap-8 text-sm font-medium text-pure-white/60">
+      <a href="#services" class="hover:text-pure-white transition-colors">Services</a>
+      <a href="#portfolio" class="hover:text-pure-white transition-colors">Work</a>
+      <a href="#process" class="hover:text-pure-white transition-colors">Process</a>
+    </div>
+
+    <div class="flex items-center gap-6">
+      <p class="text-xs text-pure-white/40">© {year} Ubakel. All rights reserved.</p>
+      <a href="#" class="w-8 h-8 rounded-full bg-pure-white/5 flex items-center justify-center text-pure-white/60 hover:bg-pure-white/10 hover:text-pure-white transition-colors" aria-label="Back to top">
+        ↑
+      </a>
+    </div>
+  </div>
+</footer>

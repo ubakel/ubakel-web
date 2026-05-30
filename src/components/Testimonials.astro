@@ -1,0 +1,32 @@
+---
+// src/components/Testimonials.astro
+const quotes = [
+  { quote: "Working with Ubakel transformed our digital presence and eliminated 40 hours of manual work a week.", name: "Sarah Jenkins", role: "VP of Operations" },
+  { quote: "The zero-touch architecture they deployed paid for itself in the first 14 days.", name: "Marcus Reed", role: "CTO, Fintech Corp" },
+  { quote: "Flawless execution. We haven't had a single dropped dispatch ticket since launch.", name: "Elena Rostova", role: "Logistics Director" }
+];
+---
+<section class="bg-deep-burgundy py-24 overflow-hidden border-y border-pure-white/10 relative">
+  <div class="absolute inset-0 z-0 bg-noise opacity-30 mix-blend-overlay"></div>
+  
+  <div class="mx-auto max-w-7xl px-6 lg:px-8 mb-12 relative z-10 text-center">
+    <h2 class="text-2xl font-display font-bold text-pure-white">Client Outcomes</h2>
+  </div>
+
+  <div class="relative flex overflow-hidden z-10">
+    <div class="animate-marquee flex gap-8 px-4 hover:[animation-play-state:paused]">
+      {[...quotes, ...quotes].map((t) => (
+        <div class="w-[400px] shrink-0 bg-pure-white/5 border border-pure-white/10 rounded-2xl p-8 backdrop-blur-sm">
+          <p class="text-lg text-pure-white/90 italic mb-6">"{t.quote}"</p>
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-sharp-crimson flex items-center justify-center text-pure-white font-bold">{t.name[0]}</div>
+            <div>
+              <p class="text-pure-white font-semibold text-sm">{t.name}</p>
+              <p class="text-pure-white/60 text-xs">{t.role}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

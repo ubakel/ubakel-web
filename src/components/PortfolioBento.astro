@@ -1,0 +1,58 @@
+---
+// src/components/PortfolioBento.astro
+---
+<section id="portfolio" class="bg-deep-raisin py-24 sm:py-32 border-t border-pure-white/10">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      <div>
+        <h2 class="text-3xl font-display font-bold tracking-tight text-pure-white sm:text-4xl animate-fade-up">Deployed Architecture</h2>
+        <p class="mt-4 text-lg text-pure-white/60 animate-fade-up" style="animation-delay: 100ms;">Production-ready case studies.</p>
+      </div>
+      <div class="flex gap-2 bg-pure-white/5 p-1 rounded-lg border border-pure-white/10 self-start animate-fade-up" style="animation-delay: 200ms;">
+        <button class="px-4 py-2 text-sm font-semibold rounded-md bg-sharp-crimson text-pure-white transition-colors">All</button>
+        <button class="px-4 py-2 text-sm font-semibold rounded-md text-pure-white/70 hover:text-pure-white transition-colors">AI Ops</button>
+        <button class="px-4 py-2 text-sm font-semibold rounded-md text-pure-white/70 hover:text-pure-white transition-colors">Logistics</button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px]">
+      
+      <div class="group relative md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden bg-deep-black border border-pure-white/10 animate-fade-up" style="animation-delay: 300ms;">
+        <div class="absolute inset-0 bg-gradient-to-br from-cool-slate/20 to-transparent z-0"></div>
+        <div class="absolute inset-0 bg-deep-burgundy/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+        <div class="relative z-20 h-full flex flex-col justify-end p-8 bg-gradient-to-t from-deep-black via-deep-black/60 to-transparent">
+          <span class="text-sharp-crimson font-bold text-sm tracking-widest uppercase mb-2">Finance & ERP</span>
+          <h3 class="text-3xl font-display font-bold text-pure-white mb-2">Touchless Accounts Payable</h3>
+          <p class="text-pure-white/70 max-w-md">90% reduction in processing via AI-driven layout parsing and two-way matching.</p>
+        </div>
+      </div>
+
+      <div class="group relative rounded-2xl overflow-hidden bg-deep-black border border-pure-white/10 animate-fade-up" style="animation-delay: 400ms;">
+        <div class="absolute inset-0 bg-gradient-to-br from-cool-slate/20 to-transparent z-0"></div>
+        <div class="relative z-20 h-full flex flex-col justify-end p-6 bg-gradient-to-t from-deep-black via-deep-black/80 to-transparent">
+          <span class="text-sharp-crimson font-bold text-xs tracking-widest uppercase mb-1">Knowledge</span>
+          <h3 class="text-xl font-bold text-pure-white">Zero-Touch RAG</h3>
+        </div>
+      </div>
+
+      <div class="group relative rounded-2xl overflow-hidden bg-deep-black border border-pure-white/10 animate-fade-up" style="animation-delay: 500ms;">
+        <div class="absolute inset-0 bg-gradient-to-br from-cool-slate/20 to-transparent z-0"></div>
+        <div class="relative z-20 h-full flex flex-col justify-end p-6 bg-gradient-to-t from-deep-black via-deep-black/80 to-transparent">
+          <span class="text-sharp-crimson font-bold text-xs tracking-widest uppercase mb-1">Logistics</span>
+          <h3 class="text-xl font-bold text-pure-white">Dispatch Engine</h3>
+        </div>
+      </div>
+
+      <div class="group relative md:col-span-2 rounded-2xl overflow-hidden bg-deep-black border border-pure-white/10 animate-fade-up" style="animation-delay: 600ms;">
+        <div class="absolute inset-0 bg-gradient-to-br from-cool-slate/20 to-transparent z-0"></div>
+        <div class="relative z-20 h-full flex flex-col justify-end p-6 bg-gradient-to-t from-deep-black via-deep-black/80 to-transparent">
+          <span class="text-sharp-crimson font-bold text-xs tracking-widest uppercase mb-1">Revenue</span>
+          <h3 class="text-2xl font-bold text-pure-white mb-1">Intelligent Lifecycle Automation</h3>
+          <p class="text-pure-white/70 text-sm">Automated 92% of scheduling, boosting discovery sessions by 28%.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
