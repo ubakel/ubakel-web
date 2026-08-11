@@ -1,0 +1,46 @@
+ubakel/
+├── astro.config.mjs            # i18n routing (en default, ar RTL) + tailwind vite plugin
+├── package.json                # astro, tailwind v4, lenis
+├── tsconfig.json
+├── README.md
+├── public/
+│   ├── favicon.svg             # logo mark (auto light/dark)
+│   ├── logo-full.svg           # mark + wordmark (burgundy/ink)
+│   ├── logo-full-white.svg     # for the dark footer
+│   ├── logo-mark.svg
+│   └── logo-mark-white.svg
+└── src/
+    ├── data/                   # SINGLE SOURCE OF TRUTH
+    │   ├── site.ts             # contact, socials, partners, nav
+    │   ├── services.ts         # 4 services
+    │   ├── products.ts         # 3 products (incl. Intelicare)
+    │   └── work.ts             # case studies
+    ├── i18n/
+    │   ├── ui.ts               # translation dictionary — en + ar, full parity
+    │   └── utils.ts            # getLangFromUrl, useTranslations, localizePath, isRtl
+    ├── styles/
+    │   └── global.css          # @theme tokens + blueprint utils + CSS animations + RTL fixes
+    ├── layouts/
+    │   └── Layout.astro        # SEO, fonts (+Arabic faces on /ar/), Lenis, hreflang, dir=rtl
+    ├── components/
+    │   ├── Navbar.astro         # executive spacing, scroll-elevation, RTL-safe
+    │   ├── LanguageSwitcher.astro
+    │   ├── Footer.astro
+    │   ├── PipelineDiagram.astro   # ★ signature animated pipeline, mirrors under RTL
+    │   ├── Hero.astro              # ★ business-forward copy, ambient light, floating chips
+    │   ├── PartnerTicker.astro
+    │   ├── Services.astro
+    │   ├── WorkPreview.astro
+    │   ├── Products.astro
+    │   ├── About.astro
+    │   ├── Contact.astro
+    │   └── CTABand.astro
+    └── pages/
+        ├── index.astro
+        ├── [locale]/index.astro    # localized homepage(s) — derives from ui.ts automatically
+        ├── services/index.astro
+        ├── services/[slug].astro
+        ├── products/index.astro
+        ├── products/[slug].astro
+        ├── work/index.astro
+        └── work/[slug].astro

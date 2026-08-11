@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Solar Bill Review System – User Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --burg: #6b1a2a; --raisin: #1a0a10; --grey: #f3f4f6; --ink: #0d0d0d;
+    --slate: #4B5563; --crimson: #D90429; --green: #2F7D4F; --amber: #B7791F;
+    --line: #e5e7eb; --tint: #f7eff1; --muted: #9ca3af;
+  }
+  @page { size: 8.5in 11in; margin: 0; }
+  html, body { margin: 0; padding: 0; background: #fff; }
+  body {
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif; color: var(--ink);
+    font-size: 10.2pt; line-height: 1.45;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 8.5in; height: 11in; box-sizing: border-box; position: relative; overflow: hidden;
+    padding: 0.98in 0.75in 0.85in; page-break-after: always; break-after: page;
+  }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+  .hdr {
+    position: absolute; top: 0.4in; left: 0.75in; right: 0.75in; display: flex;
+    align-items: center; justify-content: space-between; font-size: 8.3pt; color: var(--slate);
+    border-bottom: 1px solid var(--line); padding-bottom: 7px;
+  }
+  .hdr .brand { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--raisin); }
+  .hdr img { height: 15px; }
+  .hdr .sep { display: inline-block; width: 1px; height: 13px; background: #d1d5db; }
+  .ftr {
+    position: absolute; bottom: 0.4in; left: 0.75in; right: 0.75in; display: flex;
+    justify-content: space-between; font-size: 7.8pt; color: var(--slate);
+  }
+  .kicker { font-size: 8.6pt; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--burg); }
+  h1 { font-size: 23pt; line-height: 1.15; margin: 4px 0 10px; color: var(--raisin); letter-spacing: -0.015em; font-weight: 800; }
+  h2 { font-size: 12.5pt; margin: 20px 0 9px; color: var(--raisin); font-weight: 700; }
+  h3 { font-size: 10.6pt; margin: 0 0 4px; color: var(--raisin); font-weight: 700; }
+  p { margin: 0 0 8px; }
+  .lead { font-size: 11.2pt; color: #1f2937; margin: 0 0 18px; max-width: 6.6in; }
+  .muted { color: var(--slate); }
+  .small { font-size: 8.8pt; }
+  code, .mono { font-family: 'Cascadia Mono', Consolas, monospace; font-size: 8.8pt; background: var(--grey); padding: 1px 5px; border-radius: 4px; color: var(--raisin); }
+
+  /* tables */
+  table.tbl { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 9pt; line-height: 1.38; }
+  .tbl th { background: var(--raisin); color: #fff; text-align: left; padding: 7px 9px; font-weight: 600; font-size: 8.6pt; }
+  .tbl th:first-child { border-top-left-radius: 6px; } .tbl th:last-child { border-top-right-radius: 6px; }
+  .tbl td { padding: 7px 9px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .tbl tr:nth-child(even) td { background: #fafafa; }
+  .tbl td.q { font-weight: 600; color: var(--raisin); }
+
+  /* status */
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: -1px; margin-right: 6px; }
+  .g { background: var(--green); } .a { background: var(--amber); } .r { background: var(--crimson); } .n { background: var(--muted); }
+  .pill { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 8.2pt; font-weight: 700; letter-spacing: .02em; }
+  .pill.g { background: #e7f3ec; color: var(--green); } .pill.a { background: #fbf1e1; color: #8a5a12; }
+  .pill.r { background: #fde7ea; color: #b00321; } .pill.n { background: #eef0f3; color: var(--slate); }
+
+  /* cards */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card { background: var(--grey); border-radius: 10px; padding: 14px 16px; }
+  .card.white { background: #fff; border: 1px solid var(--line); }
+  .card .num { width: 26px; height: 26px; border-radius: 50%; background: var(--burg); color: #fff; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center; font-size: 10pt; margin-bottom: 8px; }
+  .card p { font-size: 9.4pt; color: #1f2937; }
+  .callout { border-left: 4px solid var(--burg); background: var(--tint); padding: 11px 14px; border-radius: 0 8px 8px 0; font-size: 9.4pt; }
+  .callout.red { border-color: var(--crimson); background: #fff1f3; }
+  .callout b { color: var(--raisin); }
+  ul.clean { margin: 6px 0 0; padding-left: 18px; } ul.clean li { margin: 3px 0; font-size: 9.4pt; }
+
+  /* icons */
+  .ic { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---------- cover ---------- */
+  .cover { background: var(--raisin); color: #fff; padding: 0; }
+  .cover .shape1 { position: absolute; right: -1.6in; top: -1in; width: 6.2in; height: 7.6in; background: var(--burg);
+    clip-path: polygon(38% 0, 100% 0, 100% 100%, 0 62%); opacity: .95; }
+  .cover .shape2 { position: absolute; right: 0.9in; bottom: -0.6in; width: 3.2in; height: 4.2in; background: #2a1019;
+    clip-path: polygon(50% 0, 100% 28%, 100% 100%, 0 100%, 0 28%); }
+  .cover .inner { position: absolute; left: 0.9in; right: 0.9in; top: 1.1in; bottom: 0.9in; }
+  .cover .logo { width: 2.7in; display: block; }
+  .cover .t1 { font-size: 11pt; letter-spacing: .28em; text-transform: uppercase; color: #e8c9cf; margin-top: 2.95in; font-weight: 600; }
+  .cover .t2 { font-size: 40pt; font-weight: 800; line-height: 1.05; margin: 12px 0 14px; letter-spacing: -0.02em; }
+  .cover .t3 { font-size: 16pt; color: #f3f4f6; font-weight: 400; }
+  .cover .bar { width: 64px; height: 4px; background: var(--crimson); margin: 26px 0 22px; }
+  .cover .meta { position: absolute; bottom: 0; left: 0; font-size: 10pt; line-height: 1.7; color: #e5e7eb; }
+  .cover .meta b { color: #fff; }
+
+  /* ---------- flow ---------- */
+  .flow { display: flex; align-items: stretch; gap: 0; margin: 6px 0 4px; }
+  .step { flex: 1; background: var(--grey); border-radius: 10px; padding: 14px 11px 13px; text-align: center; position: relative; }
+  .step .ico { width: 44px; height: 44px; border-radius: 50%; background: var(--burg); color: #fff; display: flex;
+    align-items: center; justify-content: center; margin: 0 auto 9px; }
+  .step .sn { font-size: 7.6pt; font-weight: 700; letter-spacing: .14em; color: var(--burg); text-transform: uppercase; }
+  .step h3 { font-size: 10pt; margin: 3px 0 5px; }
+  .step p { font-size: 8.4pt; color: var(--slate); line-height: 1.35; margin: 0; }
+  .arrow { width: 20px; display: flex; align-items: center; justify-content: center; color: var(--burg); flex: 0 0 20px; }
+  .step.last { background: var(--raisin); } .step.last h3 { color: #fff; } .step.last p { color: #e5e7eb; }
+  .step.last .ico { background: var(--crimson); } .step.last .sn { color: #f0b7c1; }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .stat { border: 1px solid var(--line); border-radius: 10px; padding: 12px 13px; }
+  .stat .v { font-size: 19pt; font-weight: 800; color: var(--burg); line-height: 1.1; }
+  .stat .l { font-size: 8.6pt; color: var(--slate); margin-top: 3px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 1px solid var(--line); border-radius: 999px;
+    padding: 6px 12px 6px 9px; font-size: 9pt; font-weight: 500; }
+  .chip svg { width: 15px; height: 15px; stroke: var(--green); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---------- timeline ---------- */
+  .tl { display: flex; justify-content: space-between; position: relative; margin: 18px 6px 8px; }
+  .tl:before { content: ''; position: absolute; left: 12.5%; right: 12.5%; top: 20px; height: 3px; background: linear-gradient(90deg, var(--burg), var(--crimson)); }
+  .tl .tn { width: 25%; text-align: center; position: relative; }
+  .tl .tn .c { width: 42px; height: 42px; border-radius: 50%; background: #fff; border: 3px solid var(--burg); margin: 0 auto 8px;
+    display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--burg); font-size: 11pt; }
+  .tl .tn:last-child .c { background: var(--crimson); border-color: var(--crimson); color: #fff; }
+  .tl .tn .t { font-weight: 700; font-size: 9.6pt; color: var(--raisin); }
+  .tl .tn .d { font-size: 8.4pt; color: var(--slate); padding: 0 6px; }
+
+  /* ---------- email mock ---------- */
+  .mail { border: 1px solid #d1d5db; border-radius: 10px; overflow: hidden; box-shadow: 0 8px 24px rgba(26,10,16,.12); background: #fff; }
+  .mail .chrome { background: #eceef1; padding: 7px 12px; display: flex; gap: 6px; align-items: center; }
+  .mail .chrome i { width: 9px; height: 9px; border-radius: 50%; background: #c7ccd3; display: inline-block; }
+  .mail .meta { padding: 10px 16px 9px; border-bottom: 1px solid var(--line); font-size: 8.8pt; color: var(--slate); }
+  .mail .meta .subj { font-size: 11.5pt; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .mail .meta span b { color: #374151; font-weight: 600; }
+  .mail .body { background: var(--grey); padding: 16px 18px; }
+  .mcard { background: #fff; border-radius: 8px; overflow: hidden; max-width: 5.7in; margin: 0 auto; border: 1px solid #e8e9ec; }
+  .mhead { background: var(--raisin); color: #fff; padding: 12px 18px; display: flex; align-items: center; gap: 10px; }
+  .mhead img { height: 16px; } .mhead .wm { font-weight: 800; font-size: 11pt; letter-spacing: .02em; color: #fff; } .mhead .msep { width: 1px; height: 14px; background: rgba(255,255,255,.35); } .mhead .nm { font-weight: 400; font-size: 10pt; letter-spacing: .02em; color: #e8c9cf; }
+  .mhead .sub { margin-left: auto; font-size: 8pt; color: #e8c9cf; letter-spacing: .12em; text-transform: uppercase; }
+  .mstatus { padding: 11px 18px; font-weight: 700; font-size: 10.2pt; display: flex; align-items: center; gap: 8px; }
+  .mstatus.g { background: #e7f3ec; color: var(--green); } .mstatus.a { background: #fbf1e1; color: #8a5a12; }
+  .mcontent { padding: 14px 18px 16px; font-size: 9.2pt; }
+  .mcontent .cust { font-size: 12pt; font-weight: 700; color: var(--raisin); }
+  .mbtns { display: flex; gap: 9px; margin: 12px 0 13px; }
+  .mbtn { background: var(--burg); color: #fff; font-weight: 600; font-size: 8.8pt; padding: 7px 14px; border-radius: 6px; }
+  .mbtn.ghost { background: #fff; color: var(--burg); border: 1.5px solid var(--burg); }
+  .mgrid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+  .mgrid > div { padding: 8px 10px; border-right: 1px solid var(--line); }
+  .mgrid > div:last-child { border-right: 0; }
+  .mgrid .k { font-size: 7.1pt; color: var(--slate); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+  .mgrid .v { font-weight: 700; font-size: 10pt; color: var(--raisin); margin-top: 2px; }
+  .mflags { margin-top: 12px; border: 1px solid #f0d9ae; background: #fffaf1; border-radius: 7px; padding: 9px 12px; }
+  .mflags .h { font-weight: 700; color: #8a5a12; font-size: 8.8pt; margin-bottom: 4px; }
+  .mflags li { font-size: 8.7pt; margin: 3px 0; }
+  .mflags ul { margin: 0; padding-left: 16px; }
+  .matt { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 7px; padding: 7px 11px; margin-top: 13px; font-size: 8.6pt; background: #fff; }
+  .matt .pdf { background: var(--crimson); color: #fff; font-weight: 800; font-size: 7pt; padding: 3px 5px; border-radius: 3px; }
+  .mfoot { text-align: center; font-size: 7.6pt; color: var(--muted); padding: 10px 0 2px; }
+  .badge { display: inline-flex; width: 17px; height: 17px; border-radius: 50%; background: var(--crimson); color: #fff; font-size: 8pt; font-weight: 800;
+    align-items: center; justify-content: center; margin-left: 6px; vertical-align: 1px; box-shadow: 0 0 0 2px #fff; }
+  .keys { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; margin-top: 16px; }
+  .keys div { font-size: 9.1pt; display: flex; gap: 9px; align-items: flex-start; }
+  .keys .badge { margin: 1px 0 0; flex: 0 0 17px; }
+
+  /* ---------- folder ---------- */
+  .tree { background: var(--grey); border-radius: 10px; padding: 14px 18px; font-size: 9.3pt; }
+  .tree .row { display: flex; align-items: center; gap: 9px; padding: 4px 0; }
+  .tree .row .nt { color: var(--slate); font-size: 8.3pt; margin-left: auto; }
+  .tree .l1 { padding-left: 22px; } .tree .l2 { padding-left: 46px; }
+  .fi { width: 18px; height: 18px; flex: 0 0 18px; }
+  .runlog { width: 100%; border-collapse: collapse; font-size: 8.4pt; margin-top: 4px; }
+  .runlog th { text-align: left; background: #fff; border-bottom: 2px solid var(--raisin); padding: 5px 6px; color: var(--raisin); font-family: 'Cascadia Mono', Consolas, monospace; font-size: 7.8pt; }
+  .runlog td { padding: 6px; border-bottom: 1px solid var(--line); }
+
+  /* ---------- do / don't ---------- */
+  .dd { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .dd .col { border-radius: 10px; padding: 15px 17px; }
+  .dd .do { background: #eef6f1; } .dd .dont { background: #fff1f3; }
+  .dd h2 { margin-top: 0; display: flex; align-items: center; gap: 8px; }
+  .dd .item { display: flex; gap: 10px; margin: 11px 0; font-size: 9.4pt; }
+  .dd .item svg { flex: 0 0 18px; width: 18px; height: 18px; margin-top: 1px; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .dd .do svg { stroke: var(--green); } .dd .dont svg { stroke: var(--crimson); }
+  .dd .item b { color: var(--raisin); }
+
+  /* ---------- bars ---------- */
+  .bars { margin-top: 6px; }
+  .barrow { display: grid; grid-template-columns: 1.3in 1fr; align-items: center; gap: 12px; margin: 10px 0; font-size: 9.2pt; }
+  .barrow .lab { font-weight: 600; color: var(--raisin); }
+  .barrow .track { background: var(--grey); border-radius: 6px; height: 26px; position: relative; }
+  .barrow .fill { background: var(--burg); height: 100%; border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding-right: 9px; box-sizing: border-box; color: #fff; font-weight: 700; font-size: 9pt; }
+
+  /* contents */
+  .toc { margin-top: 10px; }
+  .toc .e { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .toc .l { width: 34px; height: 34px; border-radius: 8px; background: var(--burg); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 12pt; flex: 0 0 34px; }
+  .toc .t { font-weight: 700; font-size: 11pt; color: var(--raisin); }
+  .toc .d { font-size: 8.8pt; color: var(--slate); }
+  .toc .p { margin-left: auto; font-weight: 700; color: var(--burg); font-size: 10.5pt; }
+  .quote { background: #fff; border: 1.5px dashed var(--burg); border-radius: 10px; padding: 13px 16px; font-size: 9.6pt; color: #1f2937; }
+  .quote .h { font-size: 8pt; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--burg); margin-bottom: 6px; }
+
+  .mapflow { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+  .mapflow .box { flex: 1; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: #fff; }
+  .mapflow .box .k { font-size: 7.8pt; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--slate); }
+  .mapflow .box .v { font-size: 13pt; font-weight: 800; color: var(--raisin); margin-top: 3px; }
+  .mapflow .box.hl { background: var(--raisin); border-color: var(--raisin); }
+  .mapflow .box.hl .k { color: #e8c9cf; } .mapflow .box.hl .v { color: #fff; }
+  .mapflow .ar { color: var(--burg); flex: 0 0 18px; }
+  .files { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 4px 0 20px; }
+  .file { border-radius: 10px; padding: 14px 10px 12px; text-align: center; background: var(--grey); position: relative; }
+  .file .mk { position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; }
+  .file .mk svg { width: 12px; height: 12px; stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .file .mk.ok { background: var(--green); } .file .mk.no { background: var(--crimson); }
+  .file .t { font-weight: 700; font-size: 9.2pt; color: var(--raisin); margin-top: 8px; }
+  .file .d { font-size: 8.2pt; color: var(--slate); }
+  .habits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .habit { background: var(--raisin); color: #fff; border-radius: 10px; padding: 16px 16px 15px; }
+  .habit .n2 { font-size: 22pt; font-weight: 800; color: #f0b7c1; line-height: 1; }
+  .habit .t { font-weight: 700; font-size: 10.6pt; margin-top: 8px; }
+  .habit .d { font-size: 8.8pt; color: #e5e7eb; margin-top: 3px; }
+  .example { display: grid; grid-template-columns: 1fr auto; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; font-size: 9.3pt; }
+  .example > div { padding: 8px 14px; border-bottom: 1px solid var(--line); }
+  .example .rt { text-align: right; font-weight: 700; color: var(--raisin); }
+  .example .tot { background: var(--raisin); color: #fff; font-weight: 700; border-bottom: 0; }
+</style>
+</head>
+<body>
+
+<!-- ======================= 1. COVER ======================= -->
+<section class="page cover">
+  <div class="shape1"></div><div class="shape2"></div>
+  <div class="inner">
+    <img class="logo" src="{{LOGO_FW}}" alt="Ubakel">
+    <div class="t1">User Manual</div>
+    <div class="t2">Solar Bill<br>Review System</div>
+    <div class="t3">How the system works, what to submit,<br>and what to do with every notification.</div>
+    <div class="bar"></div>
+    <div class="meta">
+      Prepared for <b>Baher Saad</b><br>
+      Prepared by <b>Ubakel</b><br>
+      Version 1.4 &nbsp;·&nbsp; October 2026
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 2. CONTENTS ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>User Manual</div></div>
+  <div class="kicker">Contents</div>
+  <h1>Inside this manual</h1>
+  <p class="lead">Sections A to C explain how the system works and what homeowners submit. Section D is your day-to-day reference. Keep sections E to H at hand for unusual cases and planning.</p>
+  <div class="toc">
+    <div class="e"><div class="l">A</div><div><div class="t">What the system does</div><div class="d">The journey from form to finished report, at a glance</div></div><div class="p">3</div></div>
+    <div class="e"><div class="l">B</div><div><div class="t">Submitting a request</div><div class="d">What homeowners upload, what is not accepted, and text for your form page</div></div><div class="p">4</div></div>
+    <div class="e"><div class="l">C</div><div><div class="t">What happens next</div><div class="d">Timing, the processing queue and how resubmissions work</div></div><div class="p">6</div></div>
+    <div class="e"><div class="l">D</div><div><div class="t">Your notifications</div><div class="d">Every email the system sends, what it means and what to do</div></div><div class="p">7</div></div>
+    <div class="e"><div class="l">E</div><div><div class="t">Common situations</div><div class="d">If this happens, do this</div></div><div class="p">11</div></div>
+    <div class="e"><div class="l">F</div><div><div class="t">Where everything is</div><div class="d">Customer folders and the Run Log</div></div><div class="p">12</div></div>
+    <div class="e"><div class="l">G</div><div><div class="t">Do's and don'ts</div><div class="d">Keeping the system running smoothly</div></div><div class="p">13</div></div>
+    <div class="e"><div class="l">H</div><div><div class="t">Running cost</div><div class="d">Operations used per request and per month</div></div><div class="p">14</div></div>
+  </div>
+  <div class="callout" style="margin-top:26px">In this manual, <b>your team</b> means the people who receive the system's notifications at your team inbox, shown here as <code>reports@yourcompany.com</code>.</div>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>2</div></div>
+</section>
+
+<!-- ======================= 3. A — WHAT THE SYSTEM DOES ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>A · What the system does</div></div>
+  <div class="kicker">Section A</div>
+  <h1>What the system does</h1>
+  <p class="lead">The Solar Bill Review System turns a homeowner's online form into a completed Solar Bill Review report, automatically. It reads every utility bill, checks it, fills in the report, files everything in the customer's folder and tells your team when it is done.</p>
+
+  <div class="flow">
+    <div class="step">
+      <div class="ico"><svg class="ic" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></div>
+      <div class="sn">Step 1</div><h3>Homeowner submits</h3>
+      <p>Bills, a pre-solar bill and the production file, through your online form</p>
+    </div>
+    <div class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+    <div class="step">
+      <div class="ico"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div class="sn">Step 2</div><h3>Files checked</h3>
+      <p>PDF only, the same utility account, a clear billing month and year</p>
+    </div>
+    <div class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+    <div class="step">
+      <div class="ico"><svg class="ic" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4"/><path d="M14 3l5 5v3"/><circle cx="16.5" cy="16.5" r="3"/><path d="M18.7 18.7L21 21"/></svg></div>
+      <div class="sn">Step 3</div><h3>Bills read</h3>
+      <p>Grid import, grid export and the billing month taken from each bill</p>
+    </div>
+    <div class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+    <div class="step">
+      <div class="ico"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 13h6"/></svg></div>
+      <div class="sn">Step 4</div><h3>Report updated</h3>
+      <p>The report is filled in and every accepted file is saved in the customer's folder</p>
+    </div>
+    <div class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+    <div class="step last">
+      <div class="ico"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
+      <div class="sn">Step 5</div><h3>Team notified</h3>
+      <p>An email with the report link, the folder link and the PDF attached</p>
+    </div>
+  </div>
+
+  <h2>At a glance</h2>
+  <div class="stats">
+    <div class="stat"><div class="v">2–4 min</div><div class="l">for a full request of 12 bills</div></div>
+    <div class="stat"><div class="v">12 + 2</div><div class="l">monthly bills, plus the pre-solar bill and the production file</div></div>
+    <div class="stat"><div class="v">1 folder</div><div class="l">per customer, reused on every resubmission</div></div>
+    <div class="stat"><div class="v">Every bill</div><div class="l">checked before anything is written to the report</div></div>
+  </div>
+
+  <h2>What every bill is checked for</h2>
+  <div class="chips">
+    <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>It is a PDF</span>
+    <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>It is an electric utility bill</span>
+    <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>From after solar was installed</span>
+    <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Same utility account as the rest</span>
+    <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>A clear billing month and year</span>
+    <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Realistic usage figures</span>
+    <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Latest issued copy of its month</span>
+    <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Not older than the bill on file</span>
+  </div>
+  <div class="callout" style="margin-top:18px">A bill that fails any check is <b>left out of the report</b> and listed in the notification, so your team always knows what was used and what was not.</div>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>3</div></div>
+</section>
+
+<!-- ======================= 4. B — SUBMITTING (1) ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>B · Submitting a request</div></div>
+  <div class="kicker">Section B</div>
+  <h1>What the homeowner submits</h1>
+  <p class="lead">Homeowners send everything through your online form. A complete request has four parts.</p>
+  <div class="grid2">
+    <div class="card">
+      <div class="num">1</div>
+      <h3>Contact details and contract</h3>
+      <p>First name, last name, email and phone number, plus the contracted solar production (kWh).</p>
+      <p><b>The phone number identifies the customer.</b> Every later submission must use the same number, so new bills are added to the same report.</p>
+    </div>
+    <div class="card">
+      <div class="num">2</div>
+      <h3>Monthly utility bills</h3>
+      <p>Up to 12 bills, one per month, as <b>PDF files downloaded from the utility's website</b>.</p>
+      <p>Any order works. The system reads the billing month from each bill, so a bill uploaded in the "wrong" month box still lands in the right month.</p>
+    </div>
+    <div class="card">
+      <div class="num">3</div>
+      <h3>A bill from before solar</h3>
+      <p>One bill from before the solar system was installed, showing the <b>12-month usage chart</b>.</p>
+      <p>The system reads all twelve bars of the chart to fill the pre-solar comparison.</p>
+      <p>It is checked first: it must be <b>from before solar</b>, for the <b>same utility account</b>, and its chart must <b>not run past the start of the first solar bill</b>. The last bill before solar is ideal.</p>
+    </div>
+    <div class="card">
+      <div class="num">4</div>
+      <h3>Solar production file</h3>
+      <p>The production export from the homeowner's monitoring portal, as an <b>Excel file (.xlsx) with one row per month</b>.</p>
+      <p>It fills the solar production for each month. Once received, it is kept for later submissions.</p>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:18px"><b>One customer, one number.</b> If a homeowner submits with a different phone number, the system treats them as a new customer and starts a new folder and report.</div>
+  <h2>How a bill finds its month</h2>
+  <p class="small muted" style="margin-bottom:4px">The upload box is only a hint. The month printed on the bill decides where it goes.</p>
+  <div class="mapflow">
+    <div class="box"><div class="k">Uploaded in</div><div class="v">"Mar" box</div></div><svg class="ar" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    <div class="box"><div class="k">The bill says</div><div class="v">June 2026</div></div><svg class="ar" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    <div class="box hl"><div class="k">Written to</div><div class="v">June row</div></div>
+  </div>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>4</div></div>
+</section>
+
+<!-- ======================= 5. B — SUBMITTING (2) ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>B · Submitting a request</div></div>
+  <div class="kicker">Section B</div>
+  <h1>Getting submissions right first time</h1>
+  <p class="lead">Most review emails come from the wrong kind of file. These points prevent them.</p>
+  <div class="files">
+    <div class="file"><span class="mk ok"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span><svg width="34" height="40" viewBox="0 0 34 40"><path d="M3 2h19l9 9v27H3z" fill="#fff" stroke="#6b1a2a" stroke-width="2"/><path d="M22 2v9h9" fill="none" stroke="#6b1a2a" stroke-width="2"/><rect x="7" y="22" width="20" height="9" rx="2" fill="#D90429"/><text x="17" y="29" font-size="7" font-weight="800" fill="#fff" text-anchor="middle" font-family="Inter,Arial">PDF</text></svg><div class="t">Utility PDF</div><div class="d">downloaded from the utility's website</div></div>
+    <div class="file"><span class="mk no"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></span><svg width="40" height="40" viewBox="0 0 40 40"><rect x="3" y="8" width="34" height="26" rx="4" fill="#fff" stroke="#4B5563" stroke-width="2"/><circle cx="20" cy="21" r="7" fill="none" stroke="#4B5563" stroke-width="2"/><rect x="14" y="4" width="12" height="5" rx="1.5" fill="#4B5563"/></svg><div class="t">Photo of a bill</div><div class="d">cannot be read reliably</div></div>
+    <div class="file"><span class="mk no"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></span><svg width="40" height="40" viewBox="0 0 40 40"><rect x="4" y="6" width="32" height="24" rx="3" fill="#fff" stroke="#4B5563" stroke-width="2"/><path d="M14 36h12M20 30v6" stroke="#4B5563" stroke-width="2"/><path d="M9 25l7-7 5 5 4-4 6 6" fill="none" stroke="#4B5563" stroke-width="2"/></svg><div class="t">Screenshot</div><div class="d">image files are ignored</div></div>
+    <div class="file"><span class="mk no"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></span><svg width="34" height="40" viewBox="0 0 34 40"><path d="M3 2h19l9 9v27H3z" fill="#fff" stroke="#4B5563" stroke-width="2"/><path d="M22 2v9h9" fill="none" stroke="#4B5563" stroke-width="2"/><path d="M8 20h18M8 25h18M8 30h11" stroke="#4B5563" stroke-width="2"/></svg><div class="t">Another account</div><div class="d">rejected to protect the report</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card white" style="border-top:4px solid var(--crimson)">
+      <h3 style="color:#b00321">Not accepted</h3>
+      <ul class="clean">
+        <li>Photos or scans of paper bills</li>
+        <li>Screenshots and image files (JPG, PNG)</li>
+        <li>Bills from a different utility account than the rest</li>
+        <li>Documents that are not electric bills, such as contracts or gas bills</li>
+        <li>Partial bills without the meter readings page</li>
+      </ul>
+    </div>
+    <div class="card white" style="border-top:4px solid var(--green)">
+      <h3 style="color:var(--green)">For the best result</h3>
+      <ul class="clean">
+        <li>Download each bill as a PDF straight from the utility's website</li>
+        <li>Upload the complete bill, not just the first page</li>
+        <li>One bill per month box; the order does not matter</li>
+        <li>Export production by month, not by day</li>
+        <li>Always use the same phone number</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Suggested text for your form page</h2>
+  <p class="muted small" style="margin-bottom:9px">Place this above the upload fields so homeowners know exactly what to send.</p>
+  <div class="quote">
+    <div class="h">Copy-ready</div>
+    <p><b>Please upload your electricity bills as PDF files downloaded from your utility's website.</b> Photos and screenshots cannot be read.</p>
+    <p>Upload one bill for each of the last 12 months. The order does not matter. Please also upload one bill from before your solar system was installed, and your solar production report exported from your monitoring app as a monthly Excel file.</p>
+    <p style="margin:0">If you send more bills later, please use the same phone number so they are added to your existing report.</p>
+  </div>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>5</div></div>
+</section>
+
+<!-- ======================= 6. C — WHAT HAPPENS NEXT ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>C · What happens next</div></div>
+  <div class="kicker">Section C</div>
+  <h1>What happens next</h1>
+  <p class="lead">The system starts the moment the form is submitted. Nobody needs to press anything.</p>
+  <div class="tl">
+    <div class="tn"><div class="c">1</div><div class="t">Submitted</div><div class="d">The form arrives and joins the queue</div></div>
+    <div class="tn"><div class="c">2</div><div class="t">Checked and read</div><div class="d">Each file is checked, then read one by one</div></div>
+    <div class="tn"><div class="c">3</div><div class="t">Report updated</div><div class="d">The report is filled in and files are saved</div></div>
+    <div class="tn"><div class="c">4</div><div class="t">Email sent</div><div class="d">Usually 2–4 minutes for 12 bills, about a minute for a few</div></div>
+  </div>
+
+  <h2>One request at a time</h2>
+  <p>Requests are processed in the order they arrive, one at a time. This keeps each customer's report consistent and prevents a double submission from creating two reports. When several full requests arrive together, each waits for the one before it: five full requests take about 15 to 20 minutes to clear. When the bill-reading service is busy, a single full request can take up to 8 minutes; nothing needs to be done, the email still arrives.</p>
+
+  <h2>Resubmissions update the same report</h2>
+  <div class="grid2" style="margin-top:4px">
+    <div class="card"><h3>Same number, same report</h3><p>A submission with the same phone number goes into the customer's existing folder and report.</p></div>
+    <div class="card"><h3>Only what is new is added</h3><p>Months already on file stay. The homeowner only needs to send what is missing.</p></div>
+    <div class="card"><h3>Newer bills win</h3><p>A newer bill for a month replaces an older year's bill, and a corrected (re-issued) bill replaces the original. An older bill never replaces a newer one.</p></div>
+    <div class="card"><h3>Complete at twelve</h3><p>The report is complete once all 12 months are on file and nothing is flagged. Your team then receives "Solar report ready".</p></div>
+  </div>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>6</div></div>
+</section>
+
+<!-- ======================= 7. D — NOTIFICATIONS OVERVIEW ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>D · Your notifications</div></div>
+  <div class="kicker">Section D</div>
+  <h1>Your notifications</h1>
+  <p class="lead">Every request ends with one email to your team inbox. The colour tells you how urgent it is.</p>
+  <div style="display:flex;gap:18px;margin:0 0 14px;font-size:9pt">
+    <span><span class="dot g"></span><b>Ready</b>: check and send</span>
+    <span><span class="dot a"></span><b>Review</b>: check before sending</span>
+    <span><span class="dot r"></span><b>Action needed</b></span>
+    <span><span class="dot n"></span><b>Nothing created</b></span>
+  </div>
+  <table class="tbl">
+    <tr><th style="width:36%">Email subject</th><th style="width:34%">What it means</th><th>What to do</th></tr>
+    <tr><td class="q"><span class="dot g"></span>Solar report ready – <i>name</i></td><td>All 12 months are on file and nothing was flagged.</td><td>Open the attached PDF, give it a final look and send it to the homeowner.</td></tr>
+    <tr><td class="q"><span class="dot a"></span>Solar report needs review – <i>name</i></td><td>The report was updated, but months are missing or something was flagged.</td><td>Read the flagged lines. Page 10 explains each one.</td></tr>
+    <tr><td class="q"><span class="dot a"></span>Report ready – PDF not attached – <i>name</i></td><td>The report was built, but its PDF copy could not be created.</td><td>Open the report link and download it as PDF (File › Download › PDF).</td></tr>
+    <tr><td class="q"><span class="dot a"></span>Pre-solar bill needs review – <i>name</i></td><td>The pre-solar bill was not used. The email gives the reason: chart unreadable, bill from after solar, another account, or a chart that runs past the solar installation. The pre-solar comparison was left empty.</td><td>Read the reason. Ask for the right pre-solar bill and resubmit it.</td></tr>
+    <tr><td class="q"><span class="dot r"></span>Production file could not be read – <i>name</i></td><td>The production file could not be opened. The report is built without solar production.</td><td>Ask the homeowner for a monthly Excel export and resubmit it.</td></tr>
+    <tr><td class="q"><span class="dot r"></span>Report could not be created – <i>name</i></td><td>The customer's folder or report could not be set up. Nothing was built.</td><td>Resubmit the request. If it happens again, contact Ubakel.</td></tr>
+    <tr><td class="q"><span class="dot r"></span>Customer record not saved – <i>name</i></td><td>The report was built, but the customer could not be registered.</td><td>Contact Ubakel before this customer submits again, to avoid a second report.</td></tr>
+    <tr><td class="q"><span class="dot n"></span>Incomplete submission – not processed</td><td>The form arrived without a name, email or valid phone number.</td><td>Ask the homeowner to submit the form again with full contact details.</td></tr>
+  </table>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>7</div></div>
+</section>
+
+<!-- ======================= 8. D — REPORT READY EMAIL ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>D · Your notifications</div></div>
+  <div class="kicker">Section D · Ready</div>
+  <h1>"Solar report ready"</h1>
+  <p class="lead">The email you will see most. Everything you need to send the report is inside it.</p>
+  <div class="mail">
+    <div class="chrome"><i></i><i></i><i></i></div>
+    <div class="meta">
+      <div class="subj">Solar report ready – Jane Doe</div>
+      <span><b>From</b> Solar Bill Review &lt;reports@yourcompany.com&gt; &nbsp;·&nbsp; <b>To</b> reports@yourcompany.com</span>
+    </div>
+    <div class="body">
+      <div class="mcard">
+        <div class="mhead"><span class="wm">NetSolar</span><span class="msep"></span><span class="nm">Solar Bill Review</span><span class="sub">Report ready</span></div>
+        <div class="mstatus g"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Complete: twelve months on file, nothing flagged</div>
+        <div class="mcontent">
+          <div class="cust">Jane Doe</div>
+          <div class="muted">jane.doe@example.com</div>
+          <div class="mbtns"><span class="mbtn">Open the report</span><span class="badge">1</span><span class="mbtn ghost">Open the customer folder</span><span class="badge">2</span></div>
+          <div style="position:relative">
+            <div class="mgrid">
+              <div><div class="k">Months on file</div><div class="v">12 / 12</div></div>
+              <div><div class="k">Updated now</div><div class="v">12 months</div></div>
+              <div><div class="k">Flagged</div><div class="v">0</div></div>
+              <div><div class="k">Utility account</div><div class="v">4821093011</div></div>
+            </div>
+            <span class="badge" style="position:absolute;top:-8px;right:-8px;margin:0">4</span>
+          </div>
+          <div class="matt"><span class="pdf">PDF</span>Doe_Jane – Solar Bill Review 2026.pdf<span class="badge">3</span></div>
+          <div class="mfoot">Sent automatically by the Solar Bill Review System</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="keys">
+    <div><span class="badge">1</span><span><b>Open the report</b>: the live Google Sheet for this customer.</span></div>
+    <div><span class="badge">2</span><span><b>Open the customer folder</b>: every bill and file received for this customer.</span></div>
+    <div><span class="badge">3</span><span><b>The PDF</b>, attached and ready to send to the homeowner.</span></div>
+    <div><span class="badge">4</span><span><b>Summary</b>: months on file, what this submission added, flags and the utility account.</span></div>
+  </div>
+  <div class="callout" style="margin-top:16px"><b>What to do:</b> open the PDF, give it a final look, and send it to the homeowner.</div>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>8</div></div>
+</section>
+
+<!-- ======================= 9. D — NEEDS REVIEW EMAIL ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>D · Your notifications</div></div>
+  <div class="kicker">Section D · Review</div>
+  <h1>"Solar report needs review"</h1>
+  <p class="lead">The report was updated with every bill that passed the checks. The flagged lines tell you exactly what still needs attention.</p>
+  <div class="mail">
+    <div class="chrome"><i></i><i></i><i></i></div>
+    <div class="meta">
+      <div class="subj">Solar report needs review – Jane Doe</div>
+      <span><b>From</b> Solar Bill Review &lt;reports@yourcompany.com&gt; &nbsp;·&nbsp; <b>To</b> reports@yourcompany.com</span>
+    </div>
+    <div class="body">
+      <div class="mcard">
+        <div class="mhead"><span class="wm">NetSolar</span><span class="msep"></span><span class="nm">Solar Bill Review</span><span class="sub">Needs review</span></div>
+        <div class="mstatus a"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 18h.01"/></svg>Not complete: review before anything goes to the homeowner</div>
+        <div class="mcontent">
+          <div class="cust">Jane Doe</div>
+          <div class="muted">jane.doe@example.com</div>
+          <div class="mbtns"><span class="mbtn">Open the report</span><span class="mbtn ghost">Open the customer folder</span></div>
+          <div class="mgrid">
+            <div><div class="k">Months on file</div><div class="v">10 / 12</div></div>
+            <div><div class="k">Updated now</div><div class="v">Jan, Feb, Mar</div></div>
+            <div><div class="k">Flagged</div><div class="v">3</div></div>
+            <div><div class="k">Pre-solar</div><div class="v">All 12 read</div></div>
+          </div>
+          <div class="mflags">
+            <div class="h">Flagged</div>
+            <ul>
+              <li>Apr slot – file is not a PDF and was ignored</li>
+              <li>Jun slot – bill is for account 5521884007, but this report belongs to account 4821093011</li>
+              <li>Mar 2026 – no solar production figure</li>
+            </ul>
+          </div>
+          <div class="matt"><span class="pdf">PDF</span>Doe_Jane – Solar Bill Review 2026.pdf</div>
+          <div class="mfoot">Sent automatically by the Solar Bill Review System</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:18px"><b>What to do:</b> read each flagged line and follow the matching action on the next page. Flagged bills were <b>not</b> used, so nothing wrong has been written into the report. Once the homeowner resubmits what is missing, the same report is updated.</div>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>9</div></div>
+</section>
+
+<!-- ======================= 10. D — FLAG GUIDE ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>D · Your notifications</div></div>
+  <div class="kicker">Section D · Flag guide</div>
+  <h1>What each flag means</h1>
+  <p class="lead">"Slot" is the month box the file was uploaded in. The month in the report always comes from the bill itself.</p>
+  <table class="tbl">
+    <tr><th style="width:35%">Flag</th><th style="width:33%">What it means</th><th>What to do</th></tr>
+    <tr><td class="q">… slot – file is not a PDF and was ignored</td><td>A photo, screenshot or image was uploaded.</td><td>Ask for the PDF from the utility's website.</td></tr>
+    <tr><td class="q">… slot – bill from before solar was installed, so it cannot be used as a monthly bill</td><td>A bill from before the solar system was uploaded as a monthly bill. It has no solar figures.</td><td>Ask for the solar-era bill for that month. If it is the pre-solar bill, resubmit it in the pre-solar box.</td></tr>
+    <tr><td class="q">… slot – not recognised as an electric utility bill</td><td>The file is another kind of document, or unreadable.</td><td>Ask for the correct electric bill.</td></tr>
+    <tr><td class="q">… slot – grid usage figures are missing from this bill</td><td>The meter readings page is not in the file.</td><td>Ask for the complete bill.</td></tr>
+    <tr><td class="q">… slot – grid usage is outside the normal range</td><td>The usage read from the bill is unusually high or low.</td><td>Check the bill by eye before resubmitting it.</td></tr>
+    <tr><td class="q">… slot – the bill does not state which month it covers</td><td>No billing month could be found on the bill.</td><td>Ask for the complete bill.</td></tr>
+    <tr><td class="q">… slot – the bill could not be read with confidence</td><td>Poor quality or an unusual layout.</td><td>Check the bill; ask for a cleaner PDF.</td></tr>
+    <tr><td class="q">… slot – bill is for account X, but this report belongs to account Y</td><td>The bill is for a different utility account, often another property or person.</td><td>Confirm with the homeowner and resubmit the right bill.</td></tr>
+    <tr><td class="q">… slot – duplicate bill for <i>month</i>, already recorded from another slot</td><td>The same month was uploaded twice in one submission. The copy issued most recently is kept.</td><td>Nothing, unless a month is still missing.</td></tr>
+    <tr><td class="q">… slot – older than the <i>month</i> bill already on file</td><td>The report already holds a newer or corrected bill for that month.</td><td>Nothing, unless this bill was meant to replace it.</td></tr>
+    <tr><td class="q"><i>Month Year</i> – no solar production figure</td><td>The production file is missing or does not cover that month.</td><td>Ask for a production export that covers the month.</td></tr>
+    <tr><td class="q">Chart check differs for <i>months</i></td><td>The bill's own usage chart disagrees with its meter readings. The meter readings were used.</td><td>Spot-check those months.</td></tr>
+    <tr><td class="q">Processing problem – <i>file</i> could not be downloaded</td><td>An upload link was broken or the file could not be fetched.</td><td>Ask the homeowner to upload that file again.</td></tr>
+  </table>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>10</div></div>
+</section>
+
+<!-- ======================= 11. E — COMMON SITUATIONS ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>E · Common situations</div></div>
+  <div class="kicker">Section E</div>
+  <h1>Common situations</h1>
+  <p class="lead">If this happens, here is what the system does and what your team should do.</p>
+  <table class="tbl">
+    <tr><th style="width:27%">If this happens</th><th style="width:36%">What the system does</th><th>What to do</th></tr>
+    <tr><td class="q">A photo or screenshot was uploaded</td><td>Ignores the file and flags the month.</td><td>Ask for the PDF; the homeowner resubmits just that month.</td></tr>
+    <tr><td class="q">A bill belongs to someone else</td><td>Rejects it as an account mismatch and leaves it out.</td><td>Confirm with the homeowner and ask for the right bill.</td></tr>
+    <tr><td class="q">Some months are missing</td><td>Builds the report with the months received and sends "needs review".</td><td>Ask for the missing months only, with the same phone number.</td></tr>
+    <tr><td class="q">Bills arrive in several batches</td><td>Adds each batch to the same report.</td><td>Nothing. "Solar report ready" arrives once all 12 months are on file.</td></tr>
+    <tr><td class="q">A bill was uploaded in the wrong month box</td><td>Places it in the month printed on the bill.</td><td>Nothing.</td></tr>
+    <tr><td class="q">The same month was sent twice</td><td>Keeps the copy issued most recently and flags the other.</td><td>Nothing, unless a month is missing.</td></tr>
+    <tr><td class="q">The pre-solar bill and a monthly bill were swapped</td><td>Rejects each one in the wrong box and explains why in the email.</td><td>Ask the homeowner to resubmit each bill in the right box.</td></tr>
+    <tr><td class="q">Next year's bills are submitted</td><td>A newer bill replaces the older year's bill for that month.</td><td>Nothing. Older bills never replace newer ones.</td></tr>
+    <tr><td class="q">The production file cannot be read</td><td>Keeps any production figures already on record, builds the report and emails your team.</td><td>Ask for a monthly Excel export and resubmit it.</td></tr>
+    <tr><td class="q">No production file was sent</td><td>Uses the file already on record, if there is one; otherwise flags each month.</td><td>Ask for the production export if months are flagged.</td></tr>
+    <tr><td class="q">The address or phone on the report differs from the form</td><td>The name and email come from the form; the address and phone are taken from the bills.</td><td>Nothing, if it is the homeowner's property. Otherwise check that the bills belong to this customer.</td></tr>
+    <tr><td class="q">The homeowner changes phone number</td><td>Treats them as a new customer with a new folder and report.</td><td>Ask them to use the original number, or contact Ubakel to merge.</td></tr>
+    <tr><td class="q">A customer needs to be removed</td><td>The customer's record is kept until removed.</td><td>Contact Ubakel. Do not delete the folder on its own.</td></tr>
+  </table>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>11</div></div>
+</section>
+
+<!-- ======================= 12. F — WHERE EVERYTHING IS ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>F · Where everything is</div></div>
+  <div class="kicker">Section F</div>
+  <h1>Where everything is</h1>
+  <p class="lead">Everything lives in Google Drive: one folder per customer, and one Run Log recording every request.</p>
+  <h2 style="margin-top:4px">A customer's folder</h2>
+  <div class="tree">
+    <div class="row"><svg class="fi" viewBox="0 0 24 24" fill="#6b1a2a"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><b>Customer Reports</b><span class="nt">all customers</span></div>
+    <div class="row l1"><svg class="fi" viewBox="0 0 24 24" fill="#6b1a2a"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><b>Doe_Jane</b><span class="nt">one folder per customer: last name_first name</span></div>
+    <div class="row l2"><svg class="fi" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2" fill="#2F7D4F"/><path d="M8 9h8M8 13h8M8 17h5" stroke="#fff" stroke-width="1.6"/></svg>Doe_Jane – Solar Bill Review 2026<span class="nt">the report (Google Sheet)</span></div>
+    <div class="row l2"><svg class="fi" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2" fill="#D90429"/><path d="M8 13h8M8 17h5" stroke="#fff" stroke-width="1.6"/></svg>Jan_2026_utility_bill.pdf &nbsp;…&nbsp; Dec_2025_utility_bill.pdf<span class="nt">accepted bills, named by billing month</span></div>
+    <div class="row l2"><svg class="fi" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2" fill="#D90429"/><path d="M8 13h8M8 17h5" stroke="#fff" stroke-width="1.6"/></svg>pre_solar_bill.pdf<span class="nt">saved once its chart was read</span></div>
+    <div class="row l2"><svg class="fi" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2" fill="#4B5563"/><path d="M8 9h8M8 13h8M8 17h8" stroke="#fff" stroke-width="1.6"/></svg>solar_production_source.xlsx &nbsp;+&nbsp; solar_production<span class="nt">the production file and its readable copy</span></div>
+  </div>
+  <p class="small muted" style="margin-top:8px">Rejected files are never saved to the folder, so everything in it was used in the report.</p>
+
+  <h2>The Run Log</h2>
+  <p>A Google Sheet with one row per request, newest at the bottom. Use it to check what happened to any submission.</p>
+  <table class="runlog">
+    <tr><th>finishedAt</th><th>customer</th><th>status</th><th>months</th><th>flagged</th><th>errors</th></tr>
+    <tr><td>2026-09-25 14:38</td><td>Jane Doe</td><td><span class="pill g">Done</span></td><td>Jan … Dec</td><td>(none)</td><td>(none)</td></tr>
+    <tr><td>2026-09-25 15:02</td><td>John Smith</td><td><span class="pill a">Done with issues</span></td><td>Jan … Oct</td><td>Apr slot – file is not a PDF…</td><td>(none)</td></tr>
+  </table>
+  <div class="grid2" style="margin-top:14px;grid-template-columns:repeat(4,1fr);gap:10px">
+    <div class="card" style="padding:10px 12px"><span class="pill g">Done</span><p style="margin-top:6px">Complete and clean.</p></div>
+    <div class="card" style="padding:10px 12px"><span class="pill a">Done with issues</span><p style="margin-top:6px">Something was flagged; see <b>flagged</b>.</p></div>
+    <div class="card" style="padding:10px 12px"><span class="pill r">Done with errors</span><p style="margin-top:6px">A file could not be processed; see <b>errors</b>.</p></div>
+    <div class="card" style="padding:10px 12px"><span class="pill n">Failed</span><p style="margin-top:6px">A step stopped; the row names which one.</p></div>
+  </div>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>12</div></div>
+</section>
+
+<!-- ======================= 13. G — DO'S AND DON'TS ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>G · Do's and don'ts</div></div>
+  <div class="kicker">Section G</div>
+  <h1>Do's and don'ts</h1>
+  <p class="lead">The system runs on its own. These few habits keep it that way.</p>
+  <div class="dd">
+    <div class="col do">
+      <h2 style="color:var(--green)">Do</h2>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg><span><b>Keep one phone number per customer.</b> It is how every submission finds the right report.</span></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg><span><b>Ask for PDFs from the utility's website.</b> It prevents most review emails.</span></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg><span><b>Resubmit only what is missing.</b> Months already on file stay.</span></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg><span><b>Review every "needs review" email</b> before anything goes to the homeowner.</span></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg><span><b>Check the Run Log</b> whenever you are unsure what happened to a request.</span></div>
+    </div>
+    <div class="col dont">
+      <h2 style="color:#b00321">Don't</h2>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span><b>Rename, remove or add upload fields on the form.</b> The system recognises each field by its exact name.</span></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span><b>Edit, move or rename the report template</b> or the Customer Reports folder.</span></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span><b>Delete or rename a customer's folder or report.</b> Later submissions would have nowhere to go.</span></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span><b>Type over figures the system fills in.</b> The next submission may overwrite them.</span></div>
+      <div class="item"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span><b>Change the automation or its connected accounts.</b> Contact Ubakel for any change.</span></div>
+    </div>
+  </div>
+  <h2 style="margin-top:26px">If you remember only three things</h2>
+  <div class="habits" style="margin-top:6px">
+    <div class="habit"><div class="n2">01</div><div class="t">One number per customer</div><div class="d">The phone number links every submission to the right report.</div></div>
+    <div class="habit"><div class="n2">02</div><div class="t">PDFs from the utility</div><div class="d">Never photos or screenshots.</div></div>
+    <div class="habit"><div class="n2">03</div><div class="t">Nothing renamed</div><div class="d">Form fields, template and folders stay exactly as they are.</div></div>
+  </div>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>13</div></div>
+</section>
+
+<!-- ======================= 14. H — RUNNING COST ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>H · Running cost</div></div>
+  <div class="kicker">Section H</div>
+  <h1>Running cost</h1>
+  <p class="lead">The automation measures its work in <b>operations</b>: one for each step a request passes through. Your subscription includes a set number of operations per month.</p>
+  <h2 style="margin-top:4px">Operations per request</h2>
+  <table class="tbl">
+    <tr><th style="width:62%">Request</th><th>Operations (approx.)</th></tr>
+    <tr><td class="q">Full request: 12 bills, pre-solar bill and production file</td><td><b>190</b></td></tr>
+    <tr><td class="q">A few bills added later (1 to 3 bills)</td><td><b>55 – 75</b></td></tr>
+    <tr><td class="q">Pre-solar bill or production file on its own</td><td><b>50</b></td></tr>
+    <tr><td class="q">Incomplete submission (not processed)</td><td><b>5</b></td></tr>
+  </table>
+
+  <h2>Monthly operations by volume</h2>
+  <p class="small muted" style="margin-bottom:4px">Full requests only. Add about 20% for resubmissions of missing months.</p>
+  <div class="bars">
+    <div class="barrow"><div class="lab">10 reports / month</div><div class="track"><div class="fill" style="width:25%">1,900</div></div></div>
+    <div class="barrow"><div class="lab">20 reports / month</div><div class="track"><div class="fill" style="width:50%">3,800</div></div></div>
+    <div class="barrow"><div class="lab">40 reports / month</div><div class="track"><div class="fill" style="width:100%">7,600</div></div></div>
+  </div>
+  <h2>A typical month, worked through</h2>
+  <div class="example">
+    <div>20 new customers, full requests</div><div class="rt">20 × 190 = 3,800</div>
+    <div>8 homeowners send a few missing bills later</div><div class="rt">8 × 65 ≈ 520</div>
+    <div>2 incomplete form submissions</div><div class="rt">2 × 5 = 10</div>
+    <div class="tot">Total for the month</div><div class="tot rt" style="color:#fff">≈ 4,330 operations</div>
+  </div>
+  <div class="callout" style="margin-top:18px"><b>Every request uses operations</b>, including those that end in "needs review". Getting submissions right the first time (Section B) is the simplest way to keep usage down.</div>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · User Manual v1.4</div><div>14</div></div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!-- ======================= 1. SUMMARY ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>AI model comparison</div></div>
+  <div class="kicker">AI model comparison · October 2026</div>
+  <h1>Which AI should read the bills?</h1>
+  <p class="lead">The system uses an AI model to read every utility bill and pull out the numbers for the report. This page compares the models from Google, Anthropic, OpenAI and DeepSeek at your expected volume of <b>50–70 full requests a month</b>.</p>
+
+  <h2 style="margin-top:6px">Monthly cost at 60 full requests</h2>
+  <p class="small muted" style="margin:-4px 0 6px">Shortlisted models only. One full request reads 13 bills.</p>
+  <div class="bars">
+    <div class="barrow"><div class="lab">Gemini 3.5 Flash-Lite <span class="tag">in use</span></div><div class="track"><div class="fill" style="width:8.0%"></div><span class="val">$9</span></div></div>
+    <div class="barrow"><div class="lab">Gemini 3.8 Flash</div><div class="track"><div class="fill" style="width:15.0%"></div><span class="val">$18 <span class="muted">(until Dec 2026)</span></span></div></div>
+    <div class="barrow"><div class="lab">Claude Haiku 4.5</div><div class="track"><div class="fill" style="width:16.3%"></div><span class="val">$19</span></div></div>
+    <div class="barrow"><div class="lab">GPT-5.4 mini</div><div class="track"><div class="fill" style="width:16.4%"></div><span class="val">$19</span></div></div>
+    <div class="barrow"><div class="lab">Gemini 3.8 Flash</div><div class="track"><div class="fill" style="width:29.8%"></div><span class="val">$35 <span class="muted">(from Jan 2027)</span></span></div></div>
+    <div class="barrow"><div class="lab">Claude Sonnet 5.5</div><div class="track"><div class="fill" style="width:42.3%"></div><span class="val">$50</span></div></div>
+    <div class="barrow"><div class="lab">GPT-5.6 sol</div><div class="track"><div class="fill" style="width:43.8%"></div><span class="val">$51</span></div></div>
+    <div class="barrow"><div class="lab">Claude Opus 5.5</div><div class="track"><div class="fill" style="width:84.7%"></div><span class="val">$100</span></div></div>
+  </div>
+
+  <h2>Our recommendation</h2>
+  <div class="recs">
+    <div class="rec best"><div class="rk">Best value</div><h3>Keep Gemini 3.5 Flash-Lite</h3><p>About $10 a month. Already built and tested on real bills. Nothing to change.</p></div>
+    <div class="rec"><div class="rk">If you want more accuracy</div><h3>Gemini 3.8 Flash</h3><p>Google's newest Flash model. A simple switch plus a re-test, no rebuild. $18, then $35 a month.</p></div>
+    <div class="rec"><div class="rk">If you prefer Claude</div><h3>Claude Sonnet 5.5</h3><p>About $50 a month. Strong on tables, but the bill-reading steps must be rebuilt and re-tested.</p></div>
+  </div>
+  <div class="callout" style="margin-top:14px">At this volume every sensible option costs between $10 and $60 a month, about the same as the Make plan. <b>A single wrong number in a customer report costs more than the difference.</b> Before switching, we suggest running the same real test bills through the two or three finalists and comparing every figure. That test costs only a few dollars.</div>
+  <div class="notes">
+    <div><b>Why not DeepSeek.</b> Its API doesn't accept PDF files, so every bill would need an extra conversion step. Its privacy policy says personal data is processed and stored in China, and these bills carry homeowners' names, addresses and account numbers.</div>
+    <div><b>Privacy.</b> Paid Gemini, Claude and OpenAI API accounts don't use your data to train their models. Gemini's free tier does, so a paid key is required.</div>
+    <div><b>How the costs were estimated.</b> About 15,000 tokens read and 3,000 written per bill, 13 bills per full request. Providers count PDF pages differently, so treat the figures as a comparison, not a quote.</div>
+  </div>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · AI Model Comparison</div><div>1</div></div>
+</section>
+
+<!-- ======================= 2. FULL TABLE ======================= -->
+<section class="page">
+  <div class="hdr"><div class="brand"><img src="{{LOGO_FBS}}" alt="Ubakel"><span class="sep"></span>Solar Bill Review System</div><div>AI model comparison</div></div>
+  <div class="kicker">All models</div>
+  <h1 style="font-size:19pt">Full comparison</h1>
+  <table class="tbl cmp">
+    <tr><th style="width:23%">Model</th><th style="width:14%">Status</th><th style="width:17%">Price in / out<br><span style="font-weight:400">per million tokens</span></th><th style="width:11%">Per full request</th><th style="width:12%">50–70 a month</th><th>Verdict</th></tr>
+    <tr class="grp"><td colspan="6">Google Gemini</td></tr>
+    <tr><td class="q">2.5 Flash-Lite</td><td>Older</td><td>$0.10 / $0.40</td><td>$0.04</td><td>$2–3</td><td>Cheapest, but likely to be retired</td></tr>
+    <tr><td class="q">3.1 Flash-Lite</td><td>Older</td><td>$0.25 / $1.50</td><td>$0.11</td><td>$5–8</td><td>A generation behind</td></tr>
+    <tr class="hl"><td class="q">3.5 Flash-Lite</td><td>Stable · in use</td><td>$0.30 / $2.50</td><td>$0.16</td><td><b>$8–11</b></td><td><b>Recommended:</b> proven on real bills</td></tr>
+    <tr><td class="q">2.5 Flash</td><td>Older</td><td>$0.30 / $2.50</td><td>$0.16</td><td>$8–11</td><td>Same price as 3.5 Flash-Lite, older</td></tr>
+    <tr><td class="q">3 Flash</td><td>Preview</td><td>$0.50 / $3</td><td>$0.21</td><td>$11–15</td><td>Preview, can change</td></tr>
+    <tr class="hl"><td class="q">3.8 Flash</td><td>Stable · newest</td><td>$0.75 / $3.75<br><span class="muted">$1.50 / $7.50 from Jan</span></td><td>$0.29<br><span class="muted">$0.59</span></td><td><b>$15–20</b><br><span class="muted">$29–41</span></td><td><b>Upgrade option:</b> easy switch</td></tr>
+    <tr><td class="q">3.5 Flash</td><td>Legacy</td><td>$1.50 / $9</td><td>$0.64</td><td>$32–45</td><td>Costs more than 3.8 Flash</td></tr>
+    <tr><td class="q">2.5 Pro</td><td>Older</td><td>$1.25 / $10</td><td>$0.63</td><td>$32–44</td><td>Older generation</td></tr>
+    <tr><td class="q">3.1 Pro</td><td>Preview</td><td>$2 / $12</td><td>$0.86</td><td>$43–60</td><td>Most capable Gemini, still a preview</td></tr>
+    <tr class="grp"><td colspan="6">Anthropic Claude</td></tr>
+    <tr><td class="q">Haiku 4.5</td><td>Current</td><td>$1 / $5</td><td>$0.32</td><td>$16–22</td><td>Cheapest Claude, less careful</td></tr>
+    <tr class="hl"><td class="q">Sonnet 5.5</td><td>Current</td><td>$2 / $10</td><td>$0.83</td><td><b>$42–58</b></td><td><b>Claude option:</b> needs rebuild</td></tr>
+    <tr><td class="q">Opus 5.5</td><td>Current</td><td>$4 / $20</td><td>$1.66</td><td>$83–116</td><td>Most careful Claude, 2× Sonnet</td></tr>
+    <tr><td class="q">Fable 5.1</td><td>Current</td><td>$10 / $50</td><td>$4.20+</td><td>$210–290+</td><td>Built for hard reasoning; overkill</td></tr>
+    <tr class="grp"><td colspan="6">OpenAI GPT</td></tr>
+    <tr><td class="q">GPT-5.6 luna</td><td>Current</td><td>$0.20 / $1.20</td><td>$0.09</td><td>$4–6</td><td>Very cheap; accuracy on bills unknown</td></tr>
+    <tr><td class="q">GPT-5.4 mini</td><td>Current</td><td>$0.75 / $4.50</td><td>$0.32</td><td>$16–23</td><td>Mid-range, needs rebuild</td></tr>
+    <tr><td class="q">GPT-5.6 sol</td><td>Current</td><td>$2 / $12</td><td>$0.86</td><td>$43–60</td><td>Same class as Sonnet 5.5</td></tr>
+    <tr><td class="q">GPT-5.5</td><td>Current</td><td>$5 / $30</td><td>$2.15</td><td>$107–150</td><td>Expensive for this job</td></tr>
+    <tr class="grp"><td colspan="6">DeepSeek</td></tr>
+    <tr class="no"><td class="q">deepseek-flash</td><td>Current</td><td>$0.30 / $1.20 <span class="muted">peak</span></td><td>$0.11</td><td>$5–7</td><td>Not suitable: see page 1</td></tr>
+    <tr class="no"><td class="q">deepseek-v4-pro</td><td>Current</td><td>$1.32 / $3.96 <span class="muted">peak</span></td><td>$0.41</td><td>$21–29</td><td>Not suitable: see page 1</td></tr>
+  </table>
+
+  <p class="src">Prices from each provider's published API price list, checked 6 October 2026: ai.google.dev/gemini-api/docs/pricing · platform.claude.com/docs/en/about-claude/pricing · developers.openai.com/api/docs/pricing · api-docs.deepseek.com/quick_start/pricing. Prices can change.</p>
+  <div class="ftr"><div>Ubakel · Solar Bill Review System · AI Model Comparison</div><div>2</div></div>
+</section>
