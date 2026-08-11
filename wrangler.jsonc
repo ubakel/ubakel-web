@@ -7,6 +7,18 @@
 		"directory": "./dist",
 		"binding": "ASSETS"
 	},
+	// The Cloudflare adapter auto-enables Astro sessions against a KV binding
+	// named SESSION. Pinned to the namespace that already exists on the
+	// account — without an explicit id, wrangler tries to create a new one on
+	// every deploy and fails with "a namespace with this title already exists".
+	// Namespace ids are resource identifiers, not secrets; access still
+	// requires account auth.
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "ae0392ab10654347bf3b9d51f64fae16"
+		}
+	],
 	"observability": {
 		"enabled": true
 	}
