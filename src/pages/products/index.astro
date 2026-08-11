@@ -1,0 +1,16 @@
+---
+// src/pages/products/index.astro
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import ProductsIndexBody from '../../components/pages/ProductsIndexBody.astro';
+---
+
+<Layout title="Products — Ubakel" description="Production-ready platforms that turn our infrastructure into a service you can switch on.">
+  <span id="top"></span>
+  <Navbar />
+  <main id="main">
+    <ProductsIndexBody />
+  </main>
+  <Footer />
+</Layout>

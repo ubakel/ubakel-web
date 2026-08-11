@@ -1,0 +1,42 @@
+---
+// src/pages/[locale]/index.astro
+// Generates the localized homepage(s) — currently /ar/. English lives at
+// src/pages/index.astro. Every section reads its own locale from the URL,
+// so no props need threading.
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Hero from '../../components/Hero.astro';
+import PartnerTicker from '../../components/PartnerTicker.astro';
+import ImpactBand from '../../components/ImpactBand.astro';
+import Services from '../../components/Services.astro';
+import WorkPreview from '../../components/WorkPreview.astro';
+import Products from '../../components/Products.astro';
+import About from '../../components/About.astro';
+import Contact from '../../components/Contact.astro';
+import Footer from '../../components/Footer.astro';
+import { languages, defaultLang } from '../../i18n/ui';
+
+export function getStaticPaths() {
+  // Every non-default locale defined in ui.ts gets a localized homepage.
+  // Add a locale there and it builds here automatically.
+  return Object.keys(languages)
+    .filter((locale) => locale !== defaultLang)
+    .map((locale) => ({ params: { locale } }));
+}
+---
+
+<Layout>
+  <span id="top"></span>
+  <Navbar />
+  <main id="main">
+    <Hero />
+    <PartnerTicker />
+    <ImpactBand />
+    <Services />
+    <WorkPreview />
+    <Products />
+    <About />
+    <Contact />
+  </main>
+  <Footer />
+</Layout>

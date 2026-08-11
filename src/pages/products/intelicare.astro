@@ -1,0 +1,20 @@
+---
+// src/pages/products/intelicare.astro
+// Bespoke landing page for the flagship product — see IntelicareBody.astro.
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import IntelicareBody from '../../components/pages/IntelicareBody.astro';
+---
+
+<Layout
+  title="UBAKEL Intelicare — The AI receptionist that books, reschedules, and never sleeps"
+  description="Intelicare answers WhatsApp, identifies the patient, checks real availability, and writes the confirmed booking straight into your system — day or night."
+>
+  <span id="top"></span>
+  <Navbar />
+  <main id="main">
+    <IntelicareBody />
+  </main>
+  <Footer />
+</Layout>

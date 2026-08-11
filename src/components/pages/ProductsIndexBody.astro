@@ -1,0 +1,63 @@
+---
+// src/components/pages/ProductsIndexBody.astro
+// Shared content for /products and every /[locale]/products.
+import CTABand from '../CTABand.astro';
+import { products } from '../../data/products';
+import { getLangFromUrl, useTranslations, localizeAvailable } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const link = (h: string) => localizeAvailable(h, lang);
+
+const statusStyle = {
+  'Live':         'text-crimson border-crimson/30 bg-crimson/5',
+  'Beta':         'text-ink border-line bg-canvas',
+  'Early access': 'text-muted border-line bg-canvas',
+} as const;
+
+const statusKey = {
+  'Live':         'status.live',
+  'Beta':         'status.beta',
+  'Early access': 'status.earlyAccess',
+} as const;
+---
+
+<section class="relative overflow-hidden border-b border-line">
+  <div class="pointer-events-none absolute inset-0 bp-grid bp-grid-fade opacity-60"></div>
+  <div class="relative mx-auto max-w-4xl px-5 py-16 text-center md:py-24 lg:px-8">
+    <p class="animate-fade-up eyebrow">{t('products.eyebrow')}</p>
+    <h1 class="animate-fade-up mt-4 font-display text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1.05] tracking-tight text-ink" style="animation-delay:.08s">
+      {t('products.title')}
+    </h1>
+    <p class="animate-fade-up mx-auto mt-6 max-w-2xl text-lg text-muted" style="animation-delay:.16s">
+      {t('products.lead')}
+    </p>
+  </div>
+</section>
+
+<section class="bg-canvas py-16 md:py-24">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+      {products.map((p) => {
+        const loc = lang === 'en' ? undefined : p.i18n?.[lang];
+        const tagline = loc?.tagline ?? p.tagline;
+        const summary = loc?.summary ?? p.summary;
+        return (
+        <a href={link(`/products/${p.slug}`)} class="group crop relative flex flex-col rounded-xl border border-line bg-surface p-7 transition-all hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_rgba(13,13,13,0.35)] md:p-8">
+          <div class="flex items-center justify-between">
+            <span class={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[0.62rem] uppercase tracking-widest ${statusStyle[p.status]}`}>
+              <span class="inline-block h-1.5 w-1.5 rounded-full bg-current"></span>{t(statusKey[p.status])}
+            </span>
+            <svg class="h-5 w-5 text-muted transition-all rtl:-scale-x-100 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 group-hover:text-crimson" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+          </div>
+          <h2 class="mt-6 font-display text-xl font-bold text-ink transition-colors group-hover:text-crimson md:text-2xl">{p.name}</h2>
+          <p class="mt-1 font-mono text-xs uppercase tracking-widest text-muted">{tagline}</p>
+          <p class="mt-4 flex-1 text-[0.95rem] leading-relaxed text-muted">{summary}</p>
+        </a>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<CTABand />

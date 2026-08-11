@@ -1,0 +1,20 @@
+---
+// src/pages/work/insurance-claims-platform.astro
+// Bespoke landing page for the flagship case study — see InsuranceClaimsBody.astro.
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import InsuranceClaimsBody from '../../components/pages/InsuranceClaimsBody.astro';
+---
+
+<Layout
+  title="Hospital Insurance Claims Automation — Ubakel"
+  description="An AI-powered claims platform that drafts guarantee letters, reads insurer replies, and keeps finance and leadership updated automatically — from registration to reconciliation."
+>
+  <span id="top"></span>
+  <Navbar />
+  <main id="main">
+    <InsuranceClaimsBody />
+  </main>
+  <Footer />
+</Layout>

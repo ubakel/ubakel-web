@@ -1,0 +1,82 @@
+---
+// src/components/PipelineDiagram.astro
+// The signature element: an orchestration pipeline drawn as hard-edged nodes
+// wired by a hairline connector, with a crimson data packet travelling
+// through it. Pure SVG + CSS — zero runtime JS. Geometry is data-driven.
+// Colours/fonts are applied via CSS classes so custom properties resolve
+// reliably across browsers (var() inside SVG presentation attributes cannot).
+
+interface Step { label: string; kind: 'source' | 'process' | 'ai' | 'output'; }
+interface Props { steps: Step[]; label?: string; class?: string; }
+
+const { steps, label, class: klass = '' } = Astro.props;
+
+const GAP = 200;
+const X0 = 110;
+const CY = 96;                       // vertical centre of the rail
+const W = X0 * 2 + (steps.length - 1) * GAP;
+const H = 176;
+const xs = steps.map((_, i) => X0 + i * GAP);
+const railD = `M${xs[0]} ${CY} L${xs[xs.length - 1]} ${CY}`;
+---
+
+<figure class={`pipeline ${klass}`} role="img" aria-label={`Pipeline: ${steps.map((s) => s.label).join(' -> ')}`}>
+  {label && <figcaption class="eyebrow mb-4">{label}</figcaption>}
+
+  <svg viewBox={`0 0 ${W} ${H}`} class="pl w-full" xmlns="http://www.w3.org/2000/svg">
+    <!-- Rail: static hairline + flowing dashed overlay for direction -->
+    <path d={railD} class="pl-rail" fill="none" />
+    <path d={railD} class="pl-flow pipe-flow" fill="none" />
+
+    <!-- Nodes -->
+    {steps.map((s, i) => {
+      const x = xs[i];
+      const ai = s.kind === 'ai';
+      return (
+        <g>
+          <line x1={x} y1={CY + 22} x2={x} y2={CY + 34} class="pl-riser" />
+          <rect x={x - 22} y={CY - 22} width="44" height="44" rx="4"
+                class={`pl-node ${ai ? 'pl-node--ai' : ''}`} />
+          <rect x={x - 8} y={CY - 8} width="16" height="16" rx="2"
+                class={`pl-dot ${ai ? 'pl-dot--ai pipe-node' : ''}`} />
+          <text x={x} y={CY + 54} text-anchor="middle"
+                class={`pl-text ${ai ? 'pl-text--ai' : ''}`}>{s.label}</text>
+        </g>
+      );
+    })}
+
+    <!-- Travelling data packet -->
+    <rect class="pl-packet pipe-packet" x="-6" y="-6" width="12" height="12" rx="2"
+          style={`offset-path: path('${railD}');`} />
+  </svg>
+</figure>
+
+<style>
+  .pipeline { width: 100%; }
+  .pl { display: block; }
+
+  .pl-rail   { stroke: var(--color-line-strong); stroke-width: 2; }
+  .pl-flow   { stroke: var(--color-crimson);     stroke-width: 2; opacity: .35; }
+  .pl-riser  { stroke: var(--color-line);        stroke-width: 2; }
+
+  .pl-node      { fill: var(--color-surface); stroke: var(--color-ink); stroke-width: 2; }
+  .pl-node--ai  { stroke: var(--color-crimson); }
+
+  .pl-dot       { fill: var(--color-ink); transform-box: fill-box; transform-origin: center; }
+  .pl-dot--ai   { fill: var(--color-crimson); }
+
+  .pl-text      { font-family: var(--font-mono); font-size: 19px; fill: var(--color-muted); }
+  .pl-text--ai  { fill: var(--color-crimson); }
+
+  .pl-packet    { fill: var(--color-crimson); }
+
+  /* RTL: the pipeline should read in the page's reading direction, so the
+     whole rail mirrors — but text is flipped a second time to stay upright
+     rather than rendering backwards. */
+  :global(html[dir="rtl"]) .pl { transform: scaleX(-1); }
+  :global(html[dir="rtl"]) .pl-text {
+    transform: scaleX(-1);
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+</style>

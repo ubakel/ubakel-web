@@ -1,19 +1,136 @@
 ---
+// src/layouts/Layout.astro
 import '../styles/global.css';
-const { title = "Ubakel | Enterprise Automation Agency" } = Astro.props;
+import { getLangFromUrl, stripLocale, isRtl } from '../i18n/utils';
+import { languages } from '../i18n/ui';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = 'Ubakel — Enterprise AI Automation Agency',
+  description = 'Ubakel engineers production-grade AI agents and zero-touch orchestration pipelines for enterprise operations. Systems that ship, scale, and hold under load.',
+  ogImage = '/og-image.jpg',
+  noindex = false,
+} = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const rtl = isRtl(lang);
+const site = Astro.site ?? new URL('https://ubakel.com');
+const canonical = new URL(Astro.url.pathname, site);
+const resolvedOg = new URL(ogImage, site);
+const basePath = stripLocale(Astro.url.pathname); // path as the default locale sees it
+
+// Latin faces (Inter / Space Grotesk / JetBrains Mono) simply lack Arabic
+// glyphs, so the browser falls through to the next family in each stack per
+// character — Latin text keeps rendering in the brand faces, Arabic falls
+// through to fonts that were actually drawn for it. Loaded only on Arabic
+// pages so the English site's font payload doesn't grow.
+const googleFontsHref = rtl
+  ? 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Cairo:wght@600;700;800&family=Noto+Kufi+Arabic:wght@500;600&display=swap'
+  : 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap';
 ---
 
-<html lang="en" class="scroll-smooth">
+<!DOCTYPE html>
+<html lang={lang} dir={rtl ? 'rtl' : 'ltr'}>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Ubakel" />
+    <meta name="theme-color" content="#f3f4f6" />
+
+    <!-- hreflang alternates -->
+    {Object.keys(languages).map((code) => (
+      <link
+        rel="alternate"
+        hreflang={code}
+        href={new URL(code === 'en' ? basePath : `/${code}${basePath === '/' ? '' : basePath}`, site).toString()}
+      />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={new URL(basePath, site).toString()} />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={resolvedOg} />
+    <meta property="og:site_name" content="Ubakel" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOg} />
+
+    <!-- Fonts: Space Grotesk (display) · Inter (body) · JetBrains Mono (utility)
+         Arabic pages additionally load Cairo / IBM Plex Sans Arabic / Noto Kufi
+         Arabic — see the note above googleFontsHref. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href={googleFontsHref} rel="stylesheet" />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Ubakel',
+      url: site.toString(),
+      logo: new URL('/logo-full.svg', site).toString(),
+      description,
+    })} />
+
+    <!-- First-visit browser-language redirect. Static-host friendly, no loops,
+         and respects a stored manual choice. JS stays minimal per brief. -->
+    <script is:inline>
+      (function () {
+        try {
+          var supported = ['en', 'ar', 'ms'];
+          var seg = location.pathname.split('/')[1];
+          var inLocale = supported.indexOf(seg) > -1 && seg !== 'en';
+          var stored = localStorage.getItem('ubk-lang');
+          if (stored) return;                       // user already chose
+          if (inLocale) return;                     // already on a locale route
+          if (location.pathname !== '/') return;    // only redirect from root
+          var pref = (navigator.languages || [navigator.language || 'en'])[0]
+            .slice(0, 2).toLowerCase();
+          if (pref !== 'en' && supported.indexOf(pref) > -1) {
+            location.replace('/' + pref + '/');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body class="bg-crisp-grey text-deep-black antialiased font-sans overflow-x-hidden m-0 p-0 selection:bg-sharp-crimson selection:text-pure-white">
+
+  <body class="min-h-screen bg-canvas text-ink font-sans antialiased overflow-x-hidden">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-[100] focus:bg-ink focus:text-white focus:px-4 focus:py-2 focus:rounded">Skip to content</a>
     <slot />
+
+    <!-- Lenis smooth scroll — the only ambient JS, guarded for reduced motion. -->
+    <script>
+      import Lenis from 'lenis';
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduce) {
+        const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1, smoothWheel: true });
+        function raf(time: number) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        // In-page anchors route through Lenis for a smooth glide.
+        document.querySelectorAll('a[href^="#"]').forEach((a) => {
+          a.addEventListener('click', (e) => {
+            const id = a.getAttribute('href');
+            if (!id || id === '#') return;
+            const el = document.querySelector(id);
+            if (el) { e.preventDefault(); lenis.scrollTo(el as HTMLElement, { offset: -80 }); }
+          });
+        });
+      }
+    </script>
   </body>
 </html>

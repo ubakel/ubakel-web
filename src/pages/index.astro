@@ -2,25 +2,28 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
-import StatsMarquee from '../components/StatsMarquee.astro';
+import PartnerTicker from '../components/PartnerTicker.astro';
+import ImpactBand from '../components/ImpactBand.astro';
 import Services from '../components/Services.astro';
-import PortfolioBento from '../components/PortfolioBento.astro';
-import Process from '../components/Process.astro';
-import Testimonials from '../components/Testimonials.astro';
-import CTABand from '../components/CTABand.astro';
+import WorkPreview from '../components/WorkPreview.astro';
+import Products from '../components/Products.astro';
+import About from '../components/About.astro';
+import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 ---
 
 <Layout>
+  <span id="top"></span>
   <Navbar />
-  <main>
+  <main id="main">
     <Hero />
-    <StatsMarquee />
+    <PartnerTicker />
+    <ImpactBand />
     <Services />
-    <PortfolioBento />
-    <Process />
-    <Testimonials />
-    <CTABand />
+    <WorkPreview />
+    <Products />
+    <About />
+    <Contact />
   </main>
   <Footer />
 </Layout>

@@ -1,0 +1,30 @@
+---
+// src/pages/work/[slug].astro
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import WorkDetailBody from '../../components/pages/WorkDetailBody.astro';
+import { caseStudies, getCase } from '../../data/work';
+
+// The insurance-claims case study gets a bespoke landing page
+// (src/pages/work/insurance-claims-platform.astro) — excluded here to avoid
+// a duplicate route.
+export function getStaticPaths() {
+  return caseStudies
+    .filter((c) => c.slug !== 'insurance-claims-platform')
+    .map((c) => ({ params: { slug: c.slug }, props: { study: c } }));
+}
+
+const { study } = Astro.props;
+const cs = study ?? getCase(Astro.params.slug!);
+if (!cs) return Astro.redirect('/work');
+---
+
+<Layout title={`${cs.title} — Ubakel`} description={cs.summary}>
+  <span id="top"></span>
+  <Navbar />
+  <main id="main">
+    <WorkDetailBody study={cs} />
+  </main>
+  <Footer />
+</Layout>

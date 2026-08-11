@@ -1,0 +1,553 @@
+---
+// src/components/pages/IntelicareBody.astro
+// Bespoke landing page for UBAKEL Intelicare — the flagship product, built
+// around the real architecture (multi-provider AI fallback, family patient
+// profiles, atomic conflict-free booking, business-hours/holiday awareness,
+// abuse protection, human handoff, and a circuit-breaker error handler)
+// rather than generic SaaS copy. Content lives locally (not in ui.ts) since
+// it's specific to this one page.
+import PipelineDiagram from '../PipelineDiagram.astro';
+import { site } from '../../data/site';
+import { getLangFromUrl, useTranslations, localizeAvailable, type Lang } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const link = (h: string) => localizeAvailable(h, lang);
+
+type ChatMsg = { from: 'patient' | 'bot'; text: string };
+
+interface Copy {
+  eyebrow: string;
+  kicker: string;
+  title: string;
+  lead: string;
+  ctaPrimary: string;
+  ctaSecondary: string;
+  phoneSubtitle: string;
+  stats: { value: string; label: string }[];
+  chat: ChatMsg[];
+  confirm: { title: string; patientLabel: string; patient: string; whenLabel: string; when: string; idLabel: string; id: string; statusLabel: string; status: string; synced: string };
+  featuresEyebrow: string;
+  featuresTitle: string;
+  featuresLead: string;
+  features: { title: string; body: string }[];
+  howEyebrow: string;
+  howTitle: string;
+  how: { title: string; body: string }[];
+  pipeline: string[];
+  reliabilityEyebrow: string;
+  reliabilityTitle: string;
+  reliabilityLead: string;
+  reliabilityPoints: { title: string; body: string }[];
+  runsOn: string;
+  demoEyebrow: string;
+  demoTitle: string;
+  demoLead: string;
+  demoPlaceholder: string;
+  ctaTitle: string;
+  ctaLead: string;
+  ctaWhatsapp: string;
+}
+
+const COPY: Record<Lang, Copy> = {
+  en: {
+    eyebrow: 'UBAKEL Intelicare',
+    kicker: 'Autonomous booking engine · Live on WhatsApp',
+    title: 'The front desk that never clocks out.',
+    lead: 'Intelicare answers WhatsApp, works out which patient is messaging, checks real availability, and writes the confirmed booking straight into your system — in seconds, day or night.',
+    ctaPrimary: 'Book a walkthrough',
+    ctaSecondary: 'See it handle a real booking',
+    phoneSubtitle: 'Intelicare · AI receptionist',
+    stats: [
+      { value: '24/7', label: 'Always answering' },
+      { value: '<3s', label: 'Median response time' },
+      { value: '0', label: 'Double-bookings, by design' },
+      { value: '3', label: 'Languages understood' },
+    ],
+    chat: [
+      { from: 'patient', text: "Hi, I'd like to book an appointment for my daughter Aisha" },
+      { from: 'bot', text: 'Hi! Happy to help — what day works best for Aisha?' },
+      { from: 'patient', text: 'Tomorrow afternoon if possible' },
+      { from: 'bot', text: 'I have 2:30 PM and 4:00 PM open tomorrow. Which works?' },
+      { from: 'patient', text: '4pm please' },
+      { from: 'bot', text: "✅ Confirmed — Aisha, tomorrow at 4:00 PM. You'll get a reminder before the visit." },
+    ],
+    confirm: { title: 'Booking synced', patientLabel: 'Patient', patient: 'Aisha (family profile)', whenLabel: 'Date & time', when: 'Tomorrow · 4:00 PM', idLabel: 'Booking ID', id: 'BK-2847', statusLabel: 'Status', status: 'Confirmed', synced: 'Written to calendar · 0.4s' },
+    featuresEyebrow: 'Built for real clinics',
+    featuresTitle: 'Not a chatbot. A booking system that talks.',
+    featuresLead: 'Every capability here exists because a real front desk needed it — not because it demos well.',
+    features: [
+      { title: 'Resilient by design', body: "Backed by multiple language models, not one. If a provider slows down or drops, Intelicare keeps answering without the patient noticing." },
+      { title: 'Knows the whole family', body: "One WhatsApp number can hold multiple patient profiles. Book for a parent, then a child, in the same conversation." },
+      { title: 'Conflict-free, atomically', body: 'Every booking is checked and written against your live calendar in one atomic step. Two patients can never be handed the same slot.' },
+      { title: 'Knows your calendar, not just the clock', body: "Business hours, time zone, and public holidays are built into every offer — it never proposes a slot you're not open for." },
+      { title: 'Filters out the noise', body: 'Duplicate messages, spam, and abusive senders are caught automatically — rate-limited before they ever reach your staff.' },
+      { title: 'Hands off cleanly', body: 'When a request genuinely needs a human, staff are notified on WhatsApp instantly, with the full conversation for context.' },
+    ],
+    howEyebrow: 'How it works',
+    howTitle: 'From message to confirmed booking, in one pass.',
+    how: [
+      { title: 'Patient messages on WhatsApp', body: 'In their own words — no forms, no menu trees.' },
+      { title: "Intelicare identifies who's asking", body: 'Matches the number to a patient profile, or starts a new one.' },
+      { title: 'Checks real availability', body: 'Queries the live calendar, respecting hours, holidays, and existing bookings.' },
+      { title: 'Confirms and writes it to your system', body: 'The patient gets a confirmation. Your calendar updates. Staff are notified if needed.' },
+    ],
+    pipeline: ['Message', 'Identify', 'Availability', 'Confirmed'],
+    reliabilityEyebrow: 'Under the hood',
+    reliabilityTitle: 'Built to never fail silently.',
+    reliabilityLead: "Most booking bots go quiet the moment something breaks. Intelicare reports to a circuit-breaker error handler that watches every workflow — so a stalled call becomes a staff alert, not a missed patient.",
+    reliabilityPoints: [
+      { title: 'Every failure logged', body: 'Best-effort logging survives even a database outage.' },
+      { title: 'Staff alerted, not spammed', body: 'One alert per issue, capped — no flood during an outage.' },
+      { title: 'No silent failures', body: "If a booking can't complete, a human finds out immediately." },
+    ],
+    runsOn: 'Runs on',
+    demoEyebrow: 'See it work',
+    demoTitle: 'Watch a booking happen, start to finish.',
+    demoLead: 'A real conversation, start to confirmed — under a minute, entirely on WhatsApp.',
+    demoPlaceholder: 'Demo video — coming soon',
+    ctaTitle: 'Your clinic, answered.',
+    ctaLead: 'Talk to a systems architect about wiring Intelicare into your calendar and WhatsApp number. Most clinics are live within days.',
+    ctaWhatsapp: 'Message us on WhatsApp',
+  },
+  ar: {
+    eyebrow: 'UBAKEL Intelicare',
+    kicker: 'محرك حجز مستقل · يعمل عبر واتساب',
+    title: 'استقبال لا يُغلق أبوابه أبدًا.',
+    lead: 'يجيب Intelicare على واتساب، ويحدد هوية المريض المتحدث، ويتحقق من التوفر الفعلي، ويكتب الحجز المؤكد مباشرة في نظامك — خلال ثوانٍ، ليلًا كان أم نهارًا.',
+    ctaPrimary: 'احجز جولة تعريفية',
+    ctaSecondary: 'شاهده يُنجز حجزًا حقيقيًا',
+    phoneSubtitle: 'Intelicare · مساعدة الاستقبال الذكية',
+    stats: [
+      { value: '24/7', label: 'يستجيب دائمًا' },
+      { value: '<3ث', label: 'متوسط وقت الاستجابة' },
+      { value: '0', label: 'حجوزات مزدوجة، بحكم التصميم' },
+      { value: '3', label: 'لغات مفهومة' },
+    ],
+    chat: [
+      { from: 'patient', text: 'مرحبًا، أريد حجز موعد لابنتي عائشة' },
+      { from: 'bot', text: 'أهلًا! يسعدني المساعدة — ما هو اليوم المناسب لعائشة؟' },
+      { from: 'patient', text: 'غدًا بعد الظهر لو أمكن' },
+      { from: 'bot', text: 'لدي موعد الساعة 2:30 ظهرًا و4:00 عصرًا غدًا. أيهما يناسبك؟' },
+      { from: 'patient', text: 'الساعة 4، من فضلك' },
+      { from: 'bot', text: '✅ تم التأكيد — موعد عائشة غدًا الساعة 4:00 عصرًا. سيصلك تذكير قبل الزيارة.' },
+    ],
+    confirm: { title: 'تمت مزامنة الحجز', patientLabel: 'المريض', patient: 'عائشة (ملف عائلي)', whenLabel: 'التاريخ والوقت', when: 'غدًا · 4:00 عصرًا', idLabel: 'رقم الحجز', id: 'BK-2847', statusLabel: 'الحالة', status: 'مؤكد', synced: 'تمت الكتابة في التقويم · 0.4 ثانية' },
+    featuresEyebrow: 'مصمّم لعيادات حقيقية',
+    featuresTitle: 'ليس روبوت محادثة. نظام حجز يتحدث.',
+    featuresLead: 'كل قدرة هنا موجودة لأن استقبالًا حقيقيًا احتاجها — لا لأنها تبدو جيدة في العرض التوضيحي.',
+    features: [
+      { title: 'مرن بحكم التصميم', body: 'مدعوم بعدة نماذج لغوية، لا نموذج واحد. إذا تباطأ مزود أو تعطّل، يستمر Intelicare بالإجابة دون أن يلاحظ المريض شيئًا.' },
+      { title: 'يعرف العائلة بأكملها', body: 'رقم واتساب واحد يمكنه حمل عدة ملفات مرضى. احجز لأحد الوالدين ثم لطفل، في المحادثة ذاتها.' },
+      { title: 'بلا تعارض، وبشكل ذرّي', body: 'يُتحقّق من كل حجز ويُكتب مقابل تقويمك المباشر في خطوة ذرية واحدة. لا يمكن أبدًا منح نفس الموعد لمريضين.' },
+      { title: 'يعرف تقويمك، لا الساعة فقط', body: 'ساعات العمل والمنطقة الزمنية والعطل الرسمية مدمجة في كل عرض — لا يقترح أبدًا موعدًا خارج ساعات عملك.' },
+      { title: 'يُصفّي الضوضاء', body: 'الرسائل المكررة والبريد العشوائي والمرسلون المسيئون تُكتشف تلقائيًا — ويُقيَّد معدلها قبل أن تصل إلى موظفيك.' },
+      { title: 'يُسلّم بسلاسة', body: 'عندما يحتاج الطلب فعلاً إلى شخص، يُخطَر الموظفون عبر واتساب فورًا، مع المحادثة كاملة كسياق.' },
+    ],
+    howEyebrow: 'كيف يعمل',
+    howTitle: 'من الرسالة إلى الحجز المؤكد، في مسار واحد.',
+    how: [
+      { title: 'يرسل المريض رسالة عبر واتساب', body: 'بكلماته الخاصة — بلا نماذج أو قوائم معقدة.' },
+      { title: 'يحدد Intelicare هوية المتحدث', body: 'يطابق الرقم مع ملف مريض موجود، أو ينشئ ملفًا جديدًا.' },
+      { title: 'يتحقق من التوفر الفعلي', body: 'يستعلم من التقويم المباشر، مراعيًا ساعات العمل والعطل والحجوزات القائمة.' },
+      { title: 'يؤكد ويكتب ذلك في نظامك', body: 'يحصل المريض على تأكيد. يتحدّث تقويمك. يُخطَر الموظفون عند الحاجة.' },
+    ],
+    pipeline: ['الرسالة', 'التحديد', 'التوفر', 'التأكيد'],
+    reliabilityEyebrow: 'خلف الكواليس',
+    reliabilityTitle: 'مصمّم ليخفق بصوت، لا بصمت.',
+    reliabilityLead: 'معظم روبوتات الحجز تصمت لحظة حدوث عطل. يُبلّغ Intelicare معالج أخطاء بنمط قاطع الدائرة يراقب كل مسار عمل — فيتحول الاستدعاء المتعطل إلى تنبيه للموظفين، لا مريضًا مفقودًا.',
+    reliabilityPoints: [
+      { title: 'كل عطل مُسجَّل', body: 'يستمر التسجيل حتى مع انقطاع قاعدة البيانات.' },
+      { title: 'الموظفون يُنبَّهون، لا يُغرَقون', body: 'تنبيه واحد لكل مشكلة، بحد أقصى — بلا فيضان تنبيهات أثناء أي عطل.' },
+      { title: 'لا أعطال صامتة', body: 'إذا تعذّر إتمام حجز، يعلم شخص بذلك فورًا.' },
+    ],
+    runsOn: 'يعمل على',
+    demoEyebrow: 'شاهده يعمل',
+    demoTitle: 'شاهد حجزًا يحدث، من البداية للنهاية.',
+    demoLead: 'محادثة حقيقية، من البداية حتى التأكيد — في أقل من دقيقة، بالكامل عبر واتساب.',
+    demoPlaceholder: 'فيديو العرض التوضيحي — قريبًا',
+    ctaTitle: 'عيادتك، تُجيب دائمًا.',
+    ctaLead: 'تحدّث مع مهندس أنظمة حول ربط Intelicare بتقويمك ورقم واتساب الخاص بك. تنطلق معظم العيادات خلال أيام.',
+    ctaWhatsapp: 'راسلنا عبر واتساب',
+  },
+  ms: {
+    eyebrow: 'UBAKEL Intelicare',
+    kicker: 'Enjin tempahan autonomi · Aktif di WhatsApp',
+    title: 'Kaunter yang tidak pernah tutup.',
+    lead: 'Intelicare menjawab WhatsApp, mengenal pasti pesakit yang menghubungi, menyemak ketersediaan sebenar, dan menulis tempahan yang disahkan terus ke dalam sistem anda — dalam beberapa saat, siang atau malam.',
+    ctaPrimary: 'Tempah demonstrasi',
+    ctaSecondary: 'Lihat ia buat tempahan sebenar',
+    phoneSubtitle: 'Intelicare · Penyambut tetamu AI',
+    stats: [
+      { value: '24/7', label: 'Sentiasa menjawab' },
+      { value: '<3s', label: 'Median masa respons' },
+      { value: '0', label: 'Tempahan bertindih, mengikut reka bentuk' },
+      { value: '3', label: 'Bahasa difahami' },
+    ],
+    chat: [
+      { from: 'patient', text: 'Hai, saya nak tempah temujanji untuk anak perempuan saya Aisha' },
+      { from: 'bot', text: 'Hai! Boleh saya bantu — hari apa yang sesuai untuk Aisha?' },
+      { from: 'patient', text: 'Esok petang kalau boleh' },
+      { from: 'bot', text: 'Saya ada slot 2:30 petang dan 4:00 petang esok. Yang mana sesuai?' },
+      { from: 'patient', text: '4 petang boleh' },
+      { from: 'bot', text: '✅ Disahkan — temujanji Aisha esok jam 4:00 petang. Anda akan terima peringatan sebelum lawatan.' },
+    ],
+    confirm: { title: 'Tempahan disegerak', patientLabel: 'Pesakit', patient: 'Aisha (profil keluarga)', whenLabel: 'Tarikh & masa', when: 'Esok · 4:00 petang', idLabel: 'ID tempahan', id: 'BK-2847', statusLabel: 'Status', status: 'Disahkan', synced: 'Ditulis ke kalendar · 0.4s' },
+    featuresEyebrow: 'Dibina untuk klinik sebenar',
+    featuresTitle: 'Bukan chatbot. Sistem tempahan yang bercakap.',
+    featuresLead: 'Setiap keupayaan di sini wujud kerana kaunter sebenar memerlukannya — bukan kerana ia kelihatan hebat semasa demo.',
+    features: [
+      { title: 'Tahan lasak mengikut reka bentuk', body: 'Disokong oleh pelbagai model bahasa, bukan satu. Jika satu penyedia perlahan atau terputus, Intelicare terus menjawab tanpa pesakit menyedarinya.' },
+      { title: 'Mengenali seluruh keluarga', body: 'Satu nombor WhatsApp boleh menyimpan pelbagai profil pesakit. Tempah untuk ibu bapa, kemudian anak, dalam perbualan yang sama.' },
+      { title: 'Tiada percanggahan, secara atomik', body: 'Setiap tempahan disemak dan ditulis terhadap kalendar langsung anda dalam satu langkah atomik. Dua pesakit tidak akan diberi slot yang sama.' },
+      { title: 'Mengenali kalendar anda, bukan sekadar waktu', body: 'Waktu operasi, zon waktu dan cuti umum terbina dalam setiap tawaran — ia tidak akan mencadangkan slot semasa anda tidak beroperasi.' },
+      { title: 'Menapis gangguan', body: 'Mesej berulang, spam dan penghantar yang menyalahgunakan dikesan secara automatik — dihadkan kadarnya sebelum sampai kepada staf anda.' },
+      { title: 'Menyerah dengan kemas', body: 'Apabila permintaan benar-benar memerlukan manusia, staf dimaklumkan di WhatsApp serta-merta, lengkap dengan perbualan penuh sebagai konteks.' },
+    ],
+    howEyebrow: 'Cara ia beroperasi',
+    howTitle: 'Dari mesej ke tempahan disahkan, dalam satu aliran.',
+    how: [
+      { title: 'Pesakit menghantar mesej di WhatsApp', body: 'Dengan kata-kata mereka sendiri — tiada borang, tiada menu rumit.' },
+      { title: 'Intelicare mengenal pasti siapa yang bertanya', body: 'Memadankan nombor dengan profil pesakit sedia ada, atau mencipta profil baharu.' },
+      { title: 'Menyemak ketersediaan sebenar', body: 'Menyoal kalendar langsung, menghormati waktu operasi, cuti dan tempahan sedia ada.' },
+      { title: 'Mengesahkan dan menulisnya ke sistem anda', body: 'Pesakit menerima pengesahan. Kalendar anda dikemas kini. Staf dimaklumkan jika perlu.' },
+    ],
+    pipeline: ['Mesej', 'Kenal pasti', 'Ketersediaan', 'Disahkan'],
+    reliabilityEyebrow: 'Di sebalik tabir',
+    reliabilityTitle: 'Dibina supaya tidak pernah gagal secara senyap.',
+    reliabilityLead: 'Kebanyakan bot tempahan menjadi senyap sebaik sahaja sesuatu gagal. Intelicare melapor kepada pengendali ralat bergaya pemutus litar yang memantau setiap aliran kerja — jadi panggilan yang tersekat menjadi amaran staf, bukan pesakit yang terlepas.',
+    reliabilityPoints: [
+      { title: 'Setiap kegagalan direkodkan', body: 'Pengelogan usaha terbaik kekal berfungsi walaupun pangkalan data terputus.' },
+      { title: 'Staf dimaklumkan, bukan dibanjiri', body: 'Satu amaran bagi setiap isu, dengan had — tiada banjir amaran semasa gangguan.' },
+      { title: 'Tiada kegagalan senyap', body: 'Jika tempahan tidak dapat diselesaikan, seseorang mengetahuinya serta-merta.' },
+    ],
+    runsOn: 'Beroperasi menggunakan',
+    demoEyebrow: 'Lihat ia beroperasi',
+    demoTitle: 'Saksikan satu tempahan berlaku, dari mula hingga selesai.',
+    demoLead: 'Perbualan sebenar, dari mula hingga disahkan — kurang seminit, sepenuhnya di WhatsApp.',
+    demoPlaceholder: 'Video demo — akan datang',
+    ctaTitle: 'Klinik anda, sentiasa menjawab.',
+    ctaLead: 'Bercakap dengan jurutera sistem tentang menghubungkan Intelicare ke kalendar dan nombor WhatsApp anda. Kebanyakan klinik aktif dalam beberapa hari.',
+    ctaWhatsapp: 'Hubungi kami di WhatsApp',
+  },
+};
+
+const c = COPY[lang];
+
+const pipelineSteps = [
+  { label: c.pipeline[0], kind: 'source' as const },
+  { label: c.pipeline[1], kind: 'ai' as const },
+  { label: c.pipeline[2], kind: 'process' as const },
+  { label: c.pipeline[3], kind: 'output' as const },
+];
+
+// Real brand marks (see PartnerTicker.astro) reused here as a technical
+// credibility strip — Intelicare genuinely runs on these.
+const runsOnIcons = [
+  { name: 'WhatsApp', hex: '25D366', d: 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z' },
+  { name: 'PostgreSQL', hex: '4169E1', d: 'M23.5594 14.7228a.5269.5269 0 0 0-.0563-.1191c-.139-.2632-.4768-.3418-1.0074-.2321-1.6533.3411-2.2935.1312-2.5256-.0191 1.342-2.0482 2.445-4.522 3.0411-6.8297.2714-1.0507.7982-3.5237.1222-4.7316a1.5641 1.5641 0 0 0-.1509-.235C21.6931.9086 19.8007.0248 17.5099.0005c-1.4947-.0158-2.7705.3461-3.1161.4794a9.449 9.449 0 0 0-.5159-.0816 8.044 8.044 0 0 0-1.3114-.1278c-1.1822-.0184-2.2038.2642-3.0498.8406-.8573-.3211-4.7888-1.645-7.2219.0788C.9359 2.1526.3086 3.8733.4302 6.3043c.0409.818.5069 3.334 1.2423 5.7436.4598 1.5065.9387 2.7019 1.4334 3.582.553.9942 1.1259 1.5933 1.7143 1.7895.4474.1491 1.1327.1441 1.8581-.7279.8012-.9635 1.5903-1.8258 1.9446-2.2069.4351.2355.9064.3625 1.39.3772a.0569.0569 0 0 0 .0004.0041 11.0312 11.0312 0 0 0-.2472.3054c-.3389.4302-.4094.5197-1.5002.7443-.3102.064-1.1344.2339-1.1464.8115-.0025.1224.0329.2309.0919.3268.2269.4231.9216.6097 1.015.6331 1.3345.3335 2.5044.092 3.3714-.6787-.017 2.231.0775 4.4174.3454 5.0874.2212.5529.7618 1.9045 2.4692 1.9043.2505 0 .5263-.0291.8296-.0941 1.7819-.3821 2.5557-1.1696 2.855-2.9059.1503-.8707.4016-2.8753.5388-4.1012.0169-.0703.0357-.1207.057-.1362.0007-.0005.0697-.0471.4272.0307a.3673.3673 0 0 0 .0443.0068l.2539.0223.0149.001c.8468.0384 1.9114-.1426 2.5312-.4308.6438-.2988 1.8057-1.0323 1.5951-1.6698zM2.371 11.8765c-.7435-2.4358-1.1779-4.8851-1.2123-5.5719-.1086-2.1714.4171-3.6829 1.5623-4.4927 1.8367-1.2986 4.8398-.5408 6.108-.13-.0032.0032-.0066.0061-.0098.0094-2.0238 2.044-1.9758 5.536-1.9708 5.7495-.0002.0823.0066.1989.0162.3593.0348.5873.0996 1.6804-.0735 2.9184-.1609 1.1504.1937 2.2764.9728 3.0892.0806.0841.1648.1631.2518.2374-.3468.3714-1.1004 1.1926-1.9025 2.1576-.5677.6825-.9597.5517-1.0886.5087-.3919-.1307-.813-.5871-1.2381-1.3223-.4796-.839-.9635-2.0317-1.4155-3.5126zm6.0072 5.0871c-.1711-.0428-.3271-.1132-.4322-.1772.0889-.0394.2374-.0902.4833-.1409 1.2833-.2641 1.4815-.4506 1.9143-1.0002.0992-.126.2116-.2687.3673-.4426a.3549.3549 0 0 0 .0737-.1298c.1708-.1513.2724-.1099.4369-.0417.156.0646.3078.26.3695.4752.0291.1016.0619.2945-.0452.4444-.9043 1.2658-2.2216 1.2494-3.1676 1.0128zm2.094-3.988-.0525.141c-.133.3566-.2567.6881-.3334 1.003-.6674-.0021-1.3168-.2872-1.8105-.8024-.6279-.6551-.9131-1.5664-.7825-2.5004.1828-1.3079.1153-2.4468.079-3.0586-.005-.0857-.0095-.1607-.0122-.2199.2957-.2621 1.6659-.9962 2.6429-.7724.4459.1022.7176.4057.8305.928.5846 2.7038.0774 3.8307-.3302 4.7363-.084.1866-.1633.3629-.2311.5454zm7.3637 4.5725c-.0169.1768-.0358.376-.0618.5959l-.146.4383a.3547.3547 0 0 0-.0182.1077c-.0059.4747-.054.6489-.115.8693-.0634.2292-.1353.4891-.1794 1.0575-.11 1.4143-.8782 2.2267-2.4172 2.5565-1.5155.3251-1.7843-.4968-2.0212-1.2217a6.5824 6.5824 0 0 0-.0769-.2266c-.2154-.5858-.1911-1.4119-.1574-2.5551.0165-.5612-.0249-1.9013-.3302-2.6462.0044-.2932.0106-.5909.019-.8918a.3529.3529 0 0 0-.0153-.1126 1.4927 1.4927 0 0 0-.0439-.208c-.1226-.4283-.4213-.7866-.7797-.9351-.1424-.059-.4038-.1672-.7178-.0869.067-.276.1831-.5875.309-.9249l.0529-.142c.0595-.16.134-.3257.213-.5012.4265-.9476 1.0106-2.2453.3766-5.1772-.2374-1.0981-1.0304-1.6343-2.2324-1.5098-.7207.0746-1.3799.3654-1.7088.5321a5.6716 5.6716 0 0 0-.1958.1041c.0918-1.1064.4386-3.1741 1.7357-4.4823a4.0306 4.0306 0 0 1 .3033-.276.3532.3532 0 0 0 .1447-.0644c.7524-.5706 1.6945-.8506 2.802-.8325.4091.0067.8017.0339 1.1742.081 1.939.3544 3.2439 1.4468 4.0359 2.3827.8143.9623 1.2552 1.9315 1.4312 2.4543-1.3232-.1346-2.2234.1268-2.6797.779-.9926 1.4189.543 4.1729 1.2811 5.4964.1353.2426.2522.4522.2889.5413.2403.5825.5515.9713.7787 1.2552.0696.087.1372.1714.1885.245-.4008.1155-1.1208.3825-1.0552 1.717-.0123.1563-.0423.4469-.0834.8148-.0461.2077-.0702.4603-.0994.7662zm.8905-1.6211c-.0405-.8316.2691-.9185.5967-1.0105a2.8566 2.8566 0 0 0 .135-.0406 1.202 1.202 0 0 0 .1342.103c.5703.3765 1.5823.4213 3.0068.1344-.2016.1769-.5189.3994-.9533.6011-.4098.1903-1.0957.333-1.7473.3636-.7197.0336-1.0859-.0807-1.1721-.151zm.5695-9.2712c-.0059.3508-.0542.6692-.1054 1.0017-.055.3576-.112.7274-.1264 1.1762-.0142.4368.0404.8909.0932 1.3301.1066.887.216 1.8003-.2075 2.7014a3.5272 3.5272 0 0 1-.1876-.3856c-.0527-.1276-.1669-.3326-.3251-.6162-.6156-1.1041-2.0574-3.6896-1.3193-4.7446.3795-.5427 1.3408-.5661 2.1781-.463zm.2284 7.0137a12.3762 12.3762 0 0 0-.0853-.1074l-.0355-.0444c.7262-1.1995.5842-2.3862.4578-3.4385-.0519-.4318-.1009-.8396-.0885-1.2226.0129-.4061.0666-.7543.1185-1.0911.0639-.415.1288-.8443.1109-1.3505.0134-.0531.0188-.1158.0118-.1902-.0457-.4855-.5999-1.938-1.7294-3.253-.6076-.7073-1.4896-1.4972-2.6889-2.0395.5251-.1066 1.2328-.2035 2.0244-.1859 2.0515.0456 3.6746.8135 4.8242 2.2824a.908.908 0 0 1 .0667.1002c.7231 1.3556-.2762 6.2751-2.9867 10.5405zm-8.8166-6.1162c-.025.1794-.3089.4225-.6211.4225a.5821.5821 0 0 1-.0809-.0056c-.1873-.026-.3765-.144-.5059-.3156-.0458-.0605-.1203-.178-.1055-.2844.0055-.0401.0261-.0985.0925-.1488.1182-.0894.3518-.1226.6096-.0867.3163.0441.6426.1938.6113.4186zm7.9305-.4114c.0111.0792-.049.201-.1531.3102-.0683.0717-.212.1961-.4079.2232a.5456.5456 0 0 1-.075.0052c-.2935 0-.5414-.2344-.5607-.3717-.024-.1765.2641-.3106.5611-.352.297-.0414.6111.0088.6356.1851z' },
+  { name: 'n8n', hex: 'EA4B71', d: 'M21.4737 5.6842c-1.1772 0-2.1663.8051-2.4468 1.8947h-2.8955c-1.235 0-2.289.893-2.492 2.111l-.1038.623a1.263 1.263 0 0 1-1.246 1.0555H11.289c-.2805-1.0896-1.2696-1.8947-2.4468-1.8947s-2.1663.8051-2.4467 1.8947H4.973c-.2805-1.0896-1.2696-1.8947-2.4468-1.8947C1.1311 9.4737 0 10.6047 0 12s1.131 2.5263 2.5263 2.5263c1.1772 0 2.1663-.8051 2.4468-1.8947h1.4223c.2804 1.0896 1.2696 1.8947 2.4467 1.8947 1.1772 0 2.1663-.8051 2.4468-1.8947h1.0008a1.263 1.263 0 0 1 1.2459 1.0555l.1038.623c.203 1.218 1.257 2.111 2.492 2.111h.3692c.2804 1.0895 1.2696 1.8947 2.4468 1.8947 1.3952 0 2.5263-1.131 2.5263-2.5263s-1.131-2.5263-2.5263-2.5263c-1.1772 0-2.1664.805-2.4468 1.8947h-.3692a1.263 1.263 0 0 1-1.246-1.0555l-.1037-.623A2.52 2.52 0 0 0 13.9607 12a2.52 2.52 0 0 0 .821-1.4794l.1038-.623a1.263 1.263 0 0 1 1.2459-1.0555h2.8955c.2805 1.0896 1.2696 1.8947 2.4468 1.8947 1.3952 0 2.5263-1.131 2.5263-2.5263s-1.131-2.5263-2.5263-2.5263m0 1.2632a1.263 1.263 0 0 1 1.2631 1.2631 1.263 1.263 0 0 1-1.2631 1.2632 1.263 1.263 0 0 1-1.2632-1.2632 1.263 1.263 0 0 1 1.2632-1.2631M2.5263 10.7368A1.263 1.263 0 0 1 3.7895 12a1.263 1.263 0 0 1-1.2632 1.2632A1.263 1.263 0 0 1 1.2632 12a1.263 1.263 0 0 1 1.2631-1.2632m6.3158 0A1.263 1.263 0 0 1 10.1053 12a1.263 1.263 0 0 1-1.2632 1.2632A1.263 1.263 0 0 1 7.579 12a1.263 1.263 0 0 1 1.2632-1.2632m10.1053 3.7895a1.263 1.263 0 0 1 1.2631 1.2632 1.263 1.263 0 0 1-1.2631 1.2631 1.263 1.263 0 0 1-1.2632-1.2631 1.263 1.263 0 0 1 1.2632-1.2632' },
+];
+---
+
+<!-- Hero -->
+<section class="relative overflow-hidden border-b border-line bg-ink">
+  <div class="pointer-events-none absolute inset-0 bp-grid opacity-[0.05]"></div>
+  <div class="pointer-events-none absolute -top-32 end-[-10%] h-[440px] w-[440px] rounded-full bg-crimson/[14%] blur-[130px]"></div>
+  <div class="pointer-events-none absolute bottom-[-12%] start-[-8%] h-[380px] w-[380px] rounded-full bg-burgundy/[16%] blur-[130px]"></div>
+
+  <div class="relative mx-auto grid max-w-7xl grid-cols-1 gap-14 px-5 py-16 md:py-24 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:px-8">
+    <div>
+      <a href={link('/products')} class="inline-flex items-center gap-1.5 font-mono text-[0.7rem] uppercase tracking-widest text-white/45 hover:text-white/70">
+        <svg class="h-3.5 w-3.5 rtl:-scale-x-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        {t('nav.products')}
+      </a>
+
+      <p class="animate-fade-up mt-6 inline-flex items-center gap-2 font-mono text-[0.7rem] uppercase tracking-widest text-white/50" style="animation-delay:.05s">
+        <span class="relative flex h-1.5 w-1.5">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-crimson opacity-75"></span>
+          <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-crimson"></span>
+        </span>
+        {c.kicker}
+      </p>
+
+      <h1 class="animate-fade-up mt-5 font-display text-[clamp(2.1rem,4.6vw,3.4rem)] font-bold leading-[1.06] tracking-tight text-white" style="animation-delay:.12s">
+        {c.title}
+      </h1>
+
+      <p class="animate-fade-up mt-6 max-w-xl text-lg leading-relaxed text-white/60" style="animation-delay:.2s">
+        {c.lead}
+      </p>
+
+      <div class="animate-fade-up mt-9 flex flex-col gap-3 sm:flex-row" style="animation-delay:.28s">
+        <a href={link('/#contact')}
+           class="group inline-flex items-center justify-center gap-2 rounded-md bg-crimson px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#b80324]">
+          {c.ctaPrimary}
+          <svg class="h-4 w-4 transition-transform rtl:-scale-x-100 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#demo-chat"
+           class="inline-flex items-center justify-center gap-2 rounded-md border border-white/20 bg-transparent px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-white/50">
+          {c.ctaSecondary}
+        </a>
+      </div>
+    </div>
+
+    <!-- Phone mockup + system-record confirmation card -->
+    <div class="relative mx-auto w-full max-w-[300px] lg:max-w-none" id="demo-chat">
+      <div class="ic-phone relative mx-auto w-[280px] rounded-[2.25rem] border-4 border-white/10 bg-raisin p-2.5 shadow-2xl">
+        <div class="absolute start-1/2 top-3.5 z-20 h-1.5 w-16 -translate-x-1/2 rounded-full bg-white/15 rtl:translate-x-1/2"></div>
+        <div class="relative z-10 flex h-[440px] flex-col overflow-hidden rounded-[1.6rem] bg-[#ECE5DD]">
+          <div class="flex items-center gap-2.5 bg-[#075E54] px-3.5 py-3">
+            <img src="/logo-mark-white.svg" alt="" class="h-7 w-7 rounded-full bg-white/10 p-1" />
+            <div class="min-w-0">
+              <div class="truncate text-[0.82rem] font-semibold text-white">Klinik Sejahtera</div>
+              <div class="truncate text-[0.66rem] text-white/70">{c.phoneSubtitle}</div>
+            </div>
+          </div>
+          <div id="ic-chat-body" class="flex flex-1 flex-col gap-1.5 overflow-hidden p-3"></div>
+        </div>
+      </div>
+
+      <!-- System-record card: reveals once the booking confirms, proving this
+           writes to a real system rather than just replying in chat. -->
+      <div id="ic-confirm-card" class="ic-confirm crop absolute bottom-[-1.5rem] start-[-1rem] w-[240px] rounded-xl border border-line bg-surface p-4 opacity-0 shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)] sm:w-[260px] lg:bottom-6 lg:start-auto lg:end-[-2.5rem]">
+        <div class="flex items-center justify-between border-b border-line-soft pb-2.5">
+          <span class="flex items-center gap-1.5 font-mono text-[0.62rem] uppercase tracking-widest text-muted">
+            <svg class="h-3.5 w-3.5 text-crimson" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7c0-1.66 3.58-3 8-3s8 1.34 8 3-3.58 3-8 3-8-1.34-8-3zm0 0v10c0 1.66 3.58 3 8 3s8-1.34 8-3V7M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg>
+            {c.confirm.title}
+          </span>
+          <span class="inline-flex items-center gap-1 rounded-full border border-crimson/30 bg-crimson/5 px-2 py-0.5 font-mono text-[0.58rem] uppercase tracking-widest text-crimson">
+            <span class="h-1.5 w-1.5 rounded-full bg-crimson"></span>{c.confirm.status}
+          </span>
+        </div>
+        <dl class="mt-2.5 space-y-1.5 text-[0.72rem]">
+          <div class="flex items-center justify-between gap-3">
+            <dt class="text-muted">{c.confirm.patientLabel}</dt>
+            <dd class="truncate font-medium text-ink">{c.confirm.patient}</dd>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <dt class="text-muted">{c.confirm.whenLabel}</dt>
+            <dd class="font-medium text-ink">{c.confirm.when}</dd>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <dt class="text-muted">{c.confirm.idLabel}</dt>
+            <dd class="font-mono text-ink">{c.confirm.id}</dd>
+          </div>
+        </dl>
+        <p class="mt-2.5 flex items-center gap-1.5 border-t border-line-soft pt-2.5 font-mono text-[0.6rem] text-muted">
+          <svg class="h-3 w-3 text-crimson" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          {c.confirm.synced}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="border-b border-line bg-canvas py-10 md:py-14">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-4">
+      {c.stats.map((s) => (
+        <div class="bg-surface p-6 text-center md:p-8">
+          <p class="font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">{s.value}</p>
+          <p class="mt-2 font-mono text-[0.68rem] uppercase tracking-widest text-muted">{s.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="border-b border-line bg-canvas py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="reveal max-w-2xl">
+      <p class="eyebrow">{c.featuresEyebrow}</p>
+      <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">{c.featuresTitle}</h2>
+      <p class="mt-4 text-lg text-muted">{c.featuresLead}</p>
+    </div>
+    <div class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+      {c.features.map((f) => (
+        <div class="crop bg-surface p-7 md:p-8">
+          <h3 class="font-display text-lg font-semibold text-ink">{f.title}</h3>
+          <p class="mt-3 text-[0.95rem] leading-relaxed text-muted">{f.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="border-b border-line bg-canvas py-20 md:py-24">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="reveal max-w-2xl">
+      <p class="eyebrow">{c.howEyebrow}</p>
+      <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">{c.howTitle}</h2>
+    </div>
+
+    <div class="mt-10 crop rounded-xl border border-line bg-surface p-6 md:p-10">
+      <PipelineDiagram steps={pipelineSteps} />
+    </div>
+
+    <div class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+      {c.how.map((step, i) => (
+        <div class="crop bg-surface p-6 md:p-7">
+          <span class="font-mono text-xs tracking-widest text-crimson">0{i + 1}</span>
+          <h3 class="mt-3 font-display text-base font-semibold text-ink">{step.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{step.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Reliability -->
+<section class="relative overflow-hidden border-b border-line bg-ink py-20 md:py-28">
+  <div class="pointer-events-none absolute inset-0 bp-grid opacity-[0.06]"></div>
+  <div class="pointer-events-none absolute -top-24 end-[-6%] h-[380px] w-[380px] rounded-full bg-crimson/[8%] blur-[130px]"></div>
+
+  <div class="relative mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="reveal max-w-2xl">
+      <p class="eyebrow !text-white/45">{c.reliabilityEyebrow}</p>
+      <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-white md:text-4xl">{c.reliabilityTitle}</h2>
+      <p class="mt-4 text-lg text-white/55">{c.reliabilityLead}</p>
+    </div>
+
+    <div class="reveal mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/10 sm:grid-cols-3">
+      {c.reliabilityPoints.map((p) => (
+        <div class="ic-crop-dark bg-ink p-7 md:p-8">
+          <h3 class="font-display text-lg font-semibold text-white">{p.title}</h3>
+          <p class="mt-3 text-sm leading-relaxed text-white/50">{p.body}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-white/10 pt-8">
+      <span class="font-mono text-[0.68rem] uppercase tracking-widest text-white/40">{c.runsOn}</span>
+      {runsOnIcons.map((icon) => (
+        <span class="inline-flex items-center gap-2">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill={`#${icon.hex}`}><path d={icon.d}/></svg>
+          <span class="font-display text-sm font-semibold text-white/70">{icon.name}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Demo video placeholder -->
+<section class="border-b border-line bg-canvas py-20 md:py-28">
+  <div class="mx-auto max-w-4xl px-5 text-center lg:px-8">
+    <p class="eyebrow">{c.demoEyebrow}</p>
+    <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">{c.demoTitle}</h2>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-muted">{c.demoLead}</p>
+
+    <!-- Swap this placeholder for a real <video> or embed when the demo is ready. -->
+    <div class="crop mt-10 flex aspect-video items-center justify-center rounded-xl border border-line bg-ink">
+      <div class="flex flex-col items-center gap-4">
+        <span class="flex h-16 w-16 items-center justify-center rounded-full bg-crimson/15 text-crimson">
+          <svg class="h-7 w-7 rtl:-scale-x-100" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+        <span class="font-mono text-xs uppercase tracking-widest text-white/50">{c.demoPlaceholder}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="bg-canvas py-20 md:py-28">
+  <div class="reveal mx-auto max-w-3xl px-5 text-center lg:px-8">
+    <h2 class="font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">{c.ctaTitle}</h2>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-muted">{c.ctaLead}</p>
+    <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <a href={link('/#contact')}
+         class="group inline-flex items-center justify-center gap-2 rounded-md bg-crimson px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#b80324]">
+        {c.ctaPrimary}
+        <svg class="h-4 w-4 transition-transform rtl:-scale-x-100 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href={site.whatsapp.href} target="_blank" rel="noopener noreferrer"
+         class="inline-flex items-center justify-center gap-2 rounded-md border border-line bg-surface px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-ink">
+        <svg class="h-4 w-4 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 21.785h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884M20.463 3.488A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+        {c.ctaWhatsapp}
+      </a>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ chat: c.chat, reduceMotion: false }}>
+  const body = document.getElementById('ic-chat-body');
+  const confirmCard = document.getElementById('ic-confirm-card');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function bubble(msg) {
+    const wrap = document.createElement('div');
+    const isBot = msg.from === 'bot';
+    wrap.className = (isBot ? 'self-start bg-white' : 'self-end bg-[#DCF8C6]') +
+      ' max-w-[82%] rounded-lg px-2.5 py-1.5 shadow-sm ic-msg';
+    wrap.innerHTML = '<p class="text-[0.72rem] leading-snug text-[#111]">' + msg.text + '</p>';
+    return wrap;
+  }
+
+  function typingBubble() {
+    const wrap = document.createElement('div');
+    wrap.className = 'self-start flex items-center gap-1 rounded-lg bg-white px-3 py-2.5 shadow-sm ic-msg';
+    wrap.innerHTML = '<span class="ic-dot"></span><span class="ic-dot"></span><span class="ic-dot"></span>';
+    return wrap;
+  }
+
+  async function playSequence() {
+    if (!body) return;
+    body.innerHTML = '';
+    confirmCard.style.opacity = '0';
+    confirmCard.style.transform = '';
+
+    if (prefersReduced) {
+      chat.forEach((m) => body.appendChild(bubble(m)));
+      confirmCard.style.opacity = '1';
+      return;
+    }
+
+    for (const msg of chat) {
+      const typing = typingBubble();
+      body.appendChild(typing);
+      body.scrollTop = body.scrollHeight;
+      await new Promise((r) => setTimeout(r, msg.from === 'bot' ? 900 : 500));
+      typing.remove();
+
+      const el = bubble(msg);
+      body.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('ic-msg-in'));
+      body.scrollTop = body.scrollHeight;
+      await new Promise((r) => setTimeout(r, 550));
+    }
+
+    confirmCard.style.transition = 'opacity .5s ease, transform .5s ease';
+    confirmCard.style.opacity = '1';
+    confirmCard.style.transform = 'translateY(0)';
+
+    await new Promise((r) => setTimeout(r, 6000));
+    playSequence();
+  }
+
+  playSequence();
+</script>
+
+<style>
+  .ic-msg { opacity: 0; transform: translateY(8px); transition: opacity .35s ease, transform .35s ease; }
+  .ic-msg-in { opacity: 1; transform: translateY(0); }
+
+  .ic-dot { width: 5px; height: 5px; border-radius: 999px; background: #9aa0a6; animation: icBounce 1.1s infinite; }
+  .ic-dot:nth-child(2) { animation-delay: .15s; }
+  .ic-dot:nth-child(3) { animation-delay: .3s; }
+  @keyframes icBounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-4px); } }
+
+  #ic-confirm-card { transform: translateY(10px); }
+
+  .ic-crop-dark { position: relative; }
+  .ic-crop-dark::before, .ic-crop-dark::after { content: ""; position: absolute; width: 10px; height: 10px; border-style: solid; border-color: rgba(255,255,255,0.16); pointer-events: none; }
+  .ic-crop-dark::before { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+  .ic-crop-dark::after { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ic-msg { opacity: 1 !important; transform: none !important; }
+    #ic-confirm-card { transform: none !important; }
+  }
+</style>

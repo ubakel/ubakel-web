@@ -1,0 +1,39 @@
+---
+// src/pages/[locale]/work/[slug].astro
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import WorkDetailBody from '../../../components/pages/WorkDetailBody.astro';
+import { caseStudies, getCase } from '../../../data/work';
+import { languages, defaultLang } from '../../../i18n/ui';
+import { getLangFromUrl } from '../../../i18n/utils';
+
+// The insurance-claims case study gets a bespoke landing page
+// (src/pages/[locale]/work/insurance-claims-platform.astro) — excluded here
+// to avoid a duplicate route.
+export function getStaticPaths() {
+  const locales = Object.keys(languages).filter((locale) => locale !== defaultLang);
+  return locales.flatMap((locale) =>
+    caseStudies
+      .filter((c) => c.slug !== 'insurance-claims-platform')
+      .map((c) => ({ params: { locale, slug: c.slug }, props: { study: c } }))
+  );
+}
+
+const { study: cs } = Astro.props;
+if (!cs) return Astro.redirect('/work');
+
+const lang = getLangFromUrl(Astro.url);
+const loc = cs.i18n?.[lang as 'ar' | 'ms'];
+const title = loc?.title ?? cs.title;
+const summary = loc?.summary ?? cs.summary;
+---
+
+<Layout title={`${title} — Ubakel`} description={summary}>
+  <span id="top"></span>
+  <Navbar />
+  <main id="main">
+    <WorkDetailBody study={cs} />
+  </main>
+  <Footer />
+</Layout>

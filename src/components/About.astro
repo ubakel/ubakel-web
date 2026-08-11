@@ -1,0 +1,38 @@
+---
+// src/components/About.astro
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Engineering tenets — a real, ordered list, so numbering is earned here.
+const tenets = [
+  { n: '01', k: t('about.tenet1.title'), v: t('about.tenet1.body') },
+  { n: '02', k: t('about.tenet2.title'), v: t('about.tenet2.body') },
+  { n: '03', k: t('about.tenet3.title'), v: t('about.tenet3.body') },
+  { n: '04', k: t('about.tenet4.title'), v: t('about.tenet4.body') },
+];
+---
+
+<section id="about" class="border-b border-line bg-canvas py-20 md:py-28">
+  <div class="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 lg:grid-cols-2 lg:gap-20 lg:px-8">
+    <div class="reveal">
+      <p class="eyebrow">{t('about.eyebrow')}</p>
+      <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-[2.6rem] md:leading-[1.1]">
+        {t('about.title')}
+      </h2>
+      <p class="mt-6 text-lg leading-relaxed text-muted">{t('about.body1')}</p>
+      <p class="mt-4 text-lg leading-relaxed text-muted">{t('about.body2')}</p>
+    </div>
+
+    <div class="reveal grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
+      {tenets.map((item) => (
+        <div class="crop bg-surface p-6 md:p-7">
+          <span class="font-mono text-xs tracking-widest text-crimson">{item.n}</span>
+          <h3 class="mt-4 font-display text-lg font-semibold text-ink">{item.k}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{item.v}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,40 @@
+---
+// src/pages/[locale]/products/intelicare.astro
+// Bespoke landing page for the flagship product — see IntelicareBody.astro.
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import IntelicareBody from '../../../components/pages/IntelicareBody.astro';
+import { languages, defaultLang } from '../../../i18n/ui';
+import { getLangFromUrl } from '../../../i18n/utils';
+
+export function getStaticPaths() {
+  return Object.keys(languages)
+    .filter((locale) => locale !== defaultLang)
+    .map((locale) => ({ params: { locale } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+
+const meta = {
+  ar: {
+    title: 'UBAKEL Intelicare — موظف الاستقبال الذكي الذي يحجز ولا ينام أبدًا',
+    description: 'يجيب Intelicare على واتساب، يحدد هوية المريض، يتحقق من التوفر الفعلي، ويكتب الحجز المؤكد مباشرة في نظامك — ليلًا كان أم نهارًا.',
+  },
+  ms: {
+    title: 'UBAKEL Intelicare — Penyambut tetamu AI yang menempah dan tidak pernah tidur',
+    description: 'Intelicare menjawab WhatsApp, mengenal pasti pesakit, menyemak ketersediaan sebenar, dan menulis tempahan yang disahkan terus ke sistem anda — siang atau malam.',
+  },
+} as const;
+
+const m = meta[lang as 'ar' | 'ms'];
+---
+
+<Layout title={m.title} description={m.description}>
+  <span id="top"></span>
+  <Navbar />
+  <main id="main">
+    <IntelicareBody />
+  </main>
+  <Footer />
+</Layout>

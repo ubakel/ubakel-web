@@ -1,0 +1,64 @@
+---
+// src/components/LanguageSwitcher.astro
+import { languages } from '../i18n/ui';
+import { getLangFromUrl, stripLocale, localizePath, hasLocalizedRoute } from '../i18n/utils';
+
+const current = getLangFromUrl(Astro.url);
+const basePath = stripLocale(Astro.url.pathname);
+const [routeBase] = basePath.split('#');
+
+// Stay on the equivalent page when the current route is localized (homepage,
+// services/work/products and their [slug] pages); otherwise fall back to the
+// locale's homepage rather than a dead link. Add a `locale` param to a new
+// page's getStaticPaths and hasLocalizedRoute() picks it up automatically.
+const href = (code: string) =>
+  hasLocalizedRoute(routeBase || '/') ? localizePath(basePath, code) : (code === 'en' ? basePath : `/${code}/`);
+---
+
+<details class="lang group relative">
+  <summary
+    class="flex cursor-pointer list-none items-center gap-1.5 rounded-md border border-line px-2.5 py-1.5 font-mono text-[0.72rem] uppercase tracking-widest text-muted transition-colors hover:border-ink hover:text-ink"
+    aria-label="Change language"
+  >
+    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.5 6 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-6-3.5-9S9.5 5.5 12 3z"/></svg>
+    <span>{current}</span>
+    <svg class="h-3 w-3 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+  </summary>
+
+  <ul class="absolute end-0 z-50 mt-2 w-44 overflow-hidden rounded-lg border border-line bg-surface p-1 shadow-[0_16px_40px_-16px_rgba(13,13,13,0.25)]">
+    {Object.entries(languages).map(([code, label]) => (
+      <li>
+        <a
+          href={href(code)}
+          data-lang={code}
+          class:list={[
+            'flex items-center justify-between rounded-md px-3 py-2 text-sm transition-colors',
+            code === current ? 'bg-canvas text-ink font-medium' : 'text-muted hover:bg-canvas hover:text-ink',
+          ]}
+        >
+          <span>{label}</span>
+          <span class="font-mono text-[0.65rem] uppercase tracking-widest opacity-60">{code}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</details>
+
+<style>
+  .lang > summary::-webkit-details-marker { display: none; }
+</style>
+
+<script>
+  // Persist the manual choice so the auto-detect redirect stands down.
+  document.querySelectorAll<HTMLAnchorElement>('.lang a[data-lang]').forEach((a) => {
+    a.addEventListener('click', () => {
+      try { localStorage.setItem('ubk-lang', a.dataset.lang || 'en'); } catch (e) {}
+    });
+  });
+  // Close the dropdown on outside click.
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll<HTMLDetailsElement>('details.lang[open]').forEach((d) => {
+      if (!d.contains(e.target as Node)) d.removeAttribute('open');
+    });
+  });
+</script>

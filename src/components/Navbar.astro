@@ -1,27 +1,122 @@
 ---
 // src/components/Navbar.astro
+import { nav } from '../data/site';
+import { getLangFromUrl, useTranslations, localizeAvailable } from '../i18n/utils';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const link = (href: string) => localizeAvailable(href, lang);
+
+// One combined path per icon (multiple subpaths in a single `d`) so each nav
+// item can render as a single stroked <path>, keyed off its i18n key.
+const navIcons: Record<string, string> = {
+  'nav.services': 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
+  'nav.work':     'M20 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2',
+  'nav.products': 'M4 4.5h6v6H4zM14 4.5h6v6h-6zM4 14.5h6v6H4zM14 14.5h6v6h-6z',
+  'nav.about':    'M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 16v-4M12 8h.01',
+};
 ---
 
-<header class="fixed top-0 inset-x-0 z-50 border-b border-pure-white/10 bg-deep-raisin/80 backdrop-blur-md transition-all">
-  <nav class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global">
-    
-    <div class="flex lg:flex-1">
-  <a href="/" class="-m-1.5 p-1.5 flex items-center gap-2">
-    <span class="sr-only">Ubakel</span>
-    <img class="h-8 w-auto" src="/logo.svg" alt="Ubakel Logo" />
-  </a>
-</div>
+<header class="sticky top-0 z-50">
+  <!-- CSS-only mobile menu toggle -->
+  <input type="checkbox" id="nav-toggle" class="peer sr-only" />
 
-    <div class="hidden lg:flex lg:gap-x-12">
-      <a href="#services" class="text-sm font-semibold leading-6 text-pure-white/80 hover:text-pure-white transition">Services</a>
-      <a href="#portfolio" class="text-sm font-semibold leading-6 text-pure-white/80 hover:text-pure-white transition">Work</a>
-      <a href="#process" class="text-sm font-semibold leading-6 text-pure-white/80 hover:text-pure-white transition">Process</a>
-    </div>
-
-    <div class="flex flex-1 justify-end">
-      <a href="#contact" class="rounded-full border border-pure-white/20 bg-pure-white/5 px-6 py-2.5 text-sm font-semibold text-pure-white hover:bg-pure-white hover:text-deep-black transition-all">
-        Get in touch
+  <div class="nav-shell border-b border-line-soft bg-canvas/80 backdrop-blur-xl">
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:h-24 lg:px-10">
+      <!-- Logo -->
+      <a href={link('/')} class="group flex shrink-0 items-center gap-3" aria-label="Ubakel home">
+        <img src="/logo-full.svg" alt="Ubakel" class="h-7 w-auto md:h-8" />
+        <span class="hidden h-4 w-px bg-line md:block"></span>
+        <span class="eyebrow hidden !text-[0.62rem] !tracking-[0.14em] text-muted md:block">{t('nav.tagline')}</span>
       </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden items-center gap-1 lg:flex">
+        {nav.map((item) => (
+          <a
+            href={link(item.href)}
+            class="nav-link group flex items-center gap-2 rounded-md px-3.5 py-2.5 text-[0.925rem] font-medium text-muted transition-colors hover:text-ink"
+          >
+            <svg class="h-4 w-4 text-muted/70 transition-colors group-hover:text-crimson" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={navIcons[item.key]}/></svg>
+            {t(item.key)}
+          </a>
+        ))}
+      </nav>
+
+      <!-- Lang + CTA cluster, set off by a hairline divider for an editorial, masthead feel -->
+      <div class="flex items-center gap-4 lg:gap-5 lg:border-s lg:border-line lg:ps-6">
+        <div class="hidden lg:block"><LanguageSwitcher /></div>
+
+        <a
+          href={link('/#contact')}
+          class="group hidden items-center gap-2 rounded-md bg-crimson px-5 py-3 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] transition-all hover:bg-[#b80324] hover:shadow-[0_10px_24px_-10px_rgba(217,4,41,0.55),inset_0_1px_0_rgba(255,255,255,0.18)] md:inline-flex"
+        >
+          {t('nav.cta')}
+          <svg class="h-3.5 w-3.5 transition-transform rtl:-scale-x-100 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+
+        <!-- Hamburger (mobile) -->
+        <label for="nav-toggle" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border border-line lg:hidden" aria-label="Toggle menu">
+          <span class="ham relative block h-[2px] w-5 bg-ink"></span>
+        </label>
+      </div>
     </div>
-  </nav>
+  </div>
+
+  <!-- Mobile panel -->
+  <div class="grid grid-rows-[0fr] overflow-hidden border-b border-line bg-canvas transition-[grid-template-rows] duration-300 ease-out peer-checked:grid-rows-[1fr] lg:hidden">
+    <nav class="min-h-0">
+      <ul class="flex flex-col divide-y divide-line px-6 py-2">
+        {nav.map((item) => (
+          <li>
+            <a href={link(item.href)} class="flex items-center justify-between py-4 text-base font-medium text-ink">
+              <span class="flex items-center gap-3">
+                <svg class="h-4 w-4 text-crimson" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={navIcons[item.key]}/></svg>
+                {t(item.key)}
+              </span>
+              <svg class="h-4 w-4 text-muted rtl:-scale-x-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="flex items-center gap-2 px-6 pb-3 pt-2 font-mono text-[0.68rem] text-muted">
+        <span class="relative flex h-1.5 w-1.5">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-crimson opacity-75"></span>
+          <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-crimson"></span>
+        </span>
+        {t('nav.status')}
+      </div>
+      <div class="flex items-center justify-between gap-3 px-6 pb-6 pt-3">
+        <LanguageSwitcher />
+        <a href={link('/#contact')} class="inline-flex flex-1 items-center justify-center gap-2 rounded-md bg-crimson px-4 py-3.5 text-sm font-semibold text-white">
+          {t('nav.cta')}
+        </a>
+      </div>
+    </nav>
+  </div>
 </header>
+
+<style>
+  /* Animated hamburger → X, driven purely by the checkbox state. */
+  .ham::before, .ham::after {
+    content: ""; position: absolute; left: 0; height: 2px; width: 100%;
+    background: currentColor; transition: transform .3s ease, top .3s ease;
+  }
+  .ham::before { top: -6px; }
+  .ham::after  { top:  6px; }
+  #nav-toggle:checked ~ div .ham { background: transparent; }
+  #nav-toggle:checked ~ div .ham::before { top: 0; transform: rotate(45deg); }
+  #nav-toggle:checked ~ div .ham::after  { top: 0; transform: rotate(-45deg); }
+
+  /* Underline wipe on hover — travels in the page's reading direction. */
+  .nav-link { position: relative; }
+  .nav-link::after {
+    content: ""; position: absolute; inset-inline: 0; bottom: -6px; height: 1px;
+    background: var(--color-ink);
+    transform: scaleX(0); transform-origin: 0% center;
+    transition: transform .35s var(--ease-out-expo);
+  }
+  .nav-link:hover::after { transform: scaleX(1); }
+  :global(html[dir="rtl"]) .nav-link::after { transform-origin: 100% center; }
+</style>

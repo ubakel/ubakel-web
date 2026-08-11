@@ -1,0 +1,554 @@
+---
+// src/components/pages/InsuranceClaimsBody.astro
+// Bespoke landing page for the hospital insurance claims case study — built
+// around the real workflow (registration portal, automated IGL/FGL letters,
+// AI-read insurer replies, role-specific portals, management dashboard)
+// rather than generic case-study copy. Content lives locally (not ui.ts)
+// since it's specific to this one page — same pattern as IntelicareBody.
+import PipelineDiagram from '../PipelineDiagram.astro';
+import { site } from '../../data/site';
+import { getLangFromUrl, useTranslations, localizeAvailable, type Lang } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const link = (h: string) => localizeAvailable(h, lang);
+
+type TimelineStep = { label: string; time: string; note?: string; done?: boolean };
+
+interface Copy {
+  eyebrow: string;
+  kicker: string;
+  title: string;
+  lead: string;
+  ctaPrimary: string;
+  ctaSecondary: string;
+  stats: { value: string; label: string }[];
+  timeline: TimelineStep[];
+  toastTitle: string;
+  toastBody: string;
+  featuresEyebrow: string;
+  featuresTitle: string;
+  featuresLead: string;
+  features: { title: string; body: string }[];
+  howEyebrow: string;
+  howTitle: string;
+  how: { title: string; body: string }[];
+  pipeline: string[];
+  rolesEyebrow: string;
+  rolesTitle: string;
+  rolesLead: string;
+  roles: { title: string; body: string }[];
+  demoEyebrow: string;
+  demoTitle: string;
+  demoLead: string;
+  demoWatch: string;
+  demoSoon: string;
+  ctaTitle: string;
+  ctaLead: string;
+  ctaWhatsapp: string;
+}
+
+const COPY: Record<Lang, Copy> = {
+  en: {
+    eyebrow: 'UBAKEL — Healthcare insurance',
+    kicker: 'AI claims automation · Registration to reconciliation',
+    title: 'Insurance claims that close themselves out.',
+    lead: "One platform drafts the guarantee letters, reads what the insurer sends back, and tells finance the moment there's something to act on — so no one has to chase a status update again.",
+    ctaPrimary: 'Talk to a systems architect',
+    ctaSecondary: 'See it handle a real claim',
+    stats: [
+      { value: '2', label: 'Guarantee letters automated' },
+      { value: '3', label: 'Role-specific portals' },
+      { value: '0', label: 'Manual status chasing' },
+      { value: '1', label: 'Dashboard, every claim' },
+    ],
+    timeline: [
+      { label: 'Claim registered', time: '09:14' },
+      { label: 'Initial guarantee letter sent', time: '09:14', note: 'Sent automatically to the insurer' },
+      { label: 'Insurer replied — approved', time: '11:02', note: 'Finance notified, letter attached' },
+      { label: 'Final bill uploaded', time: '14:30', note: 'One click from the finance portal' },
+      { label: 'Final guarantee letter sent', time: '14:31', note: 'Sent automatically to the insurer' },
+      { label: 'Reconciled — RM 4,820 covered', time: '16:15', note: 'Finance notified, claim closed', done: true },
+    ],
+    toastTitle: 'Claim closed',
+    toastBody: 'Finance notified · Reconciled automatically',
+    featuresEyebrow: 'Built for real claims teams',
+    featuresTitle: 'Not a form. A claims platform that acts.',
+    featuresLead: 'Every capability here exists because a real claims desk needed it.',
+    features: [
+      { title: 'One record, zero re-entry', body: "The registration portal creates the charge record once — every step downstream reads from it, nobody re-types it." },
+      { title: 'Letters drafted and sent automatically', body: 'The moment a guarantee letter is needed, the system composes it, personalises it, and sends it to the insurer — no waiting on an inbox.' },
+      { title: 'AI reads the replies', body: 'Insurer responses and uploaded bills are parsed automatically — status and covered amounts extracted without anyone opening a PDF.' },
+      { title: 'Finance told the moment they can act', body: 'The dashboard updates and an email lands — approved letter already attached — the instant there is something to do.' },
+      { title: 'One-click bill upload', body: 'No searching through email threads or shared drives. The finance portal takes the final bill in a click.' },
+      { title: 'Leadership sees the whole pipeline', body: 'A management dashboard rolls every claim into the numbers leadership actually needs.' },
+    ],
+    howEyebrow: 'How it works',
+    howTitle: 'From registration to reconciliation, in one pass.',
+    how: [
+      { title: 'Registration', body: "A new charge record is created the moment it's saved." },
+      { title: 'Guarantee letter sent', body: 'The automation engine drafts and sends the request instantly.' },
+      { title: "Insurer's reply is read", body: 'AI updates the status and alerts finance — letter attached.' },
+      { title: 'Bill uploaded, final letter sent', body: 'One click starts the closing sequence automatically.' },
+      { title: 'Reconciled', body: 'Covered amount extracted, dashboard updated, claim closed.' },
+    ],
+    pipeline: ['Registration', 'IGL sent', 'Insurer reply', 'Bill uploaded', 'Reconciled'],
+    rolesEyebrow: 'One platform, three roles',
+    rolesTitle: 'Every team gets exactly what they need — nothing else.',
+    rolesLead: "Registration, finance, and leadership don't share one crowded screen. Each has an interface built around what they actually do.",
+    roles: [
+      { title: 'Registration', body: 'A simple portal to open a claim — the moment it’s saved, automation takes over.' },
+      { title: 'Finance', body: 'A dedicated queue: upload bills, see approvals, never dig through email again.' },
+      { title: 'Leadership', body: 'A high-level dashboard with the numbers that matter, updated as claims move.' },
+    ],
+    demoEyebrow: 'See it work',
+    demoTitle: 'Watch the platform handle a real claim.',
+    demoLead: 'From registration to reconciliation — the full automation, end to end.',
+    demoWatch: 'Watch the full walkthrough',
+    demoSoon: 'Walkthrough video — coming soon',
+    ctaTitle: 'Claims that close themselves.',
+    ctaLead: 'Talk to a systems architect about wiring this into your own claims process. Most teams are live within weeks.',
+    ctaWhatsapp: 'Message us on WhatsApp',
+  },
+  ar: {
+    eyebrow: 'UBAKEL — تأمين الرعاية الصحية',
+    kicker: 'أتمتة مطالبات بالذكاء الاصطناعي · من التسجيل حتى التسوية',
+    title: 'مطالبات تأمين تُغلق نفسها بنفسها.',
+    lead: 'منصة واحدة تصيغ خطابات الضمان، وتقرأ ما يرسله المؤمِّن، وتُخبر فريق المالية بمجرد وجود ما يستدعي التصرف — فلا يحتاج أحد لملاحقة تحديث الحالة مجددًا.',
+    ctaPrimary: 'تحدّث مع مهندس أنظمة',
+    ctaSecondary: 'شاهدها تُنجز مطالبة حقيقية',
+    stats: [
+      { value: '2', label: 'خطابا ضمان مؤتمتان' },
+      { value: '3', label: 'واجهات خاصة بكل دور' },
+      { value: '0', label: 'متابعة يدوية للحالة' },
+      { value: '1', label: 'لوحة معلومات لكل مطالبة' },
+    ],
+    timeline: [
+      { label: 'تسجيل المطالبة', time: '09:14' },
+      { label: 'إرسال خطاب الضمان الأولي', time: '09:14', note: 'يُرسَل تلقائيًا إلى شركة التأمين' },
+      { label: 'رد شركة التأمين — تمت الموافقة', time: '11:02', note: 'إخطار المالية، مع إرفاق الخطاب' },
+      { label: 'رفع الفاتورة النهائية', time: '14:30', note: 'بنقرة واحدة من بوابة المالية' },
+      { label: 'إرسال خطاب الضمان النهائي', time: '14:31', note: 'يُرسَل تلقائيًا إلى شركة التأمين' },
+      { label: 'التسوية — تغطية 4,820 رينغيت', time: '16:15', note: 'إخطار المالية، إغلاق المطالبة', done: true },
+    ],
+    toastTitle: 'تم إغلاق المطالبة',
+    toastBody: 'تم إخطار المالية · تسوية تلقائية',
+    featuresEyebrow: 'مصمّم لفرق المطالبات الحقيقية',
+    featuresTitle: 'ليس نموذجًا. منصة مطالبات تتصرّف.',
+    featuresLead: 'كل قدرة هنا موجودة لأن مكتب مطالبات حقيقي احتاجها.',
+    features: [
+      { title: 'سجل واحد، بلا إعادة إدخال', body: 'تُنشئ بوابة التسجيل سجل الرسوم مرة واحدة — كل خطوة لاحقة تقرأ منه، لا يعيد أحد كتابته.' },
+      { title: 'خطابات تُصاغ وتُرسل تلقائيًا', body: 'بمجرد الحاجة إلى خطاب ضمان، يصيغه النظام ويُخصّصه ويرسله إلى شركة التأمين — دون انتظار أحد.' },
+      { title: 'الذكاء الاصطناعي يقرأ الردود', body: 'تُحلَّل ردود شركة التأمين والفواتير المرفوعة تلقائيًا — الحالة والمبالغ المغطاة، دون أن يفتح أحد ملف PDF.' },
+      { title: 'المالية تُخطَر بمجرد إمكانية التصرف', body: 'تتحدّث لوحة المعلومات ويصل بريد إلكتروني — مع الخطاب المعتمد مرفقًا — في اللحظة التي يوجد فيها ما يجب فعله.' },
+      { title: 'رفع الفاتورة بنقرة واحدة', body: 'لا بحث في رسائل البريد الإلكتروني أو المجلدات المشتركة. تستقبل بوابة المالية الفاتورة النهائية بنقرة واحدة.' },
+      { title: 'الإدارة ترى المسار كاملاً', body: 'لوحة معلومات إدارية تُجمّع كل مطالبة في الأرقام التي تحتاجها الإدارة فعلاً.' },
+    ],
+    howEyebrow: 'كيف يعمل',
+    howTitle: 'من التسجيل إلى التسوية، في مسار واحد.',
+    how: [
+      { title: 'التسجيل', body: 'يُنشأ سجل رسوم جديد بمجرد حفظه.' },
+      { title: 'إرسال خطاب الضمان', body: 'يصيغ محرك الأتمتة الطلب ويرسله فورًا.' },
+      { title: 'قراءة رد شركة التأمين', body: 'يُحدّث الذكاء الاصطناعي الحالة ويُخطر المالية — مع إرفاق الخطاب.' },
+      { title: 'رفع الفاتورة وإرسال الخطاب النهائي', body: 'نقرة واحدة تبدأ تسلسل الإغلاق تلقائيًا.' },
+      { title: 'التسوية', body: 'يُستخرج المبلغ المغطى، وتتحدّث لوحة المعلومات، وتُغلق المطالبة.' },
+    ],
+    pipeline: ['التسجيل', 'خطاب أولي', 'رد التأمين', 'رفع الفاتورة', 'التسوية'],
+    rolesEyebrow: 'منصة واحدة، ثلاثة أدوار',
+    rolesTitle: 'كل فريق يحصل على ما يحتاجه بالضبط — لا أكثر.',
+    rolesLead: 'لا يتشارك التسجيل والمالية والإدارة شاشة واحدة مزدحمة. لكل منهم واجهة مصمّمة حول ما يفعلونه فعلاً.',
+    roles: [
+      { title: 'التسجيل', body: 'بوابة بسيطة لفتح مطالبة — بمجرد حفظها، تتولى الأتمتة الباقي.' },
+      { title: 'المالية', body: 'قائمة انتظار مخصصة: رفع الفواتير، رؤية الموافقات، دون الحاجة للبحث في البريد الإلكتروني مجددًا.' },
+      { title: 'الإدارة', body: 'لوحة معلومات عالية المستوى بالأرقام المهمة، تتحدّث مع تحرك كل مطالبة.' },
+    ],
+    demoEyebrow: 'شاهدها تعمل',
+    demoTitle: 'شاهد المنصة تُنجز مطالبة حقيقية.',
+    demoLead: 'من التسجيل حتى التسوية — الأتمتة كاملة، من البداية للنهاية.',
+    demoWatch: 'شاهد العرض الكامل',
+    demoSoon: 'فيديو العرض التوضيحي — قريبًا',
+    ctaTitle: 'مطالبات تُغلق نفسها بنفسها.',
+    ctaLead: 'تحدّث مع مهندس أنظمة حول ربط هذا النظام بعملية المطالبات لديك. تنطلق معظم الفرق خلال أسابيع.',
+    ctaWhatsapp: 'راسلنا عبر واتساب',
+  },
+  ms: {
+    eyebrow: 'UBAKEL — Insurans penjagaan kesihatan',
+    kicker: 'Automasi tuntutan AI · Pendaftaran hingga penyelarasan',
+    title: 'Tuntutan insurans yang menutup dirinya sendiri.',
+    lead: 'Satu platform merangka surat jaminan, membaca apa yang dihantar balik oleh penanggung insurans, dan memberitahu kewangan sebaik sahaja ada sesuatu untuk ditindaklanjuti — jadi tiada siapa perlu mengejar kemas kini status lagi.',
+    ctaPrimary: 'Bercakap dengan jurutera sistem',
+    ctaSecondary: 'Lihat ia mengendalikan tuntutan sebenar',
+    stats: [
+      { value: '2', label: 'Surat jaminan diautomasikan' },
+      { value: '3', label: 'Portal khusus peranan' },
+      { value: '0', label: 'Susulan status manual' },
+      { value: '1', label: 'Papan pemuka untuk setiap tuntutan' },
+    ],
+    timeline: [
+      { label: 'Tuntutan didaftarkan', time: '09:14' },
+      { label: 'Surat jaminan awal dihantar', time: '09:14', note: 'Dihantar secara automatik kepada penanggung insurans' },
+      { label: 'Penanggung insurans membalas — diluluskan', time: '11:02', note: 'Kewangan dimaklumkan, surat dilampirkan' },
+      { label: 'Bil akhir dimuat naik', time: '14:30', note: 'Satu klik dari portal kewangan' },
+      { label: 'Surat jaminan akhir dihantar', time: '14:31', note: 'Dihantar secara automatik kepada penanggung insurans' },
+      { label: 'Diselaraskan — RM4,820 dilindungi', time: '16:15', note: 'Kewangan dimaklumkan, tuntutan ditutup', done: true },
+    ],
+    toastTitle: 'Tuntutan ditutup',
+    toastBody: 'Kewangan dimaklumkan · Diselaraskan secara automatik',
+    featuresEyebrow: 'Dibina untuk pasukan tuntutan sebenar',
+    featuresTitle: 'Bukan borang. Platform tuntutan yang bertindak.',
+    featuresLead: 'Setiap keupayaan di sini wujud kerana meja tuntutan sebenar memerlukannya.',
+    features: [
+      { title: 'Satu rekod, tiada kemasukan semula', body: 'Portal pendaftaran mencipta rekod caj sekali sahaja — setiap langkah seterusnya membacanya, tiada siapa menaipnya semula.' },
+      { title: 'Surat dirangka dan dihantar secara automatik', body: 'Sebaik sahaja surat jaminan diperlukan, sistem merangka, memperibadikan dan menghantarnya kepada penanggung insurans — tanpa menunggu peti masuk sesiapa.' },
+      { title: 'AI membaca balasan', body: 'Balasan penanggung insurans dan bil yang dimuat naik dihurai secara automatik — status dan jumlah dilindungi diekstrak tanpa sesiapa membuka PDF.' },
+      { title: 'Kewangan dimaklumkan sebaik sahaja boleh bertindak', body: 'Papan pemuka dikemas kini dan e-mel tiba — surat diluluskan sudah dilampirkan — pada saat ada sesuatu untuk dilakukan.' },
+      { title: 'Muat naik bil dalam satu klik', body: 'Tiada mencari dalam benang e-mel atau pemacu dikongsi. Portal kewangan menerima bil akhir dalam satu klik.' },
+      { title: 'Kepimpinan melihat keseluruhan aliran', body: 'Papan pemuka pengurusan menggulung setiap tuntutan menjadi angka yang benar-benar diperlukan kepimpinan.' },
+    ],
+    howEyebrow: 'Cara ia beroperasi',
+    howTitle: 'Dari pendaftaran ke penyelarasan, dalam satu aliran.',
+    how: [
+      { title: 'Pendaftaran', body: 'Rekod caj baharu dicipta sebaik sahaja disimpan.' },
+      { title: 'Surat jaminan dihantar', body: 'Enjin automasi merangka dan menghantar permintaan serta-merta.' },
+      { title: 'Balasan insurans dibaca', body: 'AI mengemas kini status dan memaklumkan kewangan — surat dilampirkan.' },
+      { title: 'Bil dimuat naik, surat akhir dihantar', body: 'Satu klik memulakan urutan penutupan secara automatik.' },
+      { title: 'Diselaraskan', body: 'Jumlah dilindungi diekstrak, papan pemuka dikemas kini, tuntutan ditutup.' },
+    ],
+    pipeline: ['Pendaftaran', 'Surat awal', 'Balasan insurans', 'Bil dimuat naik', 'Diselaraskan'],
+    rolesEyebrow: 'Satu platform, tiga peranan',
+    rolesTitle: 'Setiap pasukan mendapat apa yang mereka perlukan — tiada lebih.',
+    rolesLead: 'Pendaftaran, kewangan dan kepimpinan tidak berkongsi satu skrin yang sesak. Setiap satu mempunyai antara muka dibina di sekeliling apa yang mereka benar-benar lakukan.',
+    roles: [
+      { title: 'Pendaftaran', body: 'Portal ringkas untuk membuka tuntutan — sebaik sahaja disimpan, automasi mengambil alih.' },
+      { title: 'Kewangan', body: 'Baris gilir khusus: muat naik bil, lihat kelulusan, tidak perlu menggali e-mel lagi.' },
+      { title: 'Kepimpinan', body: 'Papan pemuka peringkat tinggi dengan angka yang penting, dikemas kini seiring pergerakan tuntutan.' },
+    ],
+    demoEyebrow: 'Lihat ia beroperasi',
+    demoTitle: 'Saksikan platform mengendalikan tuntutan sebenar.',
+    demoLead: 'Dari pendaftaran hingga penyelarasan — automasi penuh, hujung ke hujung.',
+    demoWatch: 'Tonton demonstrasi penuh',
+    demoSoon: 'Video demonstrasi — akan datang',
+    ctaTitle: 'Tuntutan yang menutup dirinya sendiri.',
+    ctaLead: 'Bercakap dengan jurutera sistem tentang menghubungkan ini ke proses tuntutan anda sendiri. Kebanyakan pasukan aktif dalam beberapa minggu.',
+    ctaWhatsapp: 'Hubungi kami di WhatsApp',
+  },
+};
+
+const c = COPY[lang];
+
+/**
+ * Demo walkthrough video.
+ *
+ * Left empty on purpose: Cloudflare Pages rejects any single asset over
+ * 25 MiB, and the source recording is ~92 MB, so it cannot be committed to
+ * this repo and served statically. Host it once (YouTube / Vimeo unlisted,
+ * Cloudflare Stream, or an R2 public bucket) and paste the URL here — the
+ * section renders a real player automatically and falls back to a
+ * "coming soon" panel while this is blank.
+ *
+ *   kind: 'embed' → iframe (YouTube / Vimeo / Cloudflare Stream embed URL)
+ *   kind: 'file'  → <video> tag (direct .mp4 URL, e.g. an R2 public link)
+ */
+const DEMO_VIDEO: { url: string; kind: 'embed' | 'file' } = {
+  url: '',
+  kind: 'embed',
+};
+
+const pipelineSteps = [
+  { label: c.pipeline[0], kind: 'source' as const },
+  { label: c.pipeline[1], kind: 'process' as const },
+  { label: c.pipeline[2], kind: 'ai' as const },
+  { label: c.pipeline[3], kind: 'process' as const },
+  { label: c.pipeline[4], kind: 'output' as const },
+];
+---
+
+<!-- Hero -->
+<section class="relative overflow-hidden border-b border-line bg-ink">
+  <div class="pointer-events-none absolute inset-0 bp-grid opacity-[0.05]"></div>
+  <div class="pointer-events-none absolute -top-32 end-[-10%] h-[440px] w-[440px] rounded-full bg-crimson/[14%] blur-[130px]"></div>
+  <div class="pointer-events-none absolute bottom-[-12%] start-[-8%] h-[380px] w-[380px] rounded-full bg-burgundy/[16%] blur-[130px]"></div>
+
+  <div class="relative mx-auto grid max-w-7xl grid-cols-1 gap-14 px-5 py-16 md:py-24 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:px-8">
+    <div>
+      <a href={link('/work')} class="inline-flex items-center gap-1.5 font-mono text-[0.7rem] uppercase tracking-widest text-white/45 hover:text-white/70">
+        <svg class="h-3.5 w-3.5 rtl:-scale-x-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        {t('nav.work')}
+      </a>
+
+      <p class="animate-fade-up mt-6 inline-flex items-center gap-2 font-mono text-[0.7rem] uppercase tracking-widest text-white/50" style="animation-delay:.05s">
+        <span class="relative flex h-1.5 w-1.5">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-crimson opacity-75"></span>
+          <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-crimson"></span>
+        </span>
+        {c.kicker}
+      </p>
+
+      <h1 class="animate-fade-up mt-5 font-display text-[clamp(2.1rem,4.6vw,3.4rem)] font-bold leading-[1.06] tracking-tight text-white" style="animation-delay:.12s">
+        {c.title}
+      </h1>
+
+      <p class="animate-fade-up mt-6 max-w-xl text-lg leading-relaxed text-white/60" style="animation-delay:.2s">
+        {c.lead}
+      </p>
+
+      <div class="animate-fade-up mt-9 flex flex-col gap-3 sm:flex-row" style="animation-delay:.28s">
+        <a href={link('/#contact')}
+           class="group inline-flex items-center justify-center gap-2 rounded-md bg-crimson px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#b80324]">
+          {c.ctaPrimary}
+          <svg class="h-4 w-4 transition-transform rtl:-scale-x-100 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#claim-timeline"
+           class="inline-flex items-center justify-center gap-2 rounded-md border border-white/20 bg-transparent px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-white/50">
+          {c.ctaSecondary}
+        </a>
+      </div>
+    </div>
+
+    <!-- Claim timeline + closed-claim notification -->
+    <div class="relative mx-auto w-full max-w-[380px]" id="claim-timeline">
+      <div class="ic-crop-dark crop relative rounded-xl border border-white/10 bg-raisin p-5 shadow-2xl md:p-6">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <span class="font-mono text-[0.68rem] uppercase tracking-widest text-white/45">Claim #CL-1042</span>
+          <span class="inline-flex items-center gap-1.5 rounded-full border border-crimson/30 bg-crimson/10 px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-widest text-crimson">
+            <span class="h-1.5 w-1.5 rounded-full bg-crimson"></span>Live
+          </span>
+        </div>
+        <ol id="cl-timeline-body" class="mt-4 space-y-0"></ol>
+      </div>
+
+      <!-- Toast: reveals once the claim reconciles, proving the automation
+           tells finance directly rather than leaving them to check. -->
+      <div id="cl-toast" class="crop absolute bottom-[-1.25rem] start-[-1rem] w-[230px] rounded-xl border border-line bg-surface p-3.5 opacity-0 shadow-[0_24px_50px_-20px_rgba(0,0,0,0.55)] sm:w-[250px]">
+        <div class="flex items-center gap-2.5">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-crimson/10 text-crimson">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </span>
+          <div class="min-w-0">
+            <p class="truncate text-[0.78rem] font-semibold text-ink">{c.toastTitle}</p>
+            <p class="truncate text-[0.68rem] text-muted">{c.toastBody}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="border-b border-line bg-canvas py-10 md:py-14">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-4">
+      {c.stats.map((s) => (
+        <div class="bg-surface p-6 text-center md:p-8">
+          <p class="font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">{s.value}</p>
+          <p class="mt-2 font-mono text-[0.68rem] uppercase tracking-widest text-muted">{s.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="border-b border-line bg-canvas py-20 md:py-28">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="reveal max-w-2xl">
+      <p class="eyebrow">{c.featuresEyebrow}</p>
+      <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">{c.featuresTitle}</h2>
+      <p class="mt-4 text-lg text-muted">{c.featuresLead}</p>
+    </div>
+    <div class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+      {c.features.map((f) => (
+        <div class="crop bg-surface p-7 md:p-8">
+          <h3 class="font-display text-lg font-semibold text-ink">{f.title}</h3>
+          <p class="mt-3 text-[0.95rem] leading-relaxed text-muted">{f.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="border-b border-line bg-canvas py-20 md:py-24">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="reveal max-w-2xl">
+      <p class="eyebrow">{c.howEyebrow}</p>
+      <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">{c.howTitle}</h2>
+    </div>
+
+    <div class="mt-10 crop rounded-xl border border-line bg-surface p-6 md:p-10">
+      <PipelineDiagram steps={pipelineSteps} />
+    </div>
+
+    <div class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
+      {c.how.map((step, i) => (
+        <div class="crop bg-surface p-6 md:p-7">
+          <span class="font-mono text-xs tracking-widest text-crimson">0{i + 1}</span>
+          <h3 class="mt-3 font-display text-base font-semibold text-ink">{step.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{step.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Role-based portals -->
+<section class="relative overflow-hidden border-b border-line bg-ink py-20 md:py-28">
+  <div class="pointer-events-none absolute inset-0 bp-grid opacity-[0.06]"></div>
+  <div class="pointer-events-none absolute -top-24 end-[-6%] h-[380px] w-[380px] rounded-full bg-crimson/[8%] blur-[130px]"></div>
+
+  <div class="relative mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="reveal max-w-2xl">
+      <p class="eyebrow !text-white/45">{c.rolesEyebrow}</p>
+      <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-white md:text-4xl">{c.rolesTitle}</h2>
+      <p class="mt-4 text-lg text-white/55">{c.rolesLead}</p>
+    </div>
+
+    <div class="reveal mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/10 sm:grid-cols-3">
+      {c.roles.map((r, i) => (
+        <div class="ic-crop-dark bg-ink p-7 md:p-8">
+          <span class="font-mono text-xs tracking-widest text-crimson">0{i + 1}</span>
+          <h3 class="mt-3 font-display text-lg font-semibold text-white">{r.title}</h3>
+          <p class="mt-3 text-sm leading-relaxed text-white/50">{r.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Demo video -->
+<section class="border-b border-line bg-canvas py-20 md:py-28">
+  <div class="mx-auto max-w-4xl px-5 text-center lg:px-8">
+    <p class="eyebrow">{c.demoEyebrow}</p>
+    <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">{c.demoTitle}</h2>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-muted">{c.demoLead}</p>
+
+    <div class="crop relative mt-10 aspect-video overflow-hidden rounded-xl border border-line bg-ink">
+      {DEMO_VIDEO.url && DEMO_VIDEO.kind === 'embed' && (
+        <iframe
+          class="h-full w-full"
+          src={DEMO_VIDEO.url}
+          title={c.demoTitle}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      )}
+
+      {DEMO_VIDEO.url && DEMO_VIDEO.kind === 'file' && (
+        <>
+          <button id="cl-video-play" type="button" class="absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-4" aria-label={c.demoWatch}>
+            <span class="flex h-16 w-16 items-center justify-center rounded-full bg-crimson/15 text-crimson transition-transform hover:scale-105">
+              <svg class="h-7 w-7 rtl:-scale-x-100" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+            <span class="font-mono text-xs uppercase tracking-widest text-white/50">{c.demoWatch}</span>
+          </button>
+          <video id="cl-video" class="hidden h-full w-full" controls preload="none" src={DEMO_VIDEO.url}></video>
+        </>
+      )}
+
+      {!DEMO_VIDEO.url && (
+        <div class="flex h-full w-full flex-col items-center justify-center gap-4">
+          <span class="flex h-16 w-16 items-center justify-center rounded-full bg-crimson/15 text-crimson">
+            <svg class="h-7 w-7 rtl:-scale-x-100" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+          <span class="font-mono text-xs uppercase tracking-widest text-white/50">{c.demoSoon}</span>
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="bg-canvas py-20 md:py-28">
+  <div class="reveal mx-auto max-w-3xl px-5 text-center lg:px-8">
+    <h2 class="font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">{c.ctaTitle}</h2>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-muted">{c.ctaLead}</p>
+    <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <a href={link('/#contact')}
+         class="group inline-flex items-center justify-center gap-2 rounded-md bg-crimson px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#b80324]">
+        {c.ctaPrimary}
+        <svg class="h-4 w-4 transition-transform rtl:-scale-x-100 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href={site.whatsapp.href} target="_blank" rel="noopener noreferrer"
+         class="inline-flex items-center justify-center gap-2 rounded-md border border-line bg-surface px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-ink">
+        <svg class="h-4 w-4 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 21.785h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884M20.463 3.488A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+        {c.ctaWhatsapp}
+      </a>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ timeline: c.timeline }}>
+  const list = document.getElementById('cl-timeline-body');
+  const toast = document.getElementById('cl-toast');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function row(step) {
+    const li = document.createElement('li');
+    li.className = 'cl-row flex gap-3 border-b border-white/5 py-3 last:border-b-0';
+    const dotColor = step.done ? 'bg-crimson' : 'bg-white/25';
+    li.innerHTML =
+      '<span class="mt-1 flex h-2 w-2 shrink-0 rounded-full ' + dotColor + '"></span>' +
+      '<div class="min-w-0 flex-1">' +
+        '<div class="flex items-baseline justify-between gap-3">' +
+          '<p class="text-[0.82rem] font-medium text-white">' + step.label + '</p>' +
+          '<span class="shrink-0 font-mono text-[0.65rem] text-white/40">' + step.time + '</span>' +
+        '</div>' +
+        (step.note ? '<p class="mt-0.5 text-[0.72rem] text-white/40">' + step.note + '</p>' : '') +
+      '</div>';
+    return li;
+  }
+
+  async function playSequence() {
+    if (!list) return;
+    list.innerHTML = '';
+    toast.style.opacity = '0';
+    toast.style.transform = '';
+
+    if (prefersReduced) {
+      timeline.forEach((s) => list.appendChild(row(s)));
+      toast.style.opacity = '1';
+      return;
+    }
+
+    for (const step of timeline) {
+      const el = row(step);
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(6px)';
+      el.style.transition = 'opacity .35s ease, transform .35s ease';
+      list.appendChild(el);
+      requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; });
+      await new Promise((r) => setTimeout(r, 900));
+    }
+
+    toast.style.transition = 'opacity .5s ease, transform .5s ease';
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
+
+    await new Promise((r) => setTimeout(r, 6000));
+    playSequence();
+  }
+
+  playSequence();
+
+  const playBtn = document.getElementById('cl-video-play');
+  const video = document.getElementById('cl-video');
+  playBtn?.addEventListener('click', () => {
+    playBtn.classList.add('hidden');
+    video?.classList.remove('hidden');
+    video?.play();
+  });
+</script>
+
+<style>
+  #cl-toast { transform: translateY(10px); }
+
+  .ic-crop-dark { position: relative; }
+  .ic-crop-dark::before, .ic-crop-dark::after { content: ""; position: absolute; width: 10px; height: 10px; border-style: solid; border-color: rgba(255,255,255,0.16); pointer-events: none; }
+  .ic-crop-dark::before { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+  .ic-crop-dark::after { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #cl-toast { transform: none !important; }
+  }
+</style>

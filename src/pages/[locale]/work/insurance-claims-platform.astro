@@ -1,0 +1,40 @@
+---
+// src/pages/[locale]/work/insurance-claims-platform.astro
+// Bespoke landing page for the flagship case study — see InsuranceClaimsBody.astro.
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import InsuranceClaimsBody from '../../../components/pages/InsuranceClaimsBody.astro';
+import { languages, defaultLang } from '../../../i18n/ui';
+import { getLangFromUrl } from '../../../i18n/utils';
+
+export function getStaticPaths() {
+  return Object.keys(languages)
+    .filter((locale) => locale !== defaultLang)
+    .map((locale) => ({ params: { locale } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+
+const meta = {
+  ar: {
+    title: 'أتمتة مطالبات تأمين المستشفى — Ubakel',
+    description: 'منصة مطالبات مدعومة بالذكاء الاصطناعي تصيغ خطابات الضمان، وتقرأ ردود شركة التأمين، وتُبقي فريقي المالية والإدارة على اطلاع تلقائيًا — من التسجيل حتى التسوية.',
+  },
+  ms: {
+    title: 'Automasi Tuntutan Insurans Hospital — Ubakel',
+    description: 'Platform tuntutan berkuasa AI yang merangka surat jaminan, membaca balasan penanggung insurans, dan memaklumkan pasukan kewangan serta kepimpinan secara automatik — dari pendaftaran hingga penyelarasan.',
+  },
+} as const;
+
+const m = meta[lang as 'ar' | 'ms'];
+---
+
+<Layout title={m.title} description={m.description}>
+  <span id="top"></span>
+  <Navbar />
+  <main id="main">
+    <InsuranceClaimsBody />
+  </main>
+  <Footer />
+</Layout>

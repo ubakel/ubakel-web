@@ -1,0 +1,25 @@
+---
+// src/pages/services/[slug].astro
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import ServiceDetailBody from '../../components/pages/ServiceDetailBody.astro';
+import { services, getService } from '../../data/services';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { service: s } }));
+}
+
+const { service } = Astro.props;
+const svc = service ?? getService(Astro.params.slug!);
+if (!svc) return Astro.redirect('/services');
+---
+
+<Layout title={`${svc.title} — Ubakel`} description={svc.summary}>
+  <span id="top"></span>
+  <Navbar />
+  <main id="main">
+    <ServiceDetailBody service={svc} />
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,66 @@
+---
+// src/components/pages/WorkIndexBody.astro
+// Shared content for /work and every /[locale]/work.
+import CTABand from '../CTABand.astro';
+import { caseStudies } from '../../data/work';
+import { getLangFromUrl, useTranslations, localizeAvailable } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const link = (h: string) => localizeAvailable(h, lang);
+
+const span = {
+  lg: 'md:col-span-2 md:row-span-2',
+  md: 'md:col-span-1 md:row-span-1',
+  sm: 'md:col-span-1 md:row-span-1',
+} as const;
+---
+
+<section class="relative overflow-hidden border-b border-line">
+  <div class="pointer-events-none absolute inset-0 bp-grid bp-grid-fade opacity-60"></div>
+  <div class="relative mx-auto max-w-4xl px-5 py-16 text-center md:py-24 lg:px-8">
+    <p class="animate-fade-up eyebrow">{t('work.eyebrow')}</p>
+    <h1 class="animate-fade-up mt-4 font-display text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1.05] tracking-tight text-ink" style="animation-delay:.08s">
+      {t('work.title')}
+    </h1>
+    <p class="animate-fade-up mx-auto mt-6 max-w-2xl text-lg text-muted" style="animation-delay:.16s">
+      {t('work.lead')}
+    </p>
+  </div>
+</section>
+
+<section class="bg-canvas py-16 md:py-24">
+  <div class="mx-auto max-w-7xl px-5 lg:px-8">
+    <div class="grid auto-rows-[minmax(200px,auto)] grid-cols-1 gap-4 md:grid-cols-3">
+      {caseStudies.map((c) => {
+        const loc = lang === 'en' ? undefined : c.i18n?.[lang];
+        const sector = loc?.sector ?? c.sector;
+        const title = loc?.title ?? c.title;
+        const summary = loc?.summary ?? c.summary;
+        const metrics = loc?.metrics ?? c.metrics;
+        return (
+        <a href={link(`/work/${c.slug}`)} class={`group crop relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-surface p-6 transition-all hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_rgba(13,13,13,0.35)] md:p-8 ${span[c.size]}`}>
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-[0.7rem] uppercase tracking-widest text-muted">{sector}</span>
+            <svg class="h-5 w-5 text-muted transition-all rtl:-scale-x-100 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 group-hover:text-crimson" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+          </div>
+          <div>
+            <h2 class={`font-display font-semibold text-ink transition-colors group-hover:text-crimson ${c.size === 'lg' ? 'text-2xl md:text-3xl' : 'text-xl'}`}>{title}</h2>
+            <p class="mt-3 max-w-md text-[0.95rem] text-muted">{summary}</p>
+            <div class="mt-5 flex flex-wrap gap-2">
+              {metrics.map((m) => (
+                <span class="inline-flex items-baseline gap-1.5 rounded border border-line px-2.5 py-1">
+                  <span class="font-display text-sm font-bold text-ink">{m.value}</span>
+                  <span class="font-mono text-[0.62rem] uppercase tracking-wider text-muted">{m.label}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </a>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<CTABand />
