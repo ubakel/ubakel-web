@@ -31,3 +31,6 @@ _*.js
 
 # Editor / tooling local state
 .claude/
+
+# wrangler local state
+.wrangler/
