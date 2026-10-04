@@ -20,7 +20,6 @@ export const site = {
 // Primary navigation (labels are resolved through the i18n dictionary by key).
 export const nav = [
   { key: 'nav.services', href: '/services' },
-  { key: 'nav.work',     href: '/work' },
   { key: 'nav.products', href: '/products' },
   { key: 'nav.about',    href: '/#about' },
 ] as const;

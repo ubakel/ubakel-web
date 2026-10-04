@@ -6,12 +6,6 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const link = (h: string) => localizeAvailable(h, lang);
 
-const kpis = [
-  { value: t('hero.roi.kpi1.value'), label: t('hero.roi.kpi1.label') },
-  { value: t('hero.roi.kpi2.value'), label: t('hero.roi.kpi2.label') },
-  { value: t('hero.roi.kpi3.value'), label: t('hero.roi.kpi3.label') },
-];
-
 // The mark's own three pieces (see public/logo-mark.svg) — reused here so the
 // hero visual is built out of Ubakel's actual geometry, not a stand-in.
 const markPieces = [
@@ -74,29 +68,6 @@ const markPieces = [
         </div>
       </div>
 
-      <!-- Proof chips flanking the mark at the sides — desktop only -->
-      <div class="chip chip-a pointer-events-none absolute start-0 top-[10%] hidden items-center rounded-lg border border-line bg-surface px-3.5 py-2.5 shadow-[0_16px_30px_-18px_rgba(0,0,0,0.6)] md:flex lg:start-6">
-        <span class="block font-display text-base font-bold leading-none text-ink">{kpis[0].value}</span>
-        <span class="ms-2 block text-[0.65rem] leading-tight text-muted">{kpis[0].label}</span>
-      </div>
-      <div class="chip chip-b pointer-events-none absolute end-0 top-[42%] hidden items-center rounded-lg border border-line bg-surface px-3.5 py-2.5 shadow-[0_16px_30px_-18px_rgba(0,0,0,0.6)] md:flex lg:end-6">
-        <span class="block font-display text-base font-bold leading-none text-ink">{kpis[1].value}</span>
-        <span class="ms-2 block text-[0.65rem] leading-tight text-muted">{kpis[1].label}</span>
-      </div>
-      <div class="chip chip-c pointer-events-none absolute start-0 top-[74%] hidden items-center rounded-lg border border-line bg-surface px-3.5 py-2.5 shadow-[0_16px_30px_-18px_rgba(0,0,0,0.6)] md:flex lg:start-6">
-        <span class="block font-display text-base font-bold leading-none text-ink">{kpis[2].value}</span>
-        <span class="ms-2 block text-[0.65rem] leading-tight text-muted">{kpis[2].label}</span>
-      </div>
-
-      <!-- Mobile fallback: same numbers, plain row instead of side chips -->
-      <div class="mt-10 flex items-center justify-center gap-7 md:hidden">
-        {kpis.map((k) => (
-          <div class="text-center">
-            <span class="block font-display text-lg font-bold leading-none text-white">{k.value}</span>
-            <span class="mt-1.5 block text-[0.65rem] leading-tight text-white/45">{k.label}</span>
-          </div>
-        ))}
-      </div>
     </div>
   </div>
 </section>
@@ -151,12 +122,6 @@ const markPieces = [
   }
   :global(html[dir="rtl"]) .mark-shine { animation-direction: reverse; }
 
-  .chip { animation: chipFadeIn .5s ease forwards, chipBob 4.5s ease-in-out 2.5s infinite; opacity: 0; }
-  .chip-a { animation-delay: 2.1s, 2.5s; }
-  .chip-b { animation-delay: 2.25s, 2.5s; }
-  .chip-c { animation-delay: 2.4s, 2.5s; }
-  @keyframes chipFadeIn { to { opacity: 1; } }
-  @keyframes chipBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
   @media (prefers-reduced-motion: reduce) {
     .mark-svg .mark-piece:nth-child(2),
@@ -164,6 +129,5 @@ const markPieces = [
     .mark-svg .mark-piece:nth-child(4) { animation: none; opacity: 1; transform: none; }
     .mark-wrap { animation: none; opacity: 1; transform: rotateY(-5deg); }
     .mark-shine, .mark-ring { animation: none; opacity: 0; }
-    .chip { animation: none; opacity: 1; }
   }
 </style>

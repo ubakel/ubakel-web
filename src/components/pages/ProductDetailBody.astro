@@ -17,12 +17,14 @@ const statusStyle = {
   'Live':         'text-crimson border-crimson/30 bg-crimson/5',
   'Beta':         'text-ink border-line bg-canvas',
   'Early access': 'text-muted border-line bg-canvas',
+  'Demo':         'text-muted border-line bg-canvas',
 } as const;
 
 const statusKey = {
   'Live':         'status.live',
   'Beta':         'status.beta',
   'Early access': 'status.earlyAccess',
+  'Demo':         'status.demo',
 } as const;
 
 const loc = lang === 'en' ? undefined : prod.i18n?.[lang];

@@ -7,6 +7,32 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   site: 'https://ubakel.com',
 
+  // Interim: placeholder case studies and not-yet-built products were removed
+  // until real, approved content is ready. Old URLs redirect instead of 404ing.
+  redirects: {
+    '/work': '/',
+    '/work/insurance-claims-platform': '/',
+    '/work/grounded-support-agent': '/',
+    '/work/invoice-pipeline': '/',
+    '/work/pipeline-control-plane': '/',
+    '/ar/work': '/ar/',
+    '/ar/work/insurance-claims-platform': '/ar/',
+    '/ar/work/grounded-support-agent': '/ar/',
+    '/ar/work/invoice-pipeline': '/ar/',
+    '/ar/work/pipeline-control-plane': '/ar/',
+    '/ms/work': '/ms/',
+    '/ms/work/insurance-claims-platform': '/ms/',
+    '/ms/work/grounded-support-agent': '/ms/',
+    '/ms/work/invoice-pipeline': '/ms/',
+    '/ms/work/pipeline-control-plane': '/ms/',
+    '/products/fluxline': '/products',
+    '/products/orchestrate': '/products',
+    '/ar/products/fluxline': '/ar/products',
+    '/ar/products/orchestrate': '/ar/products',
+    '/ms/products/fluxline': '/ms/products',
+    '/ms/products/orchestrate': '/ms/products',
+  },
+
   // ── Native i18n routing ────────────────────────────────────────────────
   // English is the default and is served unprefixed (`/`, `/work`, ...).
   // Arabic is prefixed (`/ar/`) and renders right-to-left; Malay is `/ms/`.

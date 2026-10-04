@@ -27,7 +27,7 @@ export const ui = {
     'nav.status':    'All systems live',
     'nav.tagline':   'Automation Agency',
 
-    'hero.eyebrow':  'Enterprise AI Growth Partner',
+    'hero.eyebrow':  'AI & Automation for Business Operations',
     'hero.title':    'AI automation that pays for itself.',
     'hero.lead':     'We help enterprises automate the work that slows them down — cutting costs, reducing errors, and freeing your team to focus on growth.',
     'hero.primary':  'Get a free consultation',
@@ -70,6 +70,7 @@ export const ui = {
     'status.live':        'Live',
     'status.beta':        'Beta',
     'status.earlyAccess': 'Early access',
+    'status.demo':        'Working demo',
 
     'services.eyebrow': 'What we build',
     'services.title':   'Automation solutions, engineered end to end.',
@@ -94,9 +95,9 @@ export const ui = {
     'work.architecture.title':   'The pipeline we deployed',
     'work.stack.label':          'Stack',
 
-    'products.eyebrow': 'Flagship products',
-    'products.title':   'Platforms we build and operate.',
-    'products.lead':    'Opinionated, production-ready products that turn our infrastructure into a service you can switch on.',
+    'products.eyebrow': 'Products',
+    'products.title':   'Products for common operational problems.',
+    'products.lead':    'Alongside our custom work, we build repeatable products for problems many businesses share.',
     'products.all':     'Explore all products',
     'products.workflow.label':   'Live workflow',
     'products.features.eyebrow': 'Features',
@@ -157,7 +158,7 @@ export const ui = {
     'nav.status':    'كل الأنظمة تعمل الآن',
     'nav.tagline':   'وكالة أتمتة',
 
-    'hero.eyebrow':  'شريكك في نمو الأعمال بالذكاء الاصطناعي',
+    'hero.eyebrow':  'الذكاء الاصطناعي والأتمتة لعمليات الأعمال',
     'hero.title':    'أتمتة بالذكاء الاصطناعي تُحقق عائدها بنفسها.',
     'hero.lead':     'نساعد المؤسسات على أتمتة الأعمال التي تُبطئ نموها — لخفض التكاليف، وتقليل الأخطاء، وتحرير فريقك للتركيز على النمو.',
     'hero.primary':  'احصل على استشارة مجانية',
@@ -200,6 +201,7 @@ export const ui = {
     'status.live':        'مباشر',
     'status.beta':        'تجريبي',
     'status.earlyAccess': 'وصول مبكر',
+    'status.demo':        'نسخة تجريبية',
 
     'services.eyebrow': 'ماذا نبني',
     'services.title':   'حلول أتمتة، مصممة من البداية إلى النهاية.',
@@ -224,9 +226,9 @@ export const ui = {
     'work.architecture.title':   'خط الأنابيب الذي نفّذناه',
     'work.stack.label':          'التقنيات المستخدمة',
 
-    'products.eyebrow': 'منتجاتنا الرئيسية',
-    'products.title':   'منصات نبنيها وندير تشغيلها.',
-    'products.lead':    'منتجات جاهزة للإنتاج تحوّل بنيتنا التحتية إلى خدمة يمكنك تفعيلها فورًا.',
+    'products.eyebrow': 'المنتجات',
+    'products.title':   'منتجات لمشكلات تشغيلية شائعة.',
+    'products.lead':    'إلى جانب عملنا المخصص، نبني منتجات قابلة للتكرار لمشكلات تشترك فيها كثير من الشركات.',
     'products.all':     'استكشف جميع المنتجات',
     'products.workflow.label':   'سير العمل المباشر',
     'products.features.eyebrow': 'الميزات',
@@ -287,7 +289,7 @@ export const ui = {
     'nav.status':    'Semua sistem aktif',
     'nav.tagline':   'Agensi Automasi',
 
-    'hero.eyebrow':  'Rakan Pertumbuhan AI Perusahaan',
+    'hero.eyebrow':  'AI & Automasi untuk Operasi Perniagaan',
     'hero.title':    'Automasi AI yang membiayai dirinya sendiri.',
     'hero.lead':     'Kami membantu perusahaan mengautomasikan kerja yang melambatkan pertumbuhan mereka — mengurangkan kos, mengurangkan ralat, dan membebaskan pasukan anda untuk fokus kepada pertumbuhan.',
     'hero.primary':  'Dapatkan konsultasi percuma',
@@ -330,6 +332,7 @@ export const ui = {
     'status.live':        'Langsung',
     'status.beta':        'Beta',
     'status.earlyAccess': 'Akses Awal',
+    'status.demo':        'Demo berfungsi',
 
     'services.eyebrow': 'Apa yang kami bina',
     'services.title':   'Penyelesaian automasi, direkayasa hujung ke hujung.',
@@ -354,9 +357,9 @@ export const ui = {
     'work.architecture.title':   'Saluran yang kami laksanakan',
     'work.stack.label':          'Tindanan teknologi',
 
-    'products.eyebrow': 'Produk unggulan',
-    'products.title':   'Platform yang kami bina dan operasikan.',
-    'products.lead':    'Produk sedia-produksi yang berpendirian jelas, menukar infrastruktur kami menjadi perkhidmatan yang boleh anda aktifkan.',
+    'products.eyebrow': 'Produk',
+    'products.title':   'Produk untuk masalah operasi yang biasa.',
+    'products.lead':    'Selain kerja khusus kami, kami membina produk boleh ulang untuk masalah yang dikongsi banyak perniagaan.',
     'products.all':     'Terokai semua produk',
     'products.workflow.label':   'Aliran kerja langsung',
     'products.features.eyebrow': 'Ciri-ciri',

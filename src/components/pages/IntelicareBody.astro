@@ -52,11 +52,11 @@ interface Copy {
 const COPY: Record<Lang, Copy> = {
   en: {
     eyebrow: 'UBAKEL Intelicare',
-    kicker: 'Autonomous booking engine · Live on WhatsApp',
+    kicker: 'Working demo · WhatsApp',
     title: 'The front desk that never clocks out.',
     lead: 'Intelicare answers WhatsApp, works out which patient is messaging, checks real availability, and writes the confirmed booking straight into your system — in seconds, day or night.',
     ctaPrimary: 'Book a walkthrough',
-    ctaSecondary: 'See it handle a real booking',
+    ctaSecondary: 'See a sample conversation',
     phoneSubtitle: 'Intelicare · AI receptionist',
     stats: [
       { value: '24/7', label: 'Always answering' },
@@ -70,14 +70,13 @@ const COPY: Record<Lang, Copy> = {
       { from: 'patient', text: 'Tomorrow afternoon if possible' },
       { from: 'bot', text: 'I have 2:30 PM and 4:00 PM open tomorrow. Which works?' },
       { from: 'patient', text: '4pm please' },
-      { from: 'bot', text: "✅ Confirmed — Aisha, tomorrow at 4:00 PM. You'll get a reminder before the visit." },
+      { from: 'bot', text: "✅ Confirmed — Aisha, tomorrow at 4:00 PM." },
     ],
     confirm: { title: 'Booking synced', patientLabel: 'Patient', patient: 'Aisha (family profile)', whenLabel: 'Date & time', when: 'Tomorrow · 4:00 PM', idLabel: 'Booking ID', id: 'BK-2847', statusLabel: 'Status', status: 'Confirmed', synced: 'Written to calendar · 0.4s' },
-    featuresEyebrow: 'Built for real clinics',
+    featuresEyebrow: 'Built for clinic front desks',
     featuresTitle: 'Not a chatbot. A booking system that talks.',
-    featuresLead: 'Every capability here exists because a real front desk needed it — not because it demos well.',
+    featuresLead: 'Designed around the messages a clinic front desk handles every day.',
     features: [
-      { title: 'Resilient by design', body: "Backed by multiple language models, not one. If a provider slows down or drops, Intelicare keeps answering without the patient noticing." },
       { title: 'Knows the whole family', body: "One WhatsApp number can hold multiple patient profiles. Book for a parent, then a child, in the same conversation." },
       { title: 'Conflict-free, atomically', body: 'Every booking is checked and written against your live calendar in one atomic step. Two patients can never be handed the same slot.' },
       { title: 'Knows your calendar, not just the clock', body: "Business hours, time zone, and public holidays are built into every offer — it never proposes a slot you're not open for." },
@@ -94,12 +93,12 @@ const COPY: Record<Lang, Copy> = {
     ],
     pipeline: ['Message', 'Identify', 'Availability', 'Confirmed'],
     reliabilityEyebrow: 'Under the hood',
-    reliabilityTitle: 'Built to never fail silently.',
+    reliabilityTitle: 'Built to flag problems, not hide them.',
     reliabilityLead: "Most booking bots go quiet the moment something breaks. Intelicare reports to a circuit-breaker error handler that watches every workflow — so a stalled call becomes a staff alert, not a missed patient.",
     reliabilityPoints: [
       { title: 'Every failure logged', body: 'Best-effort logging survives even a database outage.' },
       { title: 'Staff alerted, not spammed', body: 'One alert per issue, capped — no flood during an outage.' },
-      { title: 'No silent failures', body: "If a booking can't complete, a human finds out immediately." },
+      { title: 'Problems reach staff', body: "If a booking can't complete, staff are alerted." },
     ],
     runsOn: 'Runs on',
     demoEyebrow: 'See it work',
@@ -107,16 +106,16 @@ const COPY: Record<Lang, Copy> = {
     demoLead: 'A real conversation, start to confirmed — under a minute, entirely on WhatsApp.',
     demoPlaceholder: 'Demo video — coming soon',
     ctaTitle: 'Your clinic, answered.',
-    ctaLead: 'Talk to a systems architect about wiring Intelicare into your calendar and WhatsApp number. Most clinics are live within days.',
+    ctaLead: 'Talk to a systems architect about wiring Intelicare into your calendar and WhatsApp number.',
     ctaWhatsapp: 'Message us on WhatsApp',
   },
   ar: {
     eyebrow: 'UBAKEL Intelicare',
-    kicker: 'محرك حجز مستقل · يعمل عبر واتساب',
+    kicker: 'نسخة تجريبية عاملة · واتساب',
     title: 'استقبال لا يُغلق أبوابه أبدًا.',
     lead: 'يجيب Intelicare على واتساب، ويحدد هوية المريض المتحدث، ويتحقق من التوفر الفعلي، ويكتب الحجز المؤكد مباشرة في نظامك — خلال ثوانٍ، ليلًا كان أم نهارًا.',
     ctaPrimary: 'احجز جولة تعريفية',
-    ctaSecondary: 'شاهده يُنجز حجزًا حقيقيًا',
+    ctaSecondary: 'شاهد محادثة نموذجية',
     phoneSubtitle: 'Intelicare · مساعدة الاستقبال الذكية',
     stats: [
       { value: '24/7', label: 'يستجيب دائمًا' },
@@ -130,14 +129,13 @@ const COPY: Record<Lang, Copy> = {
       { from: 'patient', text: 'غدًا بعد الظهر لو أمكن' },
       { from: 'bot', text: 'لدي موعد الساعة 2:30 ظهرًا و4:00 عصرًا غدًا. أيهما يناسبك؟' },
       { from: 'patient', text: 'الساعة 4، من فضلك' },
-      { from: 'bot', text: '✅ تم التأكيد — موعد عائشة غدًا الساعة 4:00 عصرًا. سيصلك تذكير قبل الزيارة.' },
+      { from: 'bot', text: '✅ تم التأكيد — موعد عائشة غدًا الساعة 4:00 عصرًا.' },
     ],
     confirm: { title: 'تمت مزامنة الحجز', patientLabel: 'المريض', patient: 'عائشة (ملف عائلي)', whenLabel: 'التاريخ والوقت', when: 'غدًا · 4:00 عصرًا', idLabel: 'رقم الحجز', id: 'BK-2847', statusLabel: 'الحالة', status: 'مؤكد', synced: 'تمت الكتابة في التقويم · 0.4 ثانية' },
-    featuresEyebrow: 'مصمّم لعيادات حقيقية',
+    featuresEyebrow: 'مصمّم لمكاتب استقبال العيادات',
     featuresTitle: 'ليس روبوت محادثة. نظام حجز يتحدث.',
-    featuresLead: 'كل قدرة هنا موجودة لأن استقبالًا حقيقيًا احتاجها — لا لأنها تبدو جيدة في العرض التوضيحي.',
+    featuresLead: 'مصمّم حول الرسائل التي يتعامل معها مكتب استقبال العيادة كل يوم.',
     features: [
-      { title: 'مرن بحكم التصميم', body: 'مدعوم بعدة نماذج لغوية، لا نموذج واحد. إذا تباطأ مزود أو تعطّل، يستمر Intelicare بالإجابة دون أن يلاحظ المريض شيئًا.' },
       { title: 'يعرف العائلة بأكملها', body: 'رقم واتساب واحد يمكنه حمل عدة ملفات مرضى. احجز لأحد الوالدين ثم لطفل، في المحادثة ذاتها.' },
       { title: 'بلا تعارض، وبشكل ذرّي', body: 'يُتحقّق من كل حجز ويُكتب مقابل تقويمك المباشر في خطوة ذرية واحدة. لا يمكن أبدًا منح نفس الموعد لمريضين.' },
       { title: 'يعرف تقويمك، لا الساعة فقط', body: 'ساعات العمل والمنطقة الزمنية والعطل الرسمية مدمجة في كل عرض — لا يقترح أبدًا موعدًا خارج ساعات عملك.' },
@@ -154,12 +152,12 @@ const COPY: Record<Lang, Copy> = {
     ],
     pipeline: ['الرسالة', 'التحديد', 'التوفر', 'التأكيد'],
     reliabilityEyebrow: 'خلف الكواليس',
-    reliabilityTitle: 'مصمّم ليخفق بصوت، لا بصمت.',
+    reliabilityTitle: 'مصمّم لينبّه إلى المشكلات لا ليخفيها.',
     reliabilityLead: 'معظم روبوتات الحجز تصمت لحظة حدوث عطل. يُبلّغ Intelicare معالج أخطاء بنمط قاطع الدائرة يراقب كل مسار عمل — فيتحول الاستدعاء المتعطل إلى تنبيه للموظفين، لا مريضًا مفقودًا.',
     reliabilityPoints: [
       { title: 'كل عطل مُسجَّل', body: 'يستمر التسجيل حتى مع انقطاع قاعدة البيانات.' },
       { title: 'الموظفون يُنبَّهون، لا يُغرَقون', body: 'تنبيه واحد لكل مشكلة، بحد أقصى — بلا فيضان تنبيهات أثناء أي عطل.' },
-      { title: 'لا أعطال صامتة', body: 'إذا تعذّر إتمام حجز، يعلم شخص بذلك فورًا.' },
+      { title: 'المشكلات تصل إلى الموظفين', body: 'إذا تعذّر إتمام حجز، يُنبَّه الموظفون.' },
     ],
     runsOn: 'يعمل على',
     demoEyebrow: 'شاهده يعمل',
@@ -167,16 +165,16 @@ const COPY: Record<Lang, Copy> = {
     demoLead: 'محادثة حقيقية، من البداية حتى التأكيد — في أقل من دقيقة، بالكامل عبر واتساب.',
     demoPlaceholder: 'فيديو العرض التوضيحي — قريبًا',
     ctaTitle: 'عيادتك، تُجيب دائمًا.',
-    ctaLead: 'تحدّث مع مهندس أنظمة حول ربط Intelicare بتقويمك ورقم واتساب الخاص بك. تنطلق معظم العيادات خلال أيام.',
+    ctaLead: 'تحدّث مع مهندس أنظمة حول ربط Intelicare بتقويمك ورقم واتساب الخاص بك.',
     ctaWhatsapp: 'راسلنا عبر واتساب',
   },
   ms: {
     eyebrow: 'UBAKEL Intelicare',
-    kicker: 'Enjin tempahan autonomi · Aktif di WhatsApp',
+    kicker: 'Demo berfungsi · WhatsApp',
     title: 'Kaunter yang tidak pernah tutup.',
     lead: 'Intelicare menjawab WhatsApp, mengenal pasti pesakit yang menghubungi, menyemak ketersediaan sebenar, dan menulis tempahan yang disahkan terus ke dalam sistem anda — dalam beberapa saat, siang atau malam.',
     ctaPrimary: 'Tempah demonstrasi',
-    ctaSecondary: 'Lihat ia buat tempahan sebenar',
+    ctaSecondary: 'Lihat contoh perbualan',
     phoneSubtitle: 'Intelicare · Penyambut tetamu AI',
     stats: [
       { value: '24/7', label: 'Sentiasa menjawab' },
@@ -190,14 +188,13 @@ const COPY: Record<Lang, Copy> = {
       { from: 'patient', text: 'Esok petang kalau boleh' },
       { from: 'bot', text: 'Saya ada slot 2:30 petang dan 4:00 petang esok. Yang mana sesuai?' },
       { from: 'patient', text: '4 petang boleh' },
-      { from: 'bot', text: '✅ Disahkan — temujanji Aisha esok jam 4:00 petang. Anda akan terima peringatan sebelum lawatan.' },
+      { from: 'bot', text: '✅ Disahkan — temujanji Aisha esok jam 4:00 petang.' },
     ],
     confirm: { title: 'Tempahan disegerak', patientLabel: 'Pesakit', patient: 'Aisha (profil keluarga)', whenLabel: 'Tarikh & masa', when: 'Esok · 4:00 petang', idLabel: 'ID tempahan', id: 'BK-2847', statusLabel: 'Status', status: 'Disahkan', synced: 'Ditulis ke kalendar · 0.4s' },
-    featuresEyebrow: 'Dibina untuk klinik sebenar',
+    featuresEyebrow: 'Dibina untuk kaunter hadapan klinik',
     featuresTitle: 'Bukan chatbot. Sistem tempahan yang bercakap.',
-    featuresLead: 'Setiap keupayaan di sini wujud kerana kaunter sebenar memerlukannya — bukan kerana ia kelihatan hebat semasa demo.',
+    featuresLead: 'Direka berdasarkan mesej yang dikendalikan kaunter hadapan klinik setiap hari.',
     features: [
-      { title: 'Tahan lasak mengikut reka bentuk', body: 'Disokong oleh pelbagai model bahasa, bukan satu. Jika satu penyedia perlahan atau terputus, Intelicare terus menjawab tanpa pesakit menyedarinya.' },
       { title: 'Mengenali seluruh keluarga', body: 'Satu nombor WhatsApp boleh menyimpan pelbagai profil pesakit. Tempah untuk ibu bapa, kemudian anak, dalam perbualan yang sama.' },
       { title: 'Tiada percanggahan, secara atomik', body: 'Setiap tempahan disemak dan ditulis terhadap kalendar langsung anda dalam satu langkah atomik. Dua pesakit tidak akan diberi slot yang sama.' },
       { title: 'Mengenali kalendar anda, bukan sekadar waktu', body: 'Waktu operasi, zon waktu dan cuti umum terbina dalam setiap tawaran — ia tidak akan mencadangkan slot semasa anda tidak beroperasi.' },
@@ -214,12 +211,12 @@ const COPY: Record<Lang, Copy> = {
     ],
     pipeline: ['Mesej', 'Kenal pasti', 'Ketersediaan', 'Disahkan'],
     reliabilityEyebrow: 'Di sebalik tabir',
-    reliabilityTitle: 'Dibina supaya tidak pernah gagal secara senyap.',
+    reliabilityTitle: 'Dibina untuk menandakan masalah, bukan menyembunyikannya.',
     reliabilityLead: 'Kebanyakan bot tempahan menjadi senyap sebaik sahaja sesuatu gagal. Intelicare melapor kepada pengendali ralat bergaya pemutus litar yang memantau setiap aliran kerja — jadi panggilan yang tersekat menjadi amaran staf, bukan pesakit yang terlepas.',
     reliabilityPoints: [
       { title: 'Setiap kegagalan direkodkan', body: 'Pengelogan usaha terbaik kekal berfungsi walaupun pangkalan data terputus.' },
       { title: 'Staf dimaklumkan, bukan dibanjiri', body: 'Satu amaran bagi setiap isu, dengan had — tiada banjir amaran semasa gangguan.' },
-      { title: 'Tiada kegagalan senyap', body: 'Jika tempahan tidak dapat diselesaikan, seseorang mengetahuinya serta-merta.' },
+      { title: 'Masalah sampai kepada kakitangan', body: 'Jika tempahan tidak dapat diselesaikan, kakitangan dimaklumkan.' },
     ],
     runsOn: 'Beroperasi menggunakan',
     demoEyebrow: 'Lihat ia beroperasi',
@@ -227,7 +224,7 @@ const COPY: Record<Lang, Copy> = {
     demoLead: 'Perbualan sebenar, dari mula hingga disahkan — kurang seminit, sepenuhnya di WhatsApp.',
     demoPlaceholder: 'Video demo — akan datang',
     ctaTitle: 'Klinik anda, sentiasa menjawab.',
-    ctaLead: 'Bercakap dengan jurutera sistem tentang menghubungkan Intelicare ke kalendar dan nombor WhatsApp anda. Kebanyakan klinik aktif dalam beberapa hari.',
+    ctaLead: 'Bercakap dengan jurutera sistem tentang menghubungkan Intelicare ke kalendar dan nombor WhatsApp anda.',
     ctaWhatsapp: 'Hubungi kami di WhatsApp',
   },
 };
@@ -343,20 +340,6 @@ const runsOnIcons = [
   </div>
 </section>
 
-<!-- Stats -->
-<section class="border-b border-line bg-canvas py-10 md:py-14">
-  <div class="mx-auto max-w-7xl px-5 lg:px-8">
-    <div class="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-4">
-      {c.stats.map((s) => (
-        <div class="bg-surface p-6 text-center md:p-8">
-          <p class="font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">{s.value}</p>
-          <p class="mt-2 font-mono text-[0.68rem] uppercase tracking-widest text-muted">{s.label}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
-
 <!-- Features -->
 <section class="border-b border-line bg-canvas py-20 md:py-28">
   <div class="mx-auto max-w-7xl px-5 lg:px-8">
@@ -429,25 +412,6 @@ const runsOnIcons = [
           <span class="font-display text-sm font-semibold text-white/70">{icon.name}</span>
         </span>
       ))}
-    </div>
-  </div>
-</section>
-
-<!-- Demo video placeholder -->
-<section class="border-b border-line bg-canvas py-20 md:py-28">
-  <div class="mx-auto max-w-4xl px-5 text-center lg:px-8">
-    <p class="eyebrow">{c.demoEyebrow}</p>
-    <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">{c.demoTitle}</h2>
-    <p class="mx-auto mt-4 max-w-xl text-lg text-muted">{c.demoLead}</p>
-
-    <!-- Swap this placeholder for a real <video> or embed when the demo is ready. -->
-    <div class="crop mt-10 flex aspect-video items-center justify-center rounded-xl border border-line bg-ink">
-      <div class="flex flex-col items-center gap-4">
-        <span class="flex h-16 w-16 items-center justify-center rounded-full bg-crimson/15 text-crimson">
-          <svg class="h-7 w-7 rtl:-scale-x-100" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </span>
-        <span class="font-mono text-xs uppercase tracking-widest text-white/50">{c.demoPlaceholder}</span>
-      </div>
     </div>
   </div>
 </section>
