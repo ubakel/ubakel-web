@@ -137,7 +137,7 @@ export const ui = {
     'contact.ok.again':'Send another request',
     'contact.err':     'Something went wrong. Please reach us on WhatsApp instead.',
 
-    'footer.tagline':  'Production-ready automation for enterprise operations.',
+    'footer.tagline':  'Audit. Automate. Advance.',
     'footer.nav':      'Navigate',
     'footer.connect':  'Connect',
     'footer.rights':   'All rights reserved.',
@@ -268,7 +268,7 @@ export const ui = {
     'contact.ok.again':'إرسال طلب آخر',
     'contact.err':     'حدث خطأ ما. يُرجى التواصل معنا عبر واتساب بدلاً من ذلك.',
 
-    'footer.tagline':  'أتمتة جاهزة للإنتاج لعمليات المؤسسات.',
+    'footer.tagline':  'Audit. Automate. Advance.',
     'footer.nav':      'التنقّل',
     'footer.connect':  'تواصل',
     'footer.rights':   'جميع الحقوق محفوظة.',
@@ -399,7 +399,7 @@ export const ui = {
     'contact.ok.again':'Hantar permintaan lain',
     'contact.err':     'Sesuatu tidak kena. Sila hubungi kami melalui WhatsApp sebagai gantinya.',
 
-    'footer.tagline':  'Automasi sedia-produksi untuk operasi perusahaan.',
+    'footer.tagline':  'Audit. Automate. Advance.',
     'footer.nav':      'Navigasi',
     'footer.connect':  'Hubung',
     'footer.rights':   'Hak cipta terpelihara.',

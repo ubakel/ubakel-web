@@ -6,8 +6,8 @@ export const site = {
   domain: 'ubakel.com',
   email: 'info@ubakel.com',
   whatsapp: {
-    display: '+60 19-325 7703',
-    href: 'https://wa.me/60193257703',
+    display: '+60 17-738 7589',
+    href: 'https://wa.me/60177387589',
   },
   // Web3Forms access key (client-side, safe to expose).
   web3formsKey: 'df637e21-9fe1-40e6-984e-847f18999e25',
