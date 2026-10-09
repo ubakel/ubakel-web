@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-09",
+  "browser": "Chromium via Codex browser tools",
+  "responsiveWidths": [1440, 1024, 768, 390, 320],
+  "horizontalOverflow": false,
+  "missingImages": [],
+  "passed": ["five hero selectors", "department selection and arrow-key navigation", "manual and automated modes", "mobile menu and Escape", "contact dialog and encoded draft", "video playback and closure", "pause, resume and replay", "emulated system reduced motion"],
+  "videoDurationSeconds": 68.266667,
+  "contactTestData": "synthetic; no message sent",
+  "build": "passed: npm run build; 24 pages",
+  "limitations": ["Other browser engines not tested", "Production homepage integration and translations remain for design approval"]
+}

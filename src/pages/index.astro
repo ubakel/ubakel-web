@@ -1,23 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
-import Hero from '../components/Hero.astro';
-import Services from '../components/Services.astro';
-import Products from '../components/Products.astro';
-import About from '../components/About.astro';
-import Contact from '../components/Contact.astro';
-import Footer from '../components/Footer.astro';
+import { homepage } from '../lib/homepage';
+const page = homepage('en');
 ---
-
-<Layout>
-  <span id="top"></span>
-  <Navbar />
-  <main id="main">
-    <Hero />
-    <Services />
-    <Products />
-    <About />
-    <Contact />
-  </main>
-  <Footer />
-</Layout>
+<Fragment set:html={page} />
