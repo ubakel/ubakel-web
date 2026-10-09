@@ -1,23 +1,29 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
-import Hero from '../components/Hero.astro';
-import Services from '../components/Services.astro';
-import Products from '../components/Products.astro';
-import About from '../components/About.astro';
-import Contact from '../components/Contact.astro';
-import Footer from '../components/Footer.astro';
----
+import review from '../../public/design-review/index.html?raw';
 
-<Layout>
-  <span id="top"></span>
-  <Navbar />
-  <main id="main">
-    <Hero />
-    <Services />
-    <Products />
-    <About />
-    <Contact />
-  </main>
-  <Footer />
-</Layout>
+// Publish the approved composition while keeping its review route available.
+// The original translated routes and enquiry service remain independently usable.
+const metadata = `
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="canonical" href="https://ubakel.com/">
+  <link rel="alternate" hreflang="en" href="https://ubakel.com/">
+  <link rel="alternate" hreflang="ar" href="https://ubakel.com/ar/">
+  <link rel="alternate" hreflang="ms" href="https://ubakel.com/ms/">
+  <link rel="alternate" hreflang="x-default" href="https://ubakel.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ubakel.com/">
+  <meta property="og:title" content="UBAKEL — Custom AI, Automation &amp; Integrations">
+  <meta property="og:description" content="Custom AI agents, automations and integrations built around your business workflow.">
+  <meta property="og:image" content="https://ubakel.com/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>.footer .languages{display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-size:14px}.languages a{display:inline-flex;align-items:center;min-height:44px}.languages a:hover{text-decoration:underline}</style>
+`;
+const page = review
+  .replace('<meta name="robots" content="noindex, nofollow">', metadata)
+  .replace('href="style.css"', 'href="/design-review/style.css"')
+  .replace('src="app.js"', 'src="/design-review/app.js"')
+  .replaceAll('assets/', '/design-review/assets/')
+  .replace('Prefer email? <a href="mailto:info@ubakel.com">info@ubakel.com</a>', 'Prefer email? <a href="/contact/">Send an email enquiry</a> or <a href="mailto:info@ubakel.com">info@ubakel.com</a>')
+  .replace('</footer>', '<nav class="languages" aria-label="Language"><a href="/" lang="en" aria-current="page">English</a><a href="/ar/" lang="ar">العربية</a><a href="/ms/" lang="ms">Bahasa Melayu</a><a href="/contact/">Email enquiry ↗</a></nav></footer>');
+---
+<Fragment set:html={page} />
