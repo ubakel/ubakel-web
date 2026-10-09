@@ -12,6 +12,7 @@ import About from '../../components/About.astro';
 import Contact from '../../components/Contact.astro';
 import Footer from '../../components/Footer.astro';
 import { languages, defaultLang } from '../../i18n/ui';
+import { homepage } from '../../lib/homepage';
 
 export function getStaticPaths() {
   // Every non-default locale defined in ui.ts gets a localized homepage.
@@ -20,9 +21,10 @@ export function getStaticPaths() {
     .filter((locale) => locale !== defaultLang)
     .map((locale) => ({ params: { locale } }));
 }
+const arabicPage = Astro.params.locale === 'ar' ? homepage('ar') : null;
 ---
 
-<Layout>
+{arabicPage ? <Fragment set:html={arabicPage} /> : <Layout>
   <span id="top"></span>
   <Navbar />
   <main id="main">
@@ -33,4 +35,4 @@ export function getStaticPaths() {
     <Contact />
   </main>
   <Footer />
-</Layout>
+</Layout>}
