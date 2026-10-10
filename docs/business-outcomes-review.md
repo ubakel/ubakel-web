@@ -22,3 +22,9 @@ English and Arabic homepages now lead with practical results: less repeated work
 ## Files
 
 `src/lib/homepage-content.ts` holds the English and Arabic outcome, ownership, support and buying guidance. `src/lib/homepage.ts` assembles these into the existing branded templates and contact form. Interaction and responsive presentation live in `public/homepage.js` and `public/homepage.css`.
+
+## Visual revision
+
+`src/lib/homepage-design.ts`, `public/homepage-design.css` and `public/homepage-motion.js` provide the revised presentation: a contained interactive workflow illustration, floating sticky navigation, a consistent card and spacing system, a dark ownership/support section, and restrained reveal and dialog transitions. Initial hero content is immediately readable. Native scrolling remains available; animations respect the pause control and device motion preferences. The illustration has useful initial content without JavaScript.
+
+The revised layouts were checked again at 320, 390, 768, 1024 and 1440 pixels in both languages. No page overflow or English header overlap was found. Arabic mobile menu, contact validation, example selection, finance tab and animation pause were verified. The new browser session reported no JavaScript errors.

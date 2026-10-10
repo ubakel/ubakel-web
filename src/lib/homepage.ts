@@ -2,6 +2,7 @@ import english from '../../public/design-review/index.html?raw';
 import arabic from '../content/homepage-ar.html?raw';
 import { site } from '../data/site';
 import { enhanceHomepage } from './homepage-content';
+import { designHomepage } from './homepage-design';
 
 export function homepage(locale: 'en' | 'ar') {
   const ar = locale === 'ar';
@@ -26,7 +27,7 @@ export function homepage(locale: 'en' | 'ar') {
     </form></dialog>`;
   const metadata = `<link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="${url}"><link rel="alternate" hreflang="en" href="https://ubakel.com/"><link rel="alternate" hreflang="ar" href="https://ubakel.com/ar/"><link rel="alternate" hreflang="ms" href="https://ubakel.com/ms/"><link rel="alternate" hreflang="x-default" href="https://ubakel.com/"><meta property="og:site_name" content="UBAKEL"><meta property="og:type" content="website"><meta property="og:url" content="${url}"><meta property="og:title" content="${escape(title)}"><meta property="og:description" content="${description}"><meta property="og:image" content="https://ubakel.com/og-image.jpg"><meta property="og:locale" content="${ar ? 'ar_AR' : 'en_US'}"><meta name="twitter:card" content="summary_large_image">${ar ? '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">' : ''}`;
   const languageLinks = `<a href="/" lang="en" data-lang="en"${ar ? '' : ' aria-current="page"'}>English</a><a href="/ar/" lang="ar" data-lang="ar"${ar ? ' aria-current="page"' : ''}>العربية</a><a href="/ms/" lang="ms" data-lang="ms">Bahasa Melayu</a>`;
-  return enhanceHomepage(ar ? arabic : english, locale)
+  const html = enhanceHomepage(ar ? arabic : english, locale)
     .replace(/<title>.*?<\/title>/, `<title>${title}</title>`)
     .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${description}">`)
     .replace('<meta name="robots" content="noindex, nofollow">', metadata)
@@ -37,4 +38,5 @@ export function homepage(locale: 'en' | 'ar') {
     .replace('</main>', `<noscript><p style="padding:24px;text-align:center"><a href="/contact/">${ar ? 'أرسل طلبك عبر نموذج التواصل' : 'Send your enquiry through the contact form'}</a></p></noscript></main>`)
     .replace('<div class="header-actions">', `<div class="header-actions"><details class="language-menu"><summary aria-label="${ar ? 'تغيير اللغة' : 'Change language'}">${ar ? 'ع' : 'EN'}</summary><nav aria-label="${ar ? 'اللغة' : 'Language'}">${languageLinks}</nav></details>`)
     .replace('</footer>', `<nav class="languages" aria-label="${ar ? 'اللغة' : 'Language'}">${languageLinks}</nav></footer>`);
+  return designHomepage(html, locale);
 }
