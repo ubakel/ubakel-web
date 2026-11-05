@@ -16,6 +16,7 @@ form.addEventListener('submit',async e=>{
  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),20000);
  try{
   const values=Object.fromEntries(new FormData(form));for(const key of ['name','email','company','phone','message'])values[key]=String(values[key]||'').trim();
+  fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(values),keepalive:true}).catch(()=>{});
   const response=await fetch(form.action,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(values),signal:controller.signal});
   const data=await response.json();if(!response.ok||!data.success)throw Error('Submission failed');
   status.textContent=form.dataset.success;status.dataset.state='success';form.reset();
