@@ -4,17 +4,17 @@
 // serverless function on Cloudflare Workers (the only route that is not
 // prerendered).
 //
-// Flow: validate → de-duplicate → forward to the n8n lead webhook with
-// retries → keep anything that still fails in a retry queue, which is
+// Flow: validate → de-duplicate → send a new-lead alert to Telegram
+// with retries → keep anything that still fails in a retry queue, which is
 // flushed automatically on the next successful delivery.
 //
 // The Web3Forms email path in the browser is unchanged, so the enquiry email
-// still arrives even if this endpoint or n8n is down.
+// still arrives even if this endpoint or Telegram is down.
 //
 // Configuration (all optional — the endpoint degrades gracefully):
-//   N8N_LEAD_WEBHOOK_URL     secret: n8n Webhook node production URL
-//   N8N_LEAD_WEBHOOK_SECRET  secret: sent as X-Lead-Secret for n8n to check
-//   LEADS                    KV binding: de-duplication + failed-delivery queue
+//   TELEGRAM_BOT_TOKEN   secret: token from @BotFather
+//   TELEGRAM_CHAT_ID     var:    chat (or group) the bot posts to
+//   LEADS                KV binding: de-duplication + failed-delivery queue
 import type { APIRoute } from 'astro';
 import { env } from 'cloudflare:workers';
 
@@ -41,8 +41,9 @@ type KV = {
 };
 
 const vars = env as unknown as {
-  N8N_LEAD_WEBHOOK_URL?: string;
-  N8N_LEAD_WEBHOOK_SECRET?: string;
+  TELEGRAM_BOT_TOKEN?: string;
+  TELEGRAM_CHAT_ID?: string;
+  TELEGRAM_API_BASE?: string; // override for local testing only
   LEADS?: KV;
 };
 
@@ -93,34 +94,60 @@ async function leadId(email: string, message: string) {
   return [...new Uint8Array(hash)].slice(0, 8).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-// POSTs the lead to n8n; retries network errors, timeouts, 429 and 5xx.
-async function deliver(lead: Lead): Promise<{ ok: boolean; status?: number; error?: string }> {
-  const url = vars.N8N_LEAD_WEBHOOK_URL;
-  if (!url) return { ok: false, error: 'N8N_LEAD_WEBHOOK_URL not configured' };
-  let last: { ok: boolean; status?: number; error?: string } = { ok: false };
+export function alertText(lead: Lead) {
+  return [
+    `New website lead (${lead.locale.toUpperCase()})`,
+    `Name: ${lead.name}`,
+    `Company: ${lead.company}`,
+    `Email: ${lead.email}`,
+    lead.phone ? `WhatsApp: ${lead.phone}` : null,
+    lead.country ? `Country: ${lead.country}` : null,
+    '',
+    lead.message,
+    '',
+    `Lead ID: ${lead.lead_id} · ${lead.received_at}`,
+  ].filter((line) => line !== null).join('\n');
+}
+
+// Builds the Telegram sendMessage request, or null if Telegram isn't configured.
+function channel(lead: Lead): { name: string; url: string; body: unknown } | null {
+  const text = alertText(lead);
+  if (vars.TELEGRAM_BOT_TOKEN && vars.TELEGRAM_CHAT_ID) {
+    const base = vars.TELEGRAM_API_BASE || 'https://api.telegram.org';
+    return {
+      name: 'telegram',
+      url: `${base}/bot${vars.TELEGRAM_BOT_TOKEN}/sendMessage`,
+      body: { chat_id: vars.TELEGRAM_CHAT_ID, text, disable_web_page_preview: true },
+    };
+  }
+  return null;
+}
+
+// Sends the alert; retries network errors, timeouts, 429 and 5xx.
+async function deliver(lead: Lead): Promise<{ ok: boolean; channel?: string; status?: number; error?: string }> {
+  const target = channel(lead);
+  if (!target) return { ok: false, error: 'Telegram not configured' };
+  let last: { ok: boolean; channel?: string; status?: number; error?: string } = { ok: false, channel: target.name };
   for (let attempt = 1; attempt <= ATTEMPTS; attempt++) {
     try {
-      const res = await fetch(url, {
+      const res = await fetch(target.url, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(vars.N8N_LEAD_WEBHOOK_SECRET ? { 'X-Lead-Secret': vars.N8N_LEAD_WEBHOOK_SECRET } : {}),
-        },
-        body: JSON.stringify(lead),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(target.body),
         signal: AbortSignal.timeout(5000),
       });
-      if (res.ok) return { ok: true, status: res.status };
-      last = { ok: false, status: res.status };
+      if (res.ok) return { ok: true, channel: target.name, status: res.status };
+      last = { ok: false, channel: target.name, status: res.status };
       if (res.status < 500 && res.status !== 429) break; // 4xx other than 429 won't fix itself
     } catch (err) {
-      last = { ok: false, error: err instanceof Error ? err.message : String(err) };
+      last = { ok: false, channel: target.name, error: err instanceof Error ? err.message : String(err) };
     }
     if (attempt < ATTEMPTS) await new Promise((r) => setTimeout(r, 500 * 3 ** (attempt - 1)));
   }
   return last;
 }
 
-// Self-healing: once n8n is reachable again, re-send leads that failed earlier.
+// Self-healing: once Telegram works again, re-send leads that failed earlier.
 async function flushFailed(kv: KV) {
   const { keys } = await kv.list({ prefix: 'failed:', limit: 5 });
   for (const { name } of keys) {
@@ -140,7 +167,7 @@ async function process(lead: Lead) {
   const kv = vars.LEADS;
   const result = await deliver(lead);
   if (result.ok) {
-    log('info', 'lead.delivered', { lead_id: lead.lead_id, status: result.status });
+    log('info', 'lead.delivered', { lead_id: lead.lead_id, channel: result.channel, status: result.status });
     if (kv) await flushFailed(kv);
     return;
   }
