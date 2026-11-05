@@ -133,10 +133,18 @@ const t = useTranslations(lang);
       btn.textContent = sending;
       err.classList.add('hidden');
       try {
+        const payload = JSON.stringify(Object.fromEntries(new FormData(form)));
+        // Lead capture (our own endpoint). Best-effort: never blocks the email path.
+        fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payload,
+          keepalive: true,
+        }).catch(() => {});
         const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+          body: payload,
         });
         const data = await res.json();
         if (res.ok && data.success) {
