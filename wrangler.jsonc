@@ -19,6 +19,12 @@
 			"id": "ae0392ab10654347bf3b9d51f64fae16"
 		}
 	],
+	// Telegram chat that receives new-lead alerts from /api/contact.
+	// Not a secret. The bot token is stored separately as the
+	// TELEGRAM_BOT_TOKEN secret (Cloudflare dashboard / wrangler secret put).
+	"vars": {
+		"TELEGRAM_CHAT_ID": "7790551793"
+	},
 	"observability": {
 		"enabled": true
 	}
